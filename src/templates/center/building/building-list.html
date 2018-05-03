@@ -1,0 +1,44 @@
+
+<div class="crumbs">
+  <h3>楼盘列表</h3>
+  <p><a ui-sref="main.building-list" >楼盘管理</a> > 楼盘列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <input type="text" class="form-control input-sm"  placeholder="楼盘名称" maxlength="12" size="30" ng-model="list.searchKey">
+    <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+    <div class="form-inline form-group float-right"  >
+      <button type="button" class="btn btn-primary btn-sm  " ui-sref="main.building-add" > 新增楼盘</button>
+    </div>
+  </div>
+
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td style="min-width: 100px">楼盘名称</td>
+      <td>楼盘地址</td>
+      <td>开发商</td>
+      <!--<td style="min-width: 100px">装修标准</td>-->
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.name"></td>
+      <td ng-bind="g.address"></td>
+      <td ng-bind="g.developer"></td>
+      <!--<td><i ng-if="g.decoration===1">毛坯</i><i ng-if="g.decoration===2">精装</i></td>-->
+      <td>
+        <button   class="btn btn-primary btn-xs" ng-click="edit(g.id)"  >修改</button>
+        <!--<button   class="btn btn-danger btn-xs" ng-click="del(g.id)" >删除</button>-->
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+

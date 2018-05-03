@@ -1,0 +1,184 @@
+<div class="crumbs">
+    <h3>新增楼盘 </h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.building-add" >楼盘管理</a> > <a ui-sref="main.building-add" >楼盘列表</a>  > 新增楼盘</p>
+</div>
+<div class="content-box "  >
+
+    <div class="form-inline form-group">
+        <p class=" model-title mt50 block  ">基本信息</p>
+        <table class="input-table-default">
+            <tr>
+                <td><span>楼盘名称：</span></td>
+                <td>
+                    <input type="text" class="form-control " maxlength="30" size="60"  placeholder="名称2-30个字符以内，不能为纯数字" ng-model="dataInfo.name "  ng-pattern="pubRegex.reNumber"  ng-maxlength="30" ng-minlength="2"   ng-blur="name= !dataInfo.name"  ng-class="{err:name}"   />
+                </td>
+            </tr>
+
+            <tr>
+                <td><span>所在地区：</span></td>
+                <td>
+                    <select class="form-control" ng-options="v.id as v.name for v in provinces" ng-model="areaLevelDto.one " ng-required="true" ng-blur="one =!areaLevelDto.one"  ng-class="{err:one}" >
+                        <option value="">--省--</option>
+                    </select>
+
+                    <select class="form-control" ng-options="v.id as v.name for v in cities" ng-model="areaLevelDto.two " ng-required="true" ng-blur="two=!areaLevelDto.two"  ng-class="{err:two }"  >
+                        <option value="">--市--</option>
+                    </select>
+                    <select class="form-control areas" ng-options="v.id as v.name for v in areas" ng-model="areaLevelDto.three"  ng-if="isAreaShow"  ng-required="true" ng-blur="three=!areaLevelDto.three "  ng-class="{err:three}" >
+                        <option value="">--区/县--</option>
+                    </select>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td><span>楼盘地址：</span></td>
+                <td>
+                    <input type="text" class="form-control " maxlength="50" size="60"  placeholder="地址50个字符内" ng-model="dataInfo.address " ng-maxlength="50" ng-minlength="2" />
+                    <i class="f12 c-999">(选填)</i>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span>开发商：</span></td>
+                <td>
+                    <input type="text" class="form-control " maxlength="30" size="60"  placeholder="开发商名称" ng-model="dataInfo.developer "  ng-maxlength="30"   />
+                    <i class="f12 c-999">(选填)</i>
+                </td>
+            </tr>
+
+            <!--<tr>-->
+                <!--<td><span>装修标准：</span></td>-->
+                <!--<td>-->
+                    <!--<select class="form-control" ng-options="v.code as v.desc for v in decorationStandard" ng-model="dataInfo.decoration"  >-->
+                        <!--<option value="">&#45;&#45;选择类型&#45;&#45;</option>-->
+                    <!--</select>-->
+                    <!--<i class="f12 c-999">(选填)</i>-->
+                <!--</td>-->
+            <!--</tr>-->
+
+
+
+            <tr>
+                <td><span></span></td>
+                <td>
+                    <input type="hidden" ng-model="dataInfo.id" />
+                    <button   class="btn btn-primary " ng-click="submit([dataInfo,true])"  >提交</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+
+                </td>
+            </tr>
+
+
+
+        </table>
+
+    </div>
+
+    <div class="form-inline form-group">
+        <p class=" model-title mt50 block  " style="border-bottom: none; margin-bottom: 0">户型图设置 <button   class="btn btn-primary btn-xs  inline-block" ng-click="createDialog(null)"  >添加户型图</button> <i class="f12 c-red ml10">(注：设置户型图之前请保存基本信息！)</i></p>
+        <table class=" table   table-hover table-condensed  table-striped text-center " style=" width: 97%;margin-left: 20px">
+            <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+                <td>ID</td>
+                <td>户型名称</td>
+                <td>户型</td>
+                <td>面积（平方米）</td>
+                <td>户型图</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="g in buildingLayouts" class="v-mid">
+                <td ng-bind="g.id" class="v-mid"></td>
+                <td ng-bind="g.name" class="v-mid"></td>
+                <td class="v-mid">{{g.bedroom}}室{{g.livingRoom}}厅{{g.toilet}}卫</td>
+                <td ng-bind="g.houseArea" class="v-mid"></td>
+                <td>
+                    <a class="preview-img cursor"><img ng-src="{{g.layoutImage}}&imageView2/1/w/40/h/40"   data-target=".myModal" data-toggle="modal"  data-img="{{g.layoutImage}}"></a>
+                    </td>
+                <td  class="v-mid">
+                    <button   class="btn btn-primary btn-xs" ng-click="createDialog(g.id)"  >修改</button>
+                    <button   class="btn btn-danger btn-xs" ng-click="roomsDel([dataInfo.id,g.id])" >删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<!--dialog 添加户型图-->
+<div class="modal fade createDialog ">
+    <div class="modal-dialog " style="width: 750px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >户型设置</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <dl class="  form-inline form-group" >
+                        <dd>
+                            <span>户型名称：</span>
+                            <input type="text" class="form-control " maxlength="30" size="50"  placeholder="名称2-30个字符以内，不能为纯数字" ng-model="dialogDataInfo.name "  ng-pattern="pubRegex.reNumber"  ng-maxlength="30" ng-minlength="2"    />
+                        </dd>
+                        <dd>
+                            <span>户型：</span>
+                            <select class="form-control" ng-options="v.code as v.desc for v in bedrooms" ng-model="dialogDataInfo.bedroom " ng-required="true"  >
+                                <option value="">--卧室--</option>
+                            </select>
+
+                            <select class="form-control" ng-options="v.code as v.desc for v in livingRooms" ng-model="dialogDataInfo.livingRoom " ng-required="true" >
+                                <option value="">--客厅--</option>
+                            </select>
+                            <select class="form-control areas" ng-options="v.code as v.desc for v in toilets"  ng-model="dialogDataInfo.toilet "  ng-required="true" >
+                                <option value="">--卫生间--</option>
+                            </select>
+                        </dd>
+
+                        <dd>
+                            <span>面积：</span>
+                            <input type="text" class="form-control " maxlength="8" size="10"  placeholder="0.00" ng-model="dialogDataInfo.houseArea "  ng-pattern="pubRegex.price"    />  <i class=" f12 c-999 ml10">(平方米)</i>
+                        </dd>
+
+                        <dd>
+                            <span class="v-top">户型图：</span>
+                            <div class="inline-block">
+                                <button type="button"  class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+                                <!--<i class=" f12 c-999 ml10">({{tagsBaseText.common}})</i>-->
+                                <i class=" f12 c-999 ml10">(选填)</i>
+                                <div class="img-show-box create-dialog"></div> <input type="hidden"  ng-model="dialogDataInfo.layoutImage"  />
+                            </div>
+                        </dd>
+
+                        <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{dialogDataInfo.errorMsg}}</p>
+                    </dl>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" ng-model="dialogDataInfo.id" />
+                <button type="button" class="btn btn-primary "  ng-click="createDialogSumbit(dialogDataInfo)" >提交选择</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div ng-include="'/templates/partial/show-img.html'"></div>
+
+
+
+
+
+
+

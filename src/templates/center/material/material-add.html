@@ -1,0 +1,273 @@
+<style>
+  label{ line-height: normal}
+  .add-phone,.delete-phone{ width: 30px;height: 30px; text-align: center;line-height: 30px; border-radius: 50%; background: #5BC0DE;display: inline-block; font-size: 16px; color: #fff; cursor: pointer; margin-left: 10px}
+  .delete-phone{   border:1px solid #E53573; color: #E53573; background: #fff; font-weight: bold; line-height: 26px }
+
+  .roomsTab li{ display: inline-block; padding: 6px 12px; border: 1px solid #ccc; border-bottom: none; margin-right: -1px; cursor: pointer; margin-bottom: -1px}
+  .roomsTab li.hover{ border-bottom: 1px solid #fff}
+  .roomsTab { border-bottom: 1px solid #ccc; margin-bottom: 10px}
+  .roomsContent{ display: none}
+  #editor span{ min-width:0px}
+  .add-phone,.delete-phone{ width: 30px;height: 30px; text-align: center;line-height: 30px; border-radius: 50%; background: #5BC0DE;display: inline-block; font-size: 16px; color: #fff; cursor: pointer; margin-left: 10px}
+  .delete-phone{   border:1px solid #E53573; color: #E53573; background: #fff; font-weight: bold; line-height: 26px }
+
+</style>
+
+
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/lang/zh-cn/zh-cn.js"></script>
+
+<div class="crumbs" >
+  <h3>主材信息</h3>
+  <p><a ui-sref="main.material-list" >主材管理</a> > <a ui-sref="main.material-list" >主材列表</a> >新增主材</p>
+</div>
+
+
+<div class="content-box" >
+
+  <div class="form-inline form-group">
+    <table class="input-table-default">
+      <tr>
+        <td><span>品牌名称：</span></td>
+        <td>
+          <input type="text" class="form-control required " size="50"  maxlength="30" placeholder="品牌名2-30个字符"  ng-model="dataInfo.name" ng-required="true"   ng-maxlength="30" ng-minlength="2"  ng-blur="name = !dataInfo.name"  ng-class="{err:name }"  />
+        </td>
+      </tr>
+      <tr>
+        <td><span>品牌LOGO：</span></td>
+        <td>
+            <!---->
+            <div class="upimg-inline-block ">
+                  <dl>
+                    <dd ><button type="button"  class="btn btn-info " id="brandLogoImage">上传品牌LOGO<i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="brandInfo.logo" /></dd>
+                    </dl>
+            </div>
+            <!---->
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>是否显示：</span></td>
+        <td>
+          <label  ><input type="radio" ng-value=true  ng-model="dataInfo.display "  >是</label>
+          <label class="ml50"  ><input type="radio" ng-value=false  ng-model="dataInfo.display " >否</label>
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>定金：</span></td>
+        <td>
+          <input type="text" class="form-control " size="20" ng-minlength="0"  maxlength="8" placeholder="0~10000元，0则免费领取" ng-model="dataInfo.deposit "  ng-blur="deposit  = dataInfo.deposit!==0&&!dataInfo.deposit " ng-pattern="pubRegex.price"  ng-class="{err:deposit||(dataInfo.deposit>10000)|| (dataInfo.deposit<0)}" />
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>联系人：</span></td>
+        <td>
+          <input type="text"  size="30" class="form-control "    maxlength="10" placeholder="2-10位真实中文名字字符"  ng-pattern="pubRegex.realname" ng-model="dataInfo.contact "   ng-blur="contact =!dataInfo.contact "  ng-class="{err:contact  }" />
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>手机号：</span></td>
+        <td>
+          <input type="tel"  size="30" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="dataInfo.mobilePhone"  ng-blur="mobilePhone=!dataInfo.mobilePhone "  placeholder="请填写11位手机号码" ng-class="{err:mobilePhone }"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>座机号：</span></td>
+        <td>
+          <input type="tel"  size="30" class="form-control"  ng-init="telephone=''"   maxlength="13"  ng-pattern="pubRegex.tel" ng-model="dataInfo.telephone "  ng-blur="telephone =dataInfo.telephone "  placeholder="请填写座机号(格式：028-88888888)" ng-class="{err:telephone===undefined  }"/><i class="f12 c-999">(选填)</i>
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>服务区域：</span></td>
+        <td>
+          <select class="form-control "   ng-options="v.id as v.name for v in cityTypes" ng-model="dataInfo.areaId"  ng-blur="areaId=!dataInfo.areaId "  ng-class="{err:areaId }"  >
+            <option value="">--选择区域--</option>
+          </select>
+        </td>
+      </tr>
+
+
+
+
+      <tr>
+        <td class="v-top"><span>所属类型：</span></td>
+        <td>
+          <div class="brand-class inline-block lh200" style="min-width: 40%;">加载中...</div>
+        </td>
+      </tr>
+
+      <tr style="margin-top: -10px">
+        <td class="v-top"><span style="visibility: hidden">所属类型：</span></td>
+        <td>
+            <input type="hidden" class="form-control " ng-blur="isCheck=isChecked()"  ng-class="{err:isCheck}" />
+            <i ng-show="isCheck" class="f12 c-red">请至少选择一项品牌分类！</i>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="v-top"><span>优惠描述：</span></td>
+        <td >
+          <!--style给定宽度可以影响编辑器的最终宽度-->
+          <script id="editor" type="text/plain" style="width:940px;height:400px; overflow-x:hidden "></script>
+          <!--style给定宽度可以影响编辑器的最终宽度结束-->
+        </td>
+      </tr>
+
+
+
+      <tr>
+        <td><span>图文广告：</span></td>
+        <td>
+          <!---->
+          <div class="upimg-inline-block ">
+            <dl>
+              <dd ><button type="button"  class="btn btn-info " id="picAdverts">上传广告图片<i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="brandInfo.picAdverts" /></dd>
+            </dl>
+          </div>
+          <!---->
+        </td>
+      </tr>
+
+      <tr >
+        <td class="v-top"><span>短视频：</span></td>
+        <td>
+          <!---->
+          <div>
+            <ul>
+              <li class="inline-block">
+                <button type="button" class="btn btn-info " ng-init="initCreateV={maxLen:1,minLen:0}"   ng-click="createVideoDialog( {lastData:getVideos,addData:{},maxLen:initCreateV.maxLen})"  > 添加短视频</button>
+                <i class="f12 c-999 ml10">(选填)</i></li>
+              <input class="form-control creatVlen " type="hidden" ng-blur="creatVlen=getVideos.length<initCreateV.minLen"  ng-class="{err:creatVlen }"/>
+              <i class="f12 c-red  block"  ng-if="creatVlen">请上传一个视频！</i>
+            </ul>
+            <ul class="create-dialog-list inline-block mt10 " style="width: 60%" ng-if="getVideos.length">
+              <li  ng-model="getVideos" ng-repeat="g in getVideos track by $index" class="f12 lh260" >
+                <i class="iconfont"></i>
+                <a class="cursor"   data-target='.myModalVideo' ng-click="createVideoShow(g.url)"  data-toggle='modal' title="{{g.name}}">
+                  <img ng-src="{{g.url}}?vframe/jpg/offset/{{g.second}}/w/50/h/30" alt="缩略图"><em class="ml10">{{g.name}}</em> <i class="c-999"> 时长:{{g.duration | number:2}}</i>
+                </a>
+                            <span class="float-right c-999">
+                            <i class="iconfont f12"></i>
+                            <a href="javascript:void(0)"  data-target='.upVideoDialog'   data-toggle='modal' ng-click="createVideoDialog( {lastData:getVideos,addData:g,index:$index})" >编辑</a>
+                            <i class="iconfont f12"></i>
+                            <a  href="javascript:void(0)" ng-click="createVideoDel([getVideos,g])">移除</a>
+                            </span>
+              </li>
+            </ul>
+
+          </div>
+          <!---->
+        </td>
+      </tr>
+
+
+      <tr>
+        <td><span>主材券：</span></td>
+        <td>
+          <select class="form-control "   ng-options="v.couponId as v.couponName for v in materialCouponIds" ng-model="dataInfo.materialCouponId"  ng-blur="materialCouponId=!dataInfo.materialCouponId "  ng-class="{err:materialCouponId }"  >
+            <option value="">--请选择关联的主材券--</option>
+          </select>
+        </td>
+      </tr>
+
+
+
+      <tr >
+        <td class="v-top"><span>短信内容：</span></td>
+        <td>
+          <textarea class="form-control" ng-model="dataInfo.smsMessage "  style="width:780px"   rows="6"     ng-maxlength="450" maxlength="450" placeholder="480字以内"></textarea>
+          <i class="f12 c-999"></i>
+          <br><i class="c-999">{{dataInfo.smsMessage | monitorWords}}/450 (选填，短信发送时系统会自动加上前缀：【鹦鹉美家】（业主 138****8888），请勿额外填写)</i>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td class="v-top"><span>接收短信手机号：</span></td>
+        <td>
+          <input type="tel"  size="15" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="servicePhoneModel.phone"  ng-blur="userPhone=!servicePhoneModel.phone "  placeholder="请填写11位手机号码" />
+          <input type="text"  size="30" class="form-control"   maxlength="10"   ng-model="servicePhoneModel.remarks "  placeholder="备注10字内,选填" />
+
+          <i ng-click="joinServicePhoneModel(servicePhoneModel)" class="add-phone" ng-if="(dataInfo.extraPhones.length)<10">+</i> <i class="f12 c-999">(选填，最多绑定10个电话号码)</i>
+
+          <em class=" f12 c-red">{{servicePhoneErr}}</em>
+
+          <div ng-repeat="d in dataInfo.extraPhones track by $index" class="mt5">
+            <input type="tel"  size="15" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="d.phone"  ng-blur="userPhones=!d "  ng-disabled="true" placeholder="请填写11位手机号码" ng-class="{err:userPhones }"/>
+            <input type="text"  size="30" class="form-control"   maxlength="10"   ng-model="d.remarks "  placeholder="备注10字内,选填" />
+            <i class="delete-phone v-top" ng-click="DelServicePhoneModel(d,$index)">-</i>
+          </div>
+        </td>
+      </tr>
+
+
+
+
+      <tr>
+        <td></td>
+        <td>
+          <button ng-click="submit([dataInfo,true])"  type="button" class="btn btn-primary w110">提交</button>
+        </td>
+      </tr>
+
+
+    </table>
+  </div>
+
+</div>
+
+<!--dialog上传视频模块-->
+<div class="modal fade upVideoDialog create-dialog-box" >
+  <div class="modal-dialog " style="width: 800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" ng-if="createVideoTitleAdd">添加视频</h4>
+        <h4 class="modal-title" ng-if="!createVideoTitleAdd">编辑视频</h4>
+      </div>
+      <div class="modal-body" ng-show="maxlengtherr">
+        <p class="text-center lh320 c-red f14 ">不能添加，最大上传数量为{{maxlength}}</p>
+      </div>
+
+      <div class="modal-body" ng-show="!maxlengtherr" >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+            <dd><span>视频名称：</span><input  class="form-control "     type="text"  ng-model="createVideoInfo.name" maxlength="30"  placeholder="名称30字符内，不能为纯数字" ng-pattern="pubRegex.reNumber"  autocomplete="off"></dd>
+            <dd><span>上传视频：</span>
+              <div class="inline-block">
+                <button type="button"  class="btn btn-info " id="upVideoBtn"> 选择视频 <i></i></button>
+                <em class="f12 c-999 ml10">（上传视频格式为mp4；单个视频不超过200M。）</em>
+                <div class="mt10 video-list-content"></div><input type="hidden"  ng-model="createVideoInfo.url"  />
+              </div>
+            </dd>
+            <dd>
+              <span style="vertical-align: top">视频缩略图：</span>
+              <div class="inline-block">
+                <input type="hidden" ng-model="createVideoInfo.duration"/>
+                <input type="text" class="form-control " ng-model="createVideoInfo.second" ng-maxlength="5" ng-minlength="1"  ng-pattern="pubRegex.short_number" maxlength="5" style="width: 100px" >
+                <button type="button"  class="btn btn-info " id="getVideoPic" style='min-width: 136px' ng-disabled="!createVideoInfo.url" ng-click="createVideoShowVideoPics(createVideoInfo)">查看缩略图<i></i></button>
+                <em class="f12 c-999">（默认获取视频第<i class="defSec"></i>秒图片，可手动设置秒数。）</em>
+                <p class='mt10' ng-show="createVideoShowPics" ><img ng-src="{{createVideoShowPics}}"/><p>
+              </div>
+            </dd>
+            <p class="text-center c-red f12 "><em ng-bind="createVideoInfo.errorMsg"></em></p>
+          </dl>
+        </div>
+      </div>
+      <div class="modal-footer" ng-show="!maxlengtherr">
+        <button type="button" class="btn btn-primary "  ng-click="createVideoSumbit(createVideoInfo)" >确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div ng-include="'/templates/partial/show-img.html'"></div>
+<div ng-include="'/templates/partial/show-video.html'"></div>
+
+

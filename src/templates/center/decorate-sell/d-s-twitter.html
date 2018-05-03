@@ -1,0 +1,153 @@
+
+<div class="crumbs">
+    <h3>家居顾问详情</h3>
+    <p><a ui-sref="main.decorate-sell-list" >家居顾问管理</a> > <a ui-sref="main.decorate-sell-list" >家居顾问列表</a> > 家居顾问详情</p>
+</div>
+
+<div class="content-box " style=" min-width: 1100px">
+    <div ng-include="'/templates/center/decorate-sell/d-s-tab-inc.html'"></div>
+
+    <div class="form-inline form-group "  >
+        <h4 class="mb10 mt30 float-left">推客列表</h4>
+        <div class="inline-block f12 float-right pt20">
+            <input type="text" class="form-control input-sm"  placeholder="姓名" maxlength="10" size="20" ng-model="list.name">
+            <input type="text" class="form-control input-sm"  placeholder="电话" maxlength="11" size="12" ng-model="list.mobilePhone">
+
+            <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+            <button   type="button" class="btn btn-primary btn-sm  input-sm ml10 " ng-click="createDialogTwitter()">关联推客</button>
+            <button   type="button" class="btn btn-primary btn-sm  input-sm ml10 " ng-click="createDialog()">更换家居顾问</button>
+        </div>
+    </div>
+
+    <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+
+            <td>姓名</td>
+            <td>电话号码</td>
+            <td>推客状态</td>
+            <td>关联时间</td>
+            <td>操作</td>
+
+            <td> <label><input type="checkbox" ng-model="isAllSelect"  class="v-top"  ng-click="isAllSelectFun(isAllSelect,grid.result)"/> 全选</label></td>
+
+        </tr>
+        </thead>
+
+
+        <tbody>
+        <tr ng-repeat="g in grid.result ">
+            <td>{{g.name }}</td>
+            <td>{{g.mobilePhone}}</td>
+            <td>{{g.enable?'启用':'禁用'}}</td>
+            <td>{{g.relationDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
+                <button  class="btn btn-danger btn-xs "  ng-click=del(g.id)>取消关联</button>
+            </td>
+            <td><input type="checkbox"  ng-checked="isAllSelect"  ng-model="g.isSelect" ng-click="selectFun(grid.result)"/></td>
+        </tr>
+        <tr ng-if="!grid.result"><td colspan=6 class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+
+</div>
+
+
+
+
+<!--dialog 更改家居顾问-->
+<div class="modal fade createDialog ">
+    <div class="modal-dialog " style="width: 500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >更改家居顾问</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <dl class="  form-inline form-group" >
+
+
+                        <dd>
+                            <span>服务区域：</span>
+                            <select class="form-control "   ng-options="v.id as v.name for v in cityTypes" ng-model="seller.areaId"  ng-required="true" >
+                                <option value="">--选择服务区域--</option>
+                            </select>
+                        </dd>
+                        <dd>
+                            <span>家居顾问：</span>
+                            <select class="form-control" ng-options="v.id as v.name for v in sellerTypes" ng-model="seller.newPeId" ng-required="true"  >
+                                <option value="">--选择家居顾问--</option>
+                            </select>
+                        </dd>
+
+                        <p class="text-center c-red f12 mt10 "> <i class="loading f12 c-green block"></i>{{seller.errorMsg}}</p>
+                    </dl>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="twitterIdsChangeSeller(seller)" >提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!--dialog 关联推客-->
+<div class="modal fade createDialogTwitter ">
+    <div class="modal-dialog " style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >关联推客</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <div class="mb10">
+						<div class="pr inline-block" style="width: 30%;">
+							<input type="text" class="form-control input-sm inline-block"  placeholder="输入姓名或电话" maxlength="11" size="30" ng-model="twitterKey">
+	                        <button type="button" class="btn btn-primary btn-sm inline-block pa" style="top: 0;right: 0;" ng-click="tSearch(twitterKey)"> 
+	                        	<span class="glyphicon glyphicon-search"></span>
+	                        </button>
+						</div>
+                        
+                        <button type="button" class="btn btn-primary btn-sm inline-block " ng-click="qSearch()"> 快速查询所属推客</button>
+						<p class="f12 inline-block pr" style="top: 8px;left: 6px;">如果当前家居顾问具备推客身份 <br />点击此按钮能快速查出其下属1级和2级推客</p>
+
+                    </div>
+                    <table class=" table   table-hover table-condensed  table-striped text-center ">
+                        <thead style="background:#8A8BC4; color: #fff">
+                        <tr>
+                            <td style="width: 40px;">选择</td>
+                            <td>推客姓名</td>
+                            <td>电话</td>
+                            <td>关联情况</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="g in twitterResult" >
+                            <td> <input type="checkbox" ng-model="g.isSelect" class="checkbox-list"/></td>
+                            <td ng-bind="g.name"></td>
+                            <td ng-bind="g.mobilePhone"></td>
+                            <td>{{g.peName?('已关联'+g.peArea+'家居顾问'+g.peName):''}}</td>
+                        </tr>
+                        <tr ng-if="twitterResult.length===0&&!qSearchResult"><td colspan=6 class="f12 c-999 " >请输入关键词查询获得数据!</td></tr>
+                        <tr ng-if="twitterResult.length===0&&qSearchResult"><td colspan=6 class="f12 c-999 " >暂无数据!</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="text-center c-red f12 mt10 "> <i class="loading f12 c-green block"></i>{{errorMsg}}</p>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="twitterChange(twitterResult)" >提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+

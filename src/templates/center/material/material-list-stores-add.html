@@ -1,0 +1,183 @@
+
+<style>
+  #city_detail_table td{ width: auto}
+  .BMap_CityListCtrl span{ min-width: 0; width: auto}
+  .BMap_CityListCtrl button{ width: auto}
+  .citylist_popup_main .city_content_top{ height: 40px;}
+
+</style>
+
+<div class="crumbs">
+  <h3>{{type===1?"新增门店":type===2?"修改门店":"查看门店"}}</h3>
+  <p><a ui-sref="main.material-list" >主材管理</a> > <a ui-sref="main.material-list" >主材列表</a> > <a ui-sref="main.material-list-stores" >门店列表</a> > {{type===1?"新增门店":type===2?"修改门店":"查看门店"}}</p>
+</div>
+
+<div class="content-box "  >
+  <div class="form-inline form-group">
+    <table class="input-table-default">
+
+      <tr>
+        <td><span>门店名称：</span></td>
+        <td>
+          <input type="text" class="form-control required " maxlength="30" size="60"  placeholder="名称2-30个字符，不能为纯数字" ng-model="dataInfo.storeName"  ng-pattern="pubRegex.reNumber"   ng-maxlength="30" ng-minlength="2"   ng-blur="storeName =!dataInfo.storeName"   ng-class="{err:storeName }"  />
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>门店地址：</span></td>
+        <td>
+          <input type="text" class="form-control required " maxlength="30" size="60"  placeholder="30个字符内，不能为纯数字" ng-model="dataInfo.storeAddr "  ng-pattern="pubRegex.reNumber"  ng-maxlength="30" ng-minlength="2"   ng-blur="storeAddr  =!dataInfo.storeAddr "   ng-class="{err:storeAddr  }"  />
+        </td>
+      </tr>
+
+
+      <tr>
+        <td class="v-top"><span>门店720：</span></td>
+        <td>
+
+          <!---->
+          <div>
+            <ul>
+              <li class="inline-block">
+                <button type="button" class="btn btn-info " ng-disabled="forbid720" ng-init="initDialogDataLength={maxLen:1,minLen:0}"   ng-click="create720Dialog({lastData:get720datas,addData:{},maxLen:initDialogDataLength.maxLen,isScene:true})"  > 添加720</button>
+                <i class="f12 c-999 ml10">(请上传720压缩包，与门店图片二选一上传)</i>
+                <input class="form-control create720DialogCheck " type="hidden" ng-blur="create720DialogCheck=get720datas.length<initDialogDataLength.minLen"  ng-class="{err:create720DialogCheck }"/>
+                <i class="f12 c-red lh240  block"  ng-if="create720DialogCheck">至少上传一组720包！</i>
+              </li>
+            </ul>
+            <ul class="create-dialog-list inline-block mt10 " style="width: 60%" ng-if="get720datas.length">
+              <li  ng-model="get720datas" ng-repeat="g in get720datas track by $index" class="f12 lh260" >
+
+                <a class="cursor"  ng-if="g.pathOf720" style="width:70%;" class="inline-block" data-target='.myModal720' ng-click="create720Show(view720(g.pathOf720)[0])"  data-toggle='modal'  ><img ng-src="{{view720(g.pathOf720)[1]}}"  width="30" height="30" alt="缩略图" /></a>
+
+                <span class="float-right c-999" style="width: 100px"><i class="iconfont f12"></i><a href="javascript:void(0)"  ng-click="create720Dialog({lastData:get720datas,addData:g,index:$index,isScene:true})" >编辑</a> <i class="iconfont f12"></i><a href="javascript:void(0)" ng-click="create720Del([get720datas,g])">移除</a></span>
+
+              </li>
+            </ul>
+
+          </div>
+          <!---->
+
+        </td>
+      </tr>
+      <tr class="v-top" ng-show="get720datas.length>0">
+        <td><span >720封面：</span></td>
+        <td>
+          <!---->
+          <div class="upimg-inline-block ">
+            <dl>
+              <dd ><button type="button"  class="btn btn-info " id="storeCover">上传720封面图<i></i> </button><i class="f12 c-999 ml10">(上传720后必填)</i>  <div class="img-show-box"></div><input type="hidden"  ng-model="dataInfo.storeCover" /></dd>
+            </dl>
+          </div>
+          <!---->
+
+        </td>
+      </tr>
+      <tr class="v-top">
+        <td><span >门店图片：</span></td>
+        <td>
+          <!---->
+          <div class="upimg-inline-block ">
+            <dl>
+              <dd ><button type="button" ng-disabled = "alternative"  class="btn btn-info " id="storeImg">上传门店图片<i></i> </button><i class="f12 c-999 ml10">(与门店720二选一上传)</i>  <div class="img-show-box storeImg"></div><input type="hidden"  ng-model="dataInfo.storeImg" /></dd>
+            </dl>
+          </div>
+          <!---->
+
+        </td>
+      </tr>
+
+
+      <tr>
+        <td><span>门店状态：</span></td>
+        <td ng-init="dataInfo.available=true">
+          <label> <input type="radio"  ng-model="dataInfo.available"  ng-value="true" /> 启用</label>
+          <label class="ml10"><input  ng-value="false"  ng-model="dataInfo.available" type="radio"/> 禁用</label>
+        </td>
+      </tr>
+      <tr>
+        <td><span>查询位置：</span></td>
+        <td>
+          <input type="text" class="form-control required" id="suggestId" maxlength="15" size="60"  placeholder="输入具体位置" ng-model="mapAddr" />
+            <div id="searchResultPanl" style="border:1px solid #c0c0c0;height:auto;display:none;"></div>
+        </td>
+      </tr>
+      <tr>
+        <td><span>地图位置：</span></td>
+        <td>
+          <input type="text" class="form-control required " maxlength="15" size="60"  placeholder="选择地图位置" ng-model="mapPoint"   ng-maxlength="30" ng-minlength="2"  disabled  ng-blur="mapPoints =!mapPoint"   ng-class="{err:mapPoints }"  />
+        </td>
+      </tr>
+
+
+
+      <tr>
+        <td><span></span></td>
+        <td>
+          <div id="allmap" style="height: 600px; min-width: 920px; width: 96%"></div>
+
+        </td>
+      </tr>
+      <tr>
+        <td><span></span></td>
+        <td>
+        </td>
+      </tr>
+      <tr>
+        <td><span></span></td>
+        <td >
+          <button ng-click="submit([dataInfo,true])"  type="button" class="btn btn-primary  lastSubmit " >提交</button>
+        </td>
+      </tr>
+
+
+
+
+
+    </table>
+
+  </div>
+</div>
+
+
+<!--dialog上传720模块-->
+<div class="modal fade up720Dialog  create-dialog-box">
+  <div class="modal-dialog " style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" ng-if="create720TitleAdd">添加720</h4>
+        <h4 class="modal-title" ng-if="!create720TitleAdd">编辑720</h4>
+      </div>
+      <div class="modal-body" ng-show="maxlengtherr">
+        <p class="text-center lh320 c-red f14 ">不能添加，最大上传数量为{{maxlength}}</p>
+      </div>
+      <div class="modal-body"  ng-show="!maxlengtherr" >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+            <dd>
+              <form action="" method="post" enctype="multipart/form-data" target="upload" class="from720 " >
+                <input  class="krpano-hidden form-control "  disabled   ng-model="create720Info.pathOf720" ng-required="true" />
+
+                <label  for="upfiles">
+                  <div type="button" class="btn btn-info ">选择文件并上传<i></i></div>
+                  <input type="file"   style="display: none" id="upfiles" name="file" >
+                </label>
+                <input type="hidden" name="url"  value="{{childURL}}">
+              </form>
+              <iframe id="krpano-iframe" name="upload" frameborder="0" style="display: none" ></iframe>
+
+            </dd>
+
+            <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{create720Info.errorMsg}}</p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer" ng-show="!maxlengtherr">
+        <button type="button" class="btn btn-primary "  ng-click="create720Sumbit(create720Info)" >确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div ng-include="'/templates/partial/show-img.html'"></div>

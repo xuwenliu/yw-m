@@ -1,0 +1,48 @@
+<div class="crumbs">
+  <h3>聊天追踪</h3>
+  <p><a ui-sref="main.chat" >聊天追踪</a> > 聊天列表</p>
+</div>
+
+<div class="chat-wrap clearfix">
+    <div class="chat-contL float-left">
+        <div class="chat-contL-normal float-left chat-active">
+            <div class="chat-contL-group">正常聊天</div>
+            <div class="chat-contL-IM">
+                <ul class="chat-contL-list js-chat-normal">
+                </ul>
+            </div>
+        </div>
+        <div class="chat-contL-danger float-left">
+            <div class="chat-contL-group">风险聊天</div>
+            <div class="chat-contL-IM">
+                <ul class="chat-contL-list js-chat-danger">
+                </ul>
+            </div>
+        </div>
+    </div>        
+    <div class="chat-contR float-right">
+        <div class="chat-contR-top">
+            <div class="chat-contR-top-info clearfix">
+                <h4><!-- 钢之城作品团队001 --></h4>
+                <p><span><!-- 客户已联系：2次 --></span><span><!-- <a href="#">查看作品详情>></a> --></span></p>
+            </div>
+            <ul>
+               <!-- <li>钢之城作品团队001</li>  -->
+            </ul>
+        </div>
+        <div class="chat-contR-mid">
+            <div class="chat-contR-IM">
+                <ul class="chat-contR-list clearfix">
+                    <a href="javascript:void(0);" class="chat-more" ng-click="chatMore()">查看更多消息</a>
+                </ul>
+            </div>
+        </div> 
+        <div class="chat-contR-bottom">
+            <div class="chat-contR-operate">
+                标记聊天：<span class="chat-btn-normal" ng-click="normalClick()">正常</span><span class="chat-btn-danger" ng-click="dangerClick()">风险</span><span class="chat-btn-close" ng-click="closeClick()">关闭</span>
+            </div>
+            <textarea name="" id="chat-input" disabled cols="30" placeholder="请输入内容，并使用Ctrl+Enter发送" rows="10"></textarea>
+        </div>
+    </div>
+
+</div>

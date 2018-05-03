@@ -1,0 +1,15 @@
+
+    <div class="login-box">
+        <dl class="header"><img src="/static/images/logo.png" width="120px"></dl>
+        <dl class="form text-center mt30 " ng-keypress="enterEvent($event)" >
+            <dt class=" f20 lh320 ">鹦鹉美家后台运营管理系统</dt>
+            <dd><input  type="text" placeholder="用户名" ng-model="loginInfo.userName" maxlength="20" minlength="8"  autocomplete="off"></dd>
+            <dd><input  type="password" placeholder="密码" ng-model="loginInfo.password" maxlength="20" minlength="8"  autocomplete="off"></dd>
+            <dd> <button class="btn " ng-click="login(loginInfo)" ng-disabled="ngDisable"   style="width: 250px; background: #E53573">登录</button></dd>
+            <p class="text-center c-red f14 "><span  ng-bind="errorMsg"></span></p>
+        </dl>
+        <div class="footer f12 c-666 text-center mt30 lh200">版权所有Copyright ©2016 成都鹦鹉美家网络科技有限公司<br>蜀ICP备16004989号</div>
+    </div>
+
+
+

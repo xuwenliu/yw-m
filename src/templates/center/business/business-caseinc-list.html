@@ -1,0 +1,37 @@
+
+<div>
+  <h4 class="inline-block mr50" >作品信息</h4>
+  <table class=" table   table-hover table-condensed  table-striped text-center mt20 ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>作品名称</td>
+      <td>所在地区</td>
+      <td>状态更新时间</td>
+      <!--<td id="currentChatCount" ng-click="sort('currentChatCount')" class="cursor">当前聊天-->
+        <!--<span class="table-sort">-->
+          <!--<i ng-class="['glyphicon','glyphicon-triangle-top','f12','opacity-over',{'opacity-deep':currentSort['currentChatCount'] === true}]"></i>-->
+          <!--<i ng-class="['glyphicon','glyphicon-triangle-bottom','f12','opacity-over',{'opacity-deep':currentSort['currentChatCount'] === false}]"></i>-->
+        <!--</span>-->
+      <!--</td>-->
+      <td id="totalChatCount" ng-click="sort('totalChatCount')" class="cursor">咨询总量
+        <span class="table-sort">
+          <i ng-class="['glyphicon','glyphicon-triangle-top','f12','opacity-over',{'opacity-deep':currentSort['totalChatCount'] === true}]"></i>
+          <i ng-class="['glyphicon','glyphicon-triangle-bottom','f12','opacity-over',{'opacity-deep':currentSort['totalChatCount'] === false}]"></i>
+        </span>
+      </td>
+      <td>作品状态</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.caseName"></td>
+      <td ng-bind="g.city"></td>
+      <td ng-bind="g.updateTime"></td>
+      <!--<td ng-bind="g.currentChatCount"></td>-->
+      <td ng-bind="g.totalChatCount"></td>
+      <td ng-bind="g.status"></td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>

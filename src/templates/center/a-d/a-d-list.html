@@ -1,0 +1,47 @@
+<div class="crumbs">
+  <h3>广告列表</h3>
+  <p><a ui-sref="main.a-d-list" >广告管理</a> > 广告列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group  "  >
+    <div class="form-inline form-group float-right "  >
+      <button type="button" class="btn btn-primary btn-sm  mb10 " ui-sref="main.a-d-list-add" > 新增广告</button>
+    </div>
+  </div>
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>广告ID</td>
+      <td>广告名称</td>
+      <td>广告图</td>
+      <td>广告位</td>
+      <td>开始时间</td>
+      <td>播放长(s)</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td>{{g.id }}</td>
+      <td>{{g.name }}</td>
+      <td>
+        <a class="preview-img cursor "><img ng-src="{{g.advertsImage}}&imageView2/2/h/30/"   data-target=".myModal" data-toggle="modal"  data-img="{{g.advertsImage  }}"></a>
+      </td>
+      <td>{{g.locationDesc  }}</td>
+      <td>{{g.startDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{g.playTime}}</td>
+      <td>
+        <button  class="btn btn-primary btn-xs " ng-click=edit(g.id)>修改</button>
+        <button  class="btn btn-danger btn-xs " ng-click=del(g.id)>删除</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan=7 class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

@@ -1,0 +1,58 @@
+
+<div class="crumbs">
+  <h3>作品所属从业者列表</h3>
+  <p><a ui-sref="main.business" >公司管理</a> > <a ui-sref="main.business" >装修公司列表</a> > 作品所属从业者列表</p>
+</div>
+
+<div class="content-box">
+
+  <!--dialog-->
+  <div class="modal fade myModal" >
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">从业者信息详情</h4>
+        </div>
+        <div class="modal-body">
+          <div class="dialog-content lh200">
+            <div class="ti10">姓名：{{dialog.name}}</div>
+            <div class="ti10">职位：{{dialog.title}}</div>
+            <div class="ti10">绑定作品：{{dialog.caseNum}}</div>
+            <div class="ti10">电话：{{dialog.phone}}</div>
+            <div class="ti10">身份证号：{{dialog.idCard}}</div>
+            <div class="ti10">持证照：<img ng-src="{{dialog.idHoldImage}}" width="100" class="vt"></div>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>从业者ID</td>
+      <td>电话</td>
+      <td>姓名</td>
+      <td>职位</td>
+      <td>绑定作品</td>
+      <td>当前会话</td>
+      <td>会话总量</td>
+      <td>详情</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.userid"></td>
+      <td ng-bind="g.phone"></td>
+      <td ng-bind="g.name"></td>
+      <td ng-bind="g.userDetailType"></td>
+      <td ng-bind="g.caseNum"></td>
+      <td></td>
+      <td></td>
+      <td><button  class="btn btn-primary btn-xs " ng-click="show(g.userId)" data-target='.myModal' data-toggle='modal'>查看</button></td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>

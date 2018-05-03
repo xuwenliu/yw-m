@@ -1,0 +1,30 @@
+<div class="crumbs">
+    <h3>作品类型分布图</h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.data-cases-types" >C端用户数据</a>  > 作品类型分布图</p>
+</div>
+<div class="content-box "  >
+    <div style="background: #eee; display: block">
+        <div class="form-inline form-group float-right "  >
+            <select class="form-control input-sm "  ng-init="caseTypes=[{code:1,desc:'竣工作品'},{code:2,desc:'设计作品'}]" ng-options="v.code as v.desc for v in caseTypes" ng-model="list.caseType"   >
+                <option value="">--作品类型不限--</option>
+            </select>
+            <select  ng-init="caseStatuss=[{code:1,desc:'已上架'},{code:2,desc:'未上架'}]" class="form-control input-sm "   ng-options="v.code as v.desc for v in caseStatuss" ng-model="list.caseStatus" >
+                <option value="">--状态不限--</option>
+            </select>
+
+            <div class="inline-block f12 ">
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="myCharts" class=" mt50" style=" height: 640px; border-top: 1px solid #eee; padding-top: 20px"></div>
+</div>
+
+
+
+
+
+
+

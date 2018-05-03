@@ -1,0 +1,92 @@
+
+<style>
+  @media screen and (max-width:1480px){ .float-right{float: none}}
+  /*tab*/
+  .tabContent { border-top: 1px solid #ccc; padding-top: 10px;  }
+  .tabContent li{display: none}
+  .tab i{ display: inline-block; padding: 4px 16px; font-size: 12px; border: 1px solid #ccc; margin-bottom: -1px; cursor: pointer; margin-right: -1px; z-index: 999;background: #eee;  border-radius: 4px 4px 0 0  }
+  .tab i:hover, .tab i.hover{ border-bottom-color: #fff; background: none }
+</style>
+
+<div class="crumbs" >
+  <h3>会话管理</h3>
+  <p><a ui-sref="main.im-list" >会话管理</a> > 会话列表</p>
+</div>
+
+
+<div class="content-box" >
+  <div class="form-inline form-group "  ng-init="list.orderBy=1" >
+    <select class="form-control input-sm "   ng-options="v.code as v.desc for v in sessionStatus " ng-model="list.state"   >
+      <option value="">--全部会话状态--</option>
+    </select>
+    <select class="form-control input-sm "    ng-options="v.code as v.desc for v in groupStatus " ng-model="list.groupState"   >
+      <option value="">--群组状态--</option>
+    </select>
+    <select class="form-control input-sm "  ng-options="v.code as v.desc for v in orderDates" ng-model="list.orderBy"   >
+      <!--<option value="">&#45;&#45;时间排序&#45;&#45;</option>-->
+    </select>
+
+
+    <div class="inline-block f12 float-right ">
+
+      <div class="input-append date form_datetime_start inline-block " >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" placeholder="创建会话时间开始段" type="text" onkeyup="this.value=''" id="beginTime"  >
+      </div> ----
+      <div class="input-append date form_datetime_end inline-block" >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" type="text"  placeholder="创建会话时间结束段" onkeyup="this.value=''" id="endTime"  >
+      </div>
+      <input type="hidden" ng-class="{err:!dateThan==''}">
+      <i class="f12 c-red" >{{dateThan}}</i>
+
+
+      <input type="text" class="form-control input-sm"  placeholder="业者姓名" maxlength="10" size="20" ng-model="list.employeeName">
+      <input type="text" class="form-control input-sm"  placeholder="业者手机号" maxlength="11" size="12" ng-model="list.employeePhone">
+      <input type="text" class="form-control input-sm"  placeholder="业主手机号" maxlength="11" size="12" ng-model="list.customerPhone">
+
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+    </div>
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>会话名称</td>
+      <td>电联次数</td>
+      <td>创建时间</td>
+      <td>最新会话时间</td>
+      <td>作品名称</td>
+      <td>公司</td>
+      <td>会话状态</td>
+      <td>群组状态</td>
+      <td>加入状态</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id "></td>
+      <td>{{g.name}}</td>
+      <td>{{g.callTotal}}</td>
+      <td>{{g.createTime |date:'yyyy-MM-dd HH:mm:ss'  }}</td>
+      <td>{{g.lastTalkTime |date:'yyyy-MM-dd HH:mm:ss'  }}</td>
+      <td>{{g.caseName   }}</td>
+      <td>{{g.companyName}}</td>
+      <td>{{g.stateDesc}}</td>
+      <td>{{g.groupStateDesc   }}</td>
+      <td>{{g.joinStateDesc}}</td>
+      <td>
+        <button  class="btn btn-danger btn-xs "  ng-click="closeChat(g.id)" ng-if="g.state!==0">关闭会话</button>
+        <button  class="btn btn-primary btn-xs "  ng-click="joinChat(g.id)" ng-if="g.state!==0&&g.joinState==2" >加入会话</button>
+        <button  class="btn btn-success btn-xs "  ng-click="show(g.id,list)">查看会话</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="10" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>

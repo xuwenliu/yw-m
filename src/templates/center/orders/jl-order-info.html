@@ -1,0 +1,524 @@
+
+<style>
+    .twitter-pay li{ display: inline-block; width:30%; margin-right: 2%;  padding: 20px 50px; background:#FAEFE0;  vertical-align: top;}
+    .twitter-pay li:nth-child(2){  background:#EAF7E3;}
+    .twitter-pay li:nth-child(3){  background:#E8F2EE;}
+    .tab-btn-content li:nth-child(1)>table td{ padding: 8px 10px; border:1px solid #DCEAF5}
+    /*.img-show-box { display: inline-block}*/
+    .upimg-inline-block img{ width: 50px !important; min-width: 50px }
+</style>
+
+<div class="crumbs">
+    <h3> 监理订单详情</h3>
+    <p><a ui-sref="main.ls-orders-list" >订单管理</a> > <a ui-sref="main.ls-orders-list" >订单列表</a> > 监理订单详情</p>
+</div>
+
+<div class="content-box " style="min-width: 1100px">
+    <div class="tab-btn">
+        <ul>
+            <li>
+                <a href="javascript:void(0)"  class="hover">基本信息</a>
+                <a href="javascript:void(0)" >账单信息</a>
+                <a href="javascript:void(0)" >打款记录</a>
+                <a href="javascript:void(0)" >操作记录</a>
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-btn-content mt30">
+        <ul>
+            <!--基本信息-->
+            <li style="display: block">
+                <h4 class="mb10  float-left ">订单基本信息</h4>
+                <button ng-show="dataInfo.status!==3"   type="button" class="btn btn-danger btn-sm float-right   mb10 " ng-click="createDialogStop()">终止订单</button>
+
+                <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6"  >
+                    <tbody>
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style="width: 160px">编号</td>
+                        <td>{{dataInfo.orderNum }}</td>
+                        <td align="center" bgcolor="#EFF4FA" style="width: 160px">服务标准</td>
+                        <td >{{dataInfo.orderName}}</td>
+                        <td align="center" bgcolor="#EFF4FA" style="width: 160px">是否支持美家保</td>
+                        <td >{{dataInfo.support?'是':'否' }}</td>
+
+                    </tr>
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA">监理公司</td>
+                        <td colspan="3">{{dataInfo.companyName }}</td>
+                        <td align="center" bgcolor="#EFF4FA" style="width: 160px">状态</td>
+                        <td>{{dataInfo.statusDesc }}</td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA">已付金额（元）</td>
+                        <td>{{dataInfo.prepaidAmount }}</td>
+                        <td align="center" bgcolor="#EFF4FA">平台到账金额（元）</td>
+                        <td>{{dataInfo.arrivalAmount }}</td>
+                        <td align="center" bgcolor="#EFF4FA">已打款金额（元）</td>
+                        <td>{{dataInfo.settledAmount }}</td>
+                    </tr>
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA">创建时间</td>
+                        <td>{{dataInfo.createTime  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td align="center" bgcolor="#EFF4FA">结束时间</td>
+                        <td colspan="3" >{{dataInfo.finishTime  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mb10 mt20 float-left">客户基本信息</h4>
+                <button   type="button" class="btn btn-primary btn-xs float-left  mt20 ml20 " ng-click="createDialog(customerInfo)">编辑客户信息</button>
+                <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6" >
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">姓名</td>
+                        <td>{{customerInfo.userName }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">性别</td>
+                        <td>{{customerInfo.genderDesc  }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">电话号码</td>
+                        <td>{{customerInfo.userPhone }}</td>
+                    </tr>
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA">楼盘名称</td>
+                        <td>{{customerInfo.buildingName }}</td>
+                        <td align="center" bgcolor="#EFF4FA">房屋面积（㎡）</td>
+                        <td>{{customerInfo.houseArea }}</td>
+                        <td align="center" bgcolor="#EFF4FA">房型</td>
+                        <td>{{customerInfo.houseTypeDesc }}</td>
+                    </tr>
+                    <tr>
+
+                        <td align="center" bgcolor="#EFF4FA">所在地区</td>
+                        <td colspan="5">{{areaInfo.shortNamePath}}</td>
+                    </tr>
+                </table>
+                <h4 class="mb10 mt20">订单相关人员</h4>
+                <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6  ">
+
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">平台家居顾问</td>
+                        <td colspan="5">{{dataInfo.platformBdName  }}</td>
+                    </tr>
+                </table>
+                <h4 class="mb10 mt20">订单协议</h4>
+                <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6  ">
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">监理合同</td>
+                        <td style=" width:40%">
+                            <!---->
+                            <div class="upimg-inline-block ">
+                                <dl>
+                                    <dd ><button type="button"  class="btn btn-info btn-xs mr10 " id="xyImages"> 选择图片<i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="dataInfo.serviceAgreement " /></dd>
+                                    </dl>
+                            </div>
+                            <!---->
+                        </td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">美家保协议</td>
+                        <td>
+                            <!---->
+                            <div class="upimg-inline-block ">
+                                <dl>
+                                    <dd ><button type="button"  class="btn btn-info btn-xs mr10 " id="fourxyImages"> 选择图片<i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="dataInfo.quartetAgreement " /></dd>
+                                </dl>
+                            </div>
+                            <!---->
+
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: right; border: solid 1px #fff">
+                        </td>
+                    </tr>
+                </table>
+                <button type="button" class="btn btn-primary  btn-sm block    " style="width:120px"  ng-show="dataInfo.status!==3" ng-click="submitImages()" >提交订单协议</button>
+
+                <h4 class="mb10 mt30">折扣信息</h4>
+                <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6  ">
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">折扣比例</td>
+                        <td>{{dataInfo.discount}}</td>
+                    </tr>
+                </table>
+
+            </li>
+            <!--基本信息End-->
+            <!--账单信息-->
+            <li>
+                <h4 class="mb10 float-left ">账单信息</h4>
+                <button   type="button" class="btn btn-primary btn-sm float-right  mb10  ml20 " ng-click="createDialogOffLineBill({})">补录线下账单</button>
+                <table class=" table   table-hover table-condensed  table-striped text-center ">
+                    <thead style="background:#8A8BC4; color: #fff">
+                    <tr>
+                        <td>ID</td>
+                        <td>账单类型</td>
+                        <td>账单状态</td>
+                        <td>账单金额（元）</td>
+                        <td>已付金额（元）</td>
+                        <td>待付金额（元）</td>
+                        <td>优惠金额（元）</td>
+                        <td>实际到账（元）</td>
+                        <td>发起人</td>
+                        <td>创建时间</td>
+                        <td>付清时间</td>
+                        <td>备注</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    <tr ng-repeat="g in bill" ng-style="{background:(g.exception?'#ffe4d5':'auto')}">
+                        <td ng-bind="g.id"></td>
+                        <td ng-bind="g.typeDesc  "></td>
+                        <td>{{g.statusDesc}} {{g.exception?'(账单异常)':""}}</td>
+                        <td ng-bind="g.billAmount   "></td>
+                        <td ng-bind="g.prepaidAmount "></td>
+                        <td ng-bind="g.unpaidAmount   "></td>
+                        <td ng-bind="g.discountAmount   "></td>
+                        <td ng-bind="g.arrivalAmount   "></td>
+                        <td ng-bind="g.createUserName    "></td>
+                        <td ng-bind="g.createTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+                        <td ng-bind="g.finishTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+                        <td ng-bind="g.postscript" style="word-break:break-word; max-width: 200px;"></td>
+                        <td>
+                            <button  class="btn btn-success btn-xs " ng-click="createDialogBill([g.id,0])" >付款记录</button>
+                        </td>
+                    </tr>
+                    <tr ng-if="!bill"><td colspan="13" class="f12 c-999 " >没有相关数据!</td></tr>
+                    </tbody>
+                </table>
+
+            </li>
+            <!--账单信息End-->
+            <!--打款记录-->
+            <li>
+
+                <h4 class="mb10 float-left ">打款记录</h4>
+                <button   type="button" class="btn btn-primary btn-sm float-right  mb10  ml20 " ng-click="createDialogPayAdd()">新增打款</button>
+                <table class=" table   table-hover table-condensed  table-striped text-center ">
+                    <thead style="background:#8A8BC4; color: #fff">
+                    <tr>
+                        <td>打款时间</td>
+                        <td>打款金额（元）</td>
+                        <td>打款方式</td>
+                        <td>凭证</td>
+                        <td>备注</td>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr ng-repeat="g in transferList"  style="line-height: 180%">
+                        <td ng-bind="g.transferTime  | date:'yyyy-MM-dd HH:mm:ss' "></td>
+                        <td ng-bind="g.transferAmount "></td>
+                        <td ng-bind="g.transferToolDesc "></td>
+                        <td ><a ng-href="{{g.credential}}" target="_blank"><img ng-src="{{g.credential}}&imageView2/1/w/60/h/60 "  width="40" /></a></td>
+                        <td ng-bind="g.postscript "></td>
+
+                    </tr>
+                    <tr ng-if="!transferList"><td colspan="5" class="f12 c-999 " >没有相关数据!</td></tr>
+                    </tbody>
+                </table>
+
+
+            </li>
+            <!--打款记录End-->
+            <!--操作记录-->
+            <li>
+                <h4 class="mb10 ">操作记录</h4>
+                <table class=" table   table-hover table-condensed  table-striped text-center ">
+                    <thead style="background:#8A8BC4; color: #fff">
+                    <tr>
+                        <td>时间</td>
+                        <td>内容</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="g in logsList">
+                        <td ng-bind="g.operateTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+                        <td> {{g.operatorType=="c"?"客户":g.operatorType=="m"?'管理员':g.operatorType=="e"?g.operatorDetailTypeDesc:""}}{{g.operatorName}}{{g.operateContent }}</td>
+                    </tr>
+                    <tr ng-if="!logsList"><td colspan="2" class="f12 c-999 " >没有相关数据!</td></tr>
+                    </tbody>
+                </table>
+
+            </li>
+            <!--操作记录End-->
+
+        </ul>
+    </div>
+</div>
+
+<!--dialog 补录线下账单-->
+<div class="modal fade createDialogOffLineBill ">
+    <div class="modal-dialog " style="width: 750px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >线下付款账单补录</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <dl class="  form-inline form-group" >
+                        <dd>
+                            <span>付款时间：</span>
+                            <div class="input-append date form_datetime_start inline-block" >
+                                <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                                <input class=" form-control " size="20" placeholder="开始时间" type="text" ng-model="createDialogOffLineBillData.payTime"   onkeyup="this.value=''" id="beginTime" >
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <span>账单金额：</span>
+                            <input type="text" class="form-control " maxlength="8" size="12"  placeholder="￥0.00" ng-model="createDialogOffLineBillData.amount  "  ng-pattern="pubRegex.price"  ng-maxlength="8"     /> <i class="f12 c-red"></i>
+                        </dd>
+                        <dd>
+                            <span>付款方式：</span>线下支付
+                            <input type="hidden" ng-model="createDialogOffLineBillData.payTool" />
+                        </dd>
+                        <dd>
+                            <span>说明：</span>
+                            <input type="text" class="form-control " maxlength="15" size="50"  placeholder="15字以内" ng-model="createDialogOffLineBillData.postscript   "  />  <i class=" f12 c-999 ml10">（选填）</i>
+                        </dd>
+                        <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{createDialogOffLineBillData.errorMsg}}</p>
+                    </dl>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="createDialogOffLineBillSumbit(createDialogOffLineBillData)" >提交选择</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!--dialog 修改客户信息-->
+<div class="modal fade createDialog ">
+    <div class="modal-dialog " style="width: 750px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >客户基本信息</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <dl class="  form-inline form-group" >
+                        <dd>
+                            <span>客户姓名：</span>
+                            <input type="text" class="form-control " maxlength="10" size="50"  placeholder="姓名2-10个字符以内，不能为纯数字" ng-model="dialogDataInfoE.userName "  ng-pattern="pubRegex.reNumber"  ng-maxlength="10" ng-minlength="2"    /> <i class="f12 c-red"> *</i>
+                        </dd>
+
+                        <dd>
+                            <span>客户性别：</span>
+                            <input ng-model="dialogDataInfoE.gender " ng-value="0" type="radio"/> 保密
+                            <input ng-model="dialogDataInfoE.gender " ng-value="1" type="radio" style="margin-left: 30px" /> 男
+                            <input ng-model="dialogDataInfoE.gender " ng-value="2" type="radio" style="margin-left: 30px"/> 女
+                        </dd>
+
+                        <dd>
+                            <span>客户电话：</span>
+                            <input type="text" class="form-control " maxlength="11" size="30"  ng-disabled="true" placeholder="请输入手机号" ng-model="dialogDataInfoE.userPhone "  ng-pattern="pubRegex.phone"  ng-maxlength="11" ng-minlength="2"    />
+                        </dd>
+
+                        <dd>
+                            <span>所在地区：</span>
+                            <select class="form-control" ng-options="v.id as v.name for v in provinces" ng-model="areaLevelDto.one " ng-required="true" ng-blur="one =!areaLevelDto.one"   >
+                                <option value="">--省--</option>
+                            </select>
+
+                            <select class="form-control" ng-options="v.id as v.name for v in cities" ng-model="areaLevelDto.two " ng-required="true" ng-blur="two=!areaLevelDto.two"   >
+                                <option value="">--市--</option>
+                            </select>
+                            <select class="form-control areas" ng-options="v.id as v.name for v in areas" ng-model="areaLevelDto.three"  ng-if="isAreaShow"  ng-required="true" ng-blur="three=!areaLevelDto.three "  >
+                                <option value="">--区/县--</option>
+                            </select>
+                        </dd>
+
+
+                        <dd>
+                            <span>楼盘名称：</span>
+                                <input type="text" class="form-control " maxlength="50" size="60"  placeholder="地址50个字符内" ng-model="dialogDataInfoE.buildingName  " ng-maxlength="50" ng-minlength="0" />
+                                <i class="f12 c-999"></i>
+                        </dd>
+
+                        <dd>
+                            <span>房屋面积：</span>
+                            <input type="text" class="form-control " maxlength="8" size="10"  placeholder="0.00" ng-model="dialogDataInfoE.houseArea"   />  <i class=" f12 c-999 ml10">(平方米)</i>
+                        </dd>
+
+                        <dd>
+                            <span>房型：</span>
+                            <select class="form-control" ng-options="v.code as v.desc for v in houseTypes" ng-model="dialogDataInfoE.houseType  " ng-required="true" >
+                                <option value="">--选择房型--</option>
+                            </select>
+                        </dd>
+
+
+
+                        <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{dialogDataInfoE.errorMsg}}</p>
+                    </dl>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="createDialogSumbit(dialogDataInfoE)" >提交选择</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--dialog 终止订单理由-->
+<div class="modal fade createDialog2 ">
+    <div class="modal-dialog " style="width: 500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >终止订单</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <dl class="  form-inline form-group" >
+                        <dd>
+                            <span class="c-red">警告：此操作将导致该订单无法继续付款！</span>
+                        </dd>
+                        <dd>
+                            <em class="block f14 c-666 lh200">终止原因：</em>
+                            <textarea class="form-control" ng-model="sreason.closeReason"  style="width:96%"   rows="6"   ng-required="true"  ng-maxlength="500" maxlength="500" placeholder="500字以内"></textarea>
+                            <br><i class="c-999">{{sreason.closeReason | monitorWords}}/500</i>
+                        </dd>
+
+                        <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{sreason.errorMsg}}</p>
+                    </dl>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="createDialogSumbitStop(sreason)" >确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--dialog BILL 相关-->
+<div class="modal fade createDialog3 ">
+    <div class="modal-dialog " style="width: 750px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ng-if="dialogBillType===0" >付款记录</h4>
+                <h4 class="modal-title" ng-if="dialogBillType===1" >优惠券信息</h4>
+            </div>
+            <div class="modal-body"   >
+                <div class="dialog-content " >
+                    <table class=" table   table-hover table-condensed  table-striped text-center " ng-if="dialogBillType===0">
+                        <thead style="background:#8A8BC4; color: #fff">
+                        <tr>
+                            <td>付款记录ID</td>
+                            <td>付款金额（元）</td>
+                            <td>付款方式（手续费率）</td>
+                            <td>实际到账（元）</td>
+                            <td>付款时间</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="g in payLog">
+                            <td ng-bind="g.id "></td>
+                            <td ng-bind="g.amount  "></td>
+                            <td> {{g.payToolDesc}}{{g.ratio?(' ('+g.ratio+'%)'):""}}  </td>
+                            <td ng-bind="g.arrivalAmount     "></td>
+                            <td ng-bind="g.createTime  | date:'yyyy-MM-dd HH:mm:ss' "></td>
+                        </tr>
+                        <tr ng-if="!payLog"><td colspan="5" class="f12 c-999 " >没有相关数据!</td></tr>
+                        </tbody>
+                    </table>
+
+                    <table class=" table   table-hover table-condensed  table-striped text-center " ng-if="dialogBillType===1">
+                        <thead style="background:#8A8BC4; color: #fff">
+                        <tr>
+                            <td>ID</td>
+                            <td>名称</td>
+                            <td>类型</td>
+                            <td>优惠额度</td>
+                            <td>使用时间</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td ng-bind="coupons.id "></td>
+                            <td ng-bind="coupons.name   "></td>
+                            <td ng-bind="coupons.typeDesc "></td>
+                            <td ng-bind="coupons.price      "></td>
+                            <td ng-bind="coupons.couponUsedTime  | date:'yyyy-MM-dd HH:mm:ss' "></td>
+                        </tr>
+                        <tr ng-if="!coupons"><td colspan="5" class="f12 c-999 " >没有相关数据!</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!--dialog 添加打款记录-->
+<div class="modal fade createDialog4 ">
+    <div class="modal-dialog " style="width: 750px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >新增打款</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <dl class="  form-inline form-group" >
+                        <dd>
+                            <span>最高可付金额：</span>{{mostTransferAmount}}
+                        </dd>
+
+                        <dd>
+                            <span>打款金额：</span>
+                            <input type="text" class="form-control " maxlength="8" size="10"  placeholder="0.00" ng-model="pay.transferAmount  "  ng-pattern="pubRegex.price" />  <i class=" f12 c-999 ml10"></i>
+                        </dd>
+
+                        <dd>
+                            <span>打款方式：</span>
+                            <select class="form-control" ng-options="v.code as v.desc for v in payToolTypes" ng-model="pay.transferTool" ng-required="true"  >
+                                <option value="">--选择打款方式--</option>
+                            </select>
+                        </dd>
+                        <dd>
+                            <span class="v-top">上传凭证：</span>
+                            <div class="inline-block">
+                                <button type="button"  class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+                                <i class=" f12 c-999 ml10">(图片比例不限、图片宽度1000像素以上； 建议大小1MB-10MB之间)</i>
+                                <div class="img-show-box create-dialog"></div> <input type="hidden"  ng-model="pay.credential"  />
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <span>备注：</span>
+                            <input type="text" class="form-control " maxlength="50" size="50"  placeholder="50字以内" ng-model="pay.postscript   "  />  <i class=" f12 c-999 ml10">（选填）</i>
+                        </dd>
+                        <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{pay.errorMsg}}</p>
+                    </dl>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="createDialogSumbitPay(pay)" >提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div ng-include="'/templates/partial/show-img.html'"></div>
+

@@ -1,0 +1,27 @@
+<!--房屋信息-->
+<h4>房屋信息</h4>
+<table class=" table  mt10  table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+        <td>小区名称</td>
+        <td>是否新房</td>
+        <td>户型</td>
+        <td>房屋面积</td>
+        <td>预算（设计/装修/配饰）</td>
+        <td>房屋地址</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in result">
+        <td ng-bind="g.areaName"></td>
+        <td ng-bind="g.houseConditionStr"></td>
+        <td ng-bind="g.houseLayoutStr"></td>
+        <td ng-bind="g.houseAreaStr"></td>
+        <td ng-bind="g.houseBudgetStr"></td>
+        <td ng-bind="g.houseAddress"></td>
+    </tr>
+    <tr ng-if="!result"><td colspan="6" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+</table>
+<div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+<!--房屋信息end-->

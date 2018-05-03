@@ -1,0 +1,59 @@
+<div class="crumbs">
+  <h3>用户反馈列表</h3>
+  <p><a ui-sref="main.feedback" >用户反馈</a> > 反馈列表</p>
+</div>
+
+<div class="content-box">
+    <table class=" table   table-hover table-condensed  table-striped text-center " style="background: #fff; table-layout:fixed">
+        <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+                <td>用户名</td>
+                <td width="18%">唯一设备识别码</td>
+                <td>客户端类型</td>
+                <td>机型</td>
+                <td>操作系统</td>
+                <td>版本号</td>
+                <td width="20%">内容摘要</td>
+                <td>提交时间</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="g in grid.result">
+                <td ng-bind="g.userPhone" style="overflow: hidden; word-break: break-all; word-wrap: break-word;"></td>
+                <td ng-bind="g.deviceId" style="overflow: hidden; word-break: break-all; word-wrap: break-word;"></td>
+                <td ng-bind="g.appType === 'c'? '客户端' : '业者端' ;"></td>
+                <td ng-bind="g.deviceModel"></td>
+                <td ng-bind="g.deviceOS"></td>
+                <td ng-bind="g.appVersion"></td>
+                <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" ng-bind="g.content"></td>
+                <td ng-bind="dateMethod(g.createTime)"></td>
+                <td><button class="btn btn-success btn-xs" ng-click="showDialog(g.content, g.images)" data-target='.feedBack' data-toggle='modal'>查看内容</button></td>
+            </tr>
+        </tbody>
+  </table>
+
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+<!--dialog-->
+<div class="modal fade feedBack" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="dialog-content lh200">
+            <h4 class="modal-title">反馈详情</h4>
+            <div class="dialog-reason mt20 mb20" ng-bind="dialog.content"></div>
+            <div class="dialog-imgList">
+                <img ng-src="{{item}}&imageView2/1/w/100/h/100" ng-repeat="item in dialog.images track by $index" alt="" data-target=".myModal" data-toggle="modal" class="mr10" width="100" height="100" ng-click="showIMG(item)">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">关闭</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

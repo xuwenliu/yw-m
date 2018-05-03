@@ -1,0 +1,87 @@
+<div class="crumbs">
+    <h3>资金账户</h3>
+    <p><a ui-sref="main.bill-list" >账单管理</a> > 资金账户</p>
+</div>
+
+<div class="content-box" style="min-width: 1100px;">
+    <h4>账户总揽</h4>
+    <div class="account-box mt10">
+        <div class="form-inline form-group">
+            <dl>
+                <dd>
+                    <span>账户号：</span>{{dataInfo.accountNumber}}
+                </dd>
+                <dd>
+                    <span>账户余额：</span>{{dataInfo.balance}}
+                </dd>
+                <!-- <dd class="mt10">
+                    <button class="btn btn-primary ml50" data-target='.rechargeModal' data-toggle='modal' ng-click="bootDialog()">充值</button>
+                </dd> -->
+            </dl>
+        </div>
+    </div>
+
+    <!-- <h4 class="mt20">账户流水</h4>
+    <div class="account-box mt10">
+        <table class=" table table-hover table-condensed table-striped text-center mt20">
+            <thead style="background:#8A8BC4; color: #fff">
+                <tr>
+                    <td>流水号</td>
+                    <td>金额（RMB）</td>
+                    <td>流水类型</td>
+                    <td>交易时间</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="g in grid.result">
+                    <td>
+                        <span ng-bind="g.serialNumber"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="g.amount"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="g.journalTypeStr"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="g.createTime | date:'yyyy-MM-dd HH:mm:ss'"></span>
+                    </td>
+                </tr>
+                <tr ng-if="!grid.result">
+                    <td colspan="9" class="f12 c-999 " >没有相关数据!</td>
+                </tr>
+            </tbody>
+        </table>
+        <div ng-include="'/templates/partial/page.html'" style="height: 50px; background-color:#ffffff;"></div>
+    </div> -->
+</div>
+
+
+<!--dialog-->
+<div class="modal fade rechargeModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>充值操作</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content lh200 form-inline form-group">
+          <div>
+            <dl>
+                <dd class="js-recharge">
+                    <span><i class="c-red">*</i> 充值金额：</span>
+                    <input type="text" class="form-control" style="width:130px;" placeholder="请输入充值金额" ng-required="true" ng-model="dialog.amount" ng-pattern="pubRegex.price"  ng-blur="rechargeAmount = !dialog.amount"  ng-class="{err:rechargeAmount}">
+                </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
+        <button type="button" class="btn btn-danger" ng-click="dialogSubmit(dialog)">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

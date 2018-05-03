@@ -1,0 +1,90 @@
+<style>
+    .apply-box {width: 440px; margin: 0 auto; height: 90px; overflow: hidden; position: relative;}
+    .apply-step  {width: 60px; height: 90px; margin: 0 10px; text-align: center; color:#2da5ee; border-color: #2da5ee;}
+    .apply-step div {width: 60px; height: 60px; border: 1px solid; border-radius: 50%;line-height: 60px; font-size: 24px;}
+    .apply-step p {width: 100%; height: 30px; line-height: 30px;}
+    .apply-line {width: 100px; border-top: 1px solid #2da5ee; height: 20px; margin-top: 30px;}
+    .apply-active div {background-color: #2da5ee; color: #ffffff;}
+    .apply-invalid {border-color: #cccccc; color: #cccccc;}
+    /*.content-box-model .model-inline li {width: 100%}
+    .content-box-model .model-inline li span {min-width: 100px; text-align: right; display: inline-block;}*/
+</style>
+
+<div class="crumbs">
+    <h3>申请入驻详情</h3>
+    <p><a ui-sref="main.business" >公司管理</a> > 申请入驻详情</p>
+</div>
+
+<div class="content-box " style="min-width: 1100px">
+    <div class="apply-box mb10">
+        <div class="apply-step float-left">
+            <div>1</div>
+            <p>申请</p>
+        </div>
+        <div class="apply-line float-left"></div>
+        <div class="apply-step float-left" ng-class="{'apply-active': dataInfo.status === 0}">
+            <div>2</div>
+            <p>平台审核</p>
+        </div>
+        <div class="apply-line float-left" ng-class="{'apply-invalid': dataInfo.status === 0}"></div>
+        <div class="apply-step float-left" ng-class="{'apply-invalid': dataInfo.status === 0}">
+            <div>3</div>
+            <p ng-if="dataInfo.status == 1">已签约</p>
+            <p ng-if="dataInfo.status == 2">已拒绝</p>
+        </div>
+    </div>
+
+    <h4 ng-switch="dataInfo.userAuthRecord.applyStatus">基本信息</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+            <li><span>姓名：</span> {{dataInfo.contactName}}</li>
+            <li><span>手机号：</span> {{dataInfo.contactPhone}}</li>
+            <li><span>公司名称：</span> {{dataInfo.companyName}}</li>
+            <li><span>所在地：</span> {{dataInfo.areaName}}</li>
+            <li ng-if="dataInfo.status === 0"><span>状态：</span> 待审核</li>
+            <li><span>申请时间：</span> {{dataInfo.applyTime | date:'yyyy-MM-dd HH:mm:ss'}}</li>
+            <li ng-if="dataInfo.auditUserName"><span>接待BD：</span> {{dataInfo.auditUserName}}</li>
+            <li ng-if="dataInfo.status === 1"><span>审核结果：</span> 已签约</li>
+            <li ng-if="dataInfo.status === 2"><span>审核结果：</span> 已拒绝</li>
+            <li ng-if="dataInfo.auditTime"><span>审核时间：</span> {{dataInfo.auditTime | date:'yyyy-MM-dd HH:mm:ss'}}</li>
+            <li ng-if="dataInfo.auditReason"><span>原因：</span> {{dataInfo.auditReason}}</li>
+        </ul>
+        <p class="mt20">
+            <button class="btn btn-primary btn-sm mr20" ng-show="dataInfo.status === 0" data-target='.authModal' data-toggle='modal' ng-click="bootDialog({status:1, title:'同意申请', placeholder:'请输入的理由，200字以内(选填)'})">签约入驻</button>
+            <button class="btn btn-primary btn-sm" ng-show="dataInfo.status === 0" data-target='.authModal' data-toggle='modal' ng-click="bootDialog({status:2, title:'拒绝申请', placeholder:'请输入的理由，200字以内(必填)'})">拒绝申请</button>
+        </p>
+    </div>
+
+</div>
+
+<!--dialog-->
+<div class="modal fade authModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>{{dialog.title}}</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content lh200 form-inline form-group">
+          <div>
+            <dl>
+                <dd class="js-approve" ng-show="dialog.status === 1">
+                    <textarea class="form-control" ng-model="dialog.data.auditReason"  ng-maxlength="200" maxlength="200" rows="4" placeholder="{{dialog.placeholder}}" style="width:100%;"></textarea>
+                    <span class="float-right">字数：{{dialog.data.auditReason | monitorWords}}/200</span>
+                </dd>
+                <dd class="js-reject"ng-show="dialog.status === 2">
+                    <textarea class="form-control" ng-model="dialog.data.auditReason"  ng-maxlength="200" maxlength="200" rows="4" ng-required="true" placeholder="{{dialog.placeholder}}" style="width:100%;" ng-blur="auditReason = !dialog.data.auditReason" ng-class="{err:auditReason}"></textarea>
+                    <span class="float-right">字数：{{dialog.data.auditReason | monitorWords}}/200</span>
+                </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
+        <button type="button" class="btn btn-danger" ng-click="submit(dialog)">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

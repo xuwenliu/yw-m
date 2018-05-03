@@ -1,0 +1,26 @@
+
+<div class="crumbs">
+    <h3>客户详情</h3>
+    <p><a ui-sref="main.customer" >客户管理</a> > <a ui-sref="main.customer" >客户列表</a> > 客户详情</p>
+</div>
+
+<div class="content-box " style=" min-width: 1100px">
+    <div class="tab-btn">
+        <ul>
+            <li>
+                <a ng-href="#/main/customer-info/customer-basic?id={{id}}" class="hover">基本信息</a>
+                 <a ng-href="#/main/customer-info/customer-order-list?id={{id}}">订单信息</a>
+                <a ng-href="#/main/customer-info/customer-bill-list?id={{id}}">账单信息</a>
+                <!-- <a ng-href="#/main/customer-info/account-flow?id={{id}}"  >账户资金</a> -->
+                <a ng-href="#/main/customer-info/customer-house?id={{id}}">房屋信息</a>
+
+                <a ng-href="#/main/customer-info/customer-info-step?tid={{twitterid}}" ng-show="twitterid">报备/进展信息</a>
+                <!-- <a ng-href="#/main/customer-info/customer-refund-list?id={{id}}">退款信息</a> -->
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-btn-content mt30" ui-view="">
+    </div>
+</div>

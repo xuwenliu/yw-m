@@ -1,0 +1,97 @@
+<div class="crumbs">
+  <h3>已加入会话</h3>
+  <p><a ui-sref="main.chatIn" >会话管理</a> > 已加入会话</p>
+</div>
+
+<div class="chat-wrap clearfix">
+    <div class="chat-contL float-left">
+        <div class="chat-contL-normal float-left chat-active">
+            <div class="chat-contL-group">会话列表</div>
+            <div class="chatIn-contL-IM">
+                <ul class="chat-contL-list js-chat-normal">
+                </ul>
+            </div>
+        </div>
+    </div>        
+    <div class="chat-contR float-right">
+        <div class="chat-contR-top">
+            <div class="chat-contR-top-info clearfix">
+                <h4><span></span> <button ng-show="chatListInfo.sessionInfo.name" class="btn btn-xs btn-primary" data-target='.myModal' data-toggle='modal'>修改名称</button></h4>
+                <p><span><!-- 客户已联系： --></span><span style="margin-left:30px;"><!-- 会话创建时间： --></span></p>
+            </div>
+        </div>
+        <div class="chat-contR-mid">
+            <div class="chat-contR-IM">
+                <ul class="chat-contR-list clearfix">
+                    <div class="chat-tips">请点击下方的打开消息盒子查看更多历史记录</div>
+                    <a href="javascript:void(0);" class="chat-more" ng-click="chatMore()">查看更多消息</a>
+                </ul>
+            </div>
+        </div> 
+        <div class="chat-contR-bottom">
+            <div class="chat-contR-operate">
+                操作群组：<span class="chat-btn-normal" ng-click="normalClick()">正常</span><span class="chat-btn-danger" ng-click="dangerClick()">风险</span><span class="chat-btn-close" ng-click="closeClick()">关闭</span><span class="chat-btn-exit" ng-click="exitClick()">退出该群</span>
+            </div>
+            <textarea name="" id="chat-input" disabled cols="30" placeholder="请输入内容，并使用Ctrl+Enter发送" rows="10"></textarea>
+            <div class="chat-history chatOut-history">历史消息翻页：<span class="chat-history-homePage">首页</span><span class="chat-history-prvePage">上一页</span><input class="chat-history-input" type="text"> /<span class="chat-history-totalPage">1</span><span class="chat-history-nextPage">下一页</span><span class="chat-history-endPage">尾页</span></div>
+            <a href="#" class="chat-btn-history">打开消息盒子</a>
+        </div>
+    </div>
+
+</div>
+
+<!--dialog-->
+<div class="modal fade myModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>修改名称</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content lh200 form-inline form-group">
+          <div>
+            <dl>
+                <dd>
+                    <span><i class="c-red">*</i> 新会话名：</span>
+                    <input type="text" class="form-control" style="width:400px;" ng-required="true" ng-maxlength="50" ng-minlength="4" placeholder="请输入新的会话名称，4-50个字符" ng-model="dialog.newSessionName" ng-blur="newSessionName = !dialog.newSessionName"  ng-class="{err:newSessionName}">
+                </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
+        <button type="button" class="btn btn-danger" ng-click="dialogSubmit(dialog)">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--dialog-->
+<div class="modal fade billModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b></b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="bill-logo"></div>
+        <div class="bill-name"></div>
+        <div class="bill-row clearfix">
+          <span class="bill-row-left float-left">付款用途</span>
+          <span class="bill-row-right float-right bill-use"></span>
+        </div>
+        <div class="bill-row clearfix">
+          <span class="bill-row-left float-left">付款金额</span>
+          <span class="b bill-row-right float-right bill-amount"></span>
+        </div>
+        <div class="bill-row clearfix">
+          <span class="bill-row-left float-left">用途备注</span>
+          <span class="bill-row-right float-right bill-remarks">土木完工请支付</span>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

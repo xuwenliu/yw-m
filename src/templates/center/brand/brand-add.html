@@ -1,0 +1,62 @@
+<style>
+  .brand-class ul{ border-bottom:1px dotted #ccc; padding: 8px 0}
+</style>
+<div class="crumbs">
+  <h3>添加品牌</h3>
+  <p><a ui-sref="main.brand" >品牌管理</a> > 添加品牌</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group">
+    <div>
+      <dl>
+
+        <dd><span>品牌名称：</span> <input type="text" class="form-control required " size="50"  maxlength="30" placeholder="品牌名2-30个字符"  ng-model="brandInfo.name" ng-required="true"   ng-maxlength="30" ng-minlength="2"  ng-blur="name = !brandInfo.name"  ng-class="{err:name }"  /></dd>
+        <dd><span>品牌官网：</span> <input type="text" class="form-control" size="50" placeholder="品牌官网网址（选填），需补全http或者https"  ng-model="brandInfo.website" ng-blur="website = validateFunc(brandInfo.website)"  ng-class="{err:website}"/></dd>
+        <dd><span class="mt5">LOGO添加：</span>
+          <!---->
+          <div class="upimg-inline-block ">
+            <dl>
+              <dd ><button type="button"  class="btn btn-info " id="brandLogoImage">上传品牌LOGO<i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="brandInfo.logo" /></dd>
+            </dl>
+          </div>
+          <!---->
+        </dd>
+        <!--<dd><span>是否生效：</span><input type="radio" ng-model="brandInfo.available" ng-value="true" >启用 <input type="radio" ng-model="brandInfo.available" ng-value="false">禁用</dd>-->
+        <dd><span class="v-top" style="margin-top: 4px">所属类型：</span>
+            <div class="brand-class inline-block" style="min-width: 40%; max-width:70%">加载中...</div>
+        </dd>
+        <dd>
+          <span></span>
+          <input type="hidden" class="form-control " ng-blur="isCheck=isChecked()"  ng-class="{err:isCheck}" />
+          <i ng-show="isCheck" class="f12 c-red">请至少选择一项品牌分类！</i>
+        </dd>
+
+        <dd class="mt20">
+          <span></span>
+
+          <button ng-click="submit([brandInfo,true])"  type="button" class="btn btn-primary">添加</button>
+        </dd>
+      </dl>
+    </div>
+
+  </div>
+</div>
+
+<!--dialog-->
+<div class="modal fade myModal text-center "  >
+  <div class="modal-dialog" style="display: inline-block; width: auto; ">
+    <div class="modal-content"  style="padding: 10px">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div><img ng-src="{{preview}}&imageView2/2/w/600" class="img-big-show"></div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+

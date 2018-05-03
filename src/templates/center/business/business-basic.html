@@ -1,0 +1,31 @@
+<!--基本信息-->
+<h4>公司基本信息</h4>
+<div class="content-box-model mt10">
+    <ul class="model-inline lh220">
+        <li><span class="v-top" >公司LOGO：</span>
+            <a class="preview-img cursor  "><img ng-src="{{dataInfoBase.logoImage  }}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfoBase.logoImage}}"></a>
+        </li>
+        <li class="block"><span>商家名称：</span> {{dataInfoBase.name }}</li>
+        <li class="block"><span>注册地址：</span>{{dataInfoBase.areaStr }} {{dataInfoBase.address }}</li>
+        <li class="block"><span>营业执照号：</span>  {{dataInfoBase.lisenceNo  }}</li>
+        <li class="block"><span class="v-top">营业执照：</span>
+            <a class="preview-img cursor "><img ng-src="{{dataInfoBase.lisenceImage}}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfoBase.lisenceImage  }}"></a>
+        </li>
+        <li class="block"><span class="v-top">公司简介：</span> <div class="inline-block cut-txt" style="width:80%">{{dataInfoBase.description }}</div></li>
+        <li class="block"><span>美家保：</span>  {{dataInfoBase.supportedSupervisor?'支持':'不支持'  }}</li>
+    </ul>
+</div>
+
+<h4 class="mt20">公司管理员资料</h4>
+<div class="content-box-model mt10">
+    <ul class="model-inline lh220">
+        <li><span>管理员：</span>{{dataInfoBase.ownerName }}</li>
+        <li><span>商家账号：</span>{{dataInfoBase.userName  }}</li>
+        <li><span>账号状态：</span> <i ng-if="!dataInfoBase.available">已禁用</i><i ng-if="dataInfoBase.available">已启用</i></li>
+        <li><span>联系电话：</span> {{dataInfoBase.ownerPhone }}</li>
+        <li><span>身份证正面照：</span> <a class="preview-img cursor "><img ng-src="{{dataInfoBase.idCardImageA }}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfoBase.idCardImageA   }}"></a></li>
+        <li><span>身份证持证照：</span> <a class="preview-img cursor "><img ng-src="{{dataInfoBase.idHoldImage }}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfoBase.idHoldImage   }}"></a></li>
+
+    </ul>
+</div>
+<!--基本信息结束-->

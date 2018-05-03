@@ -1,0 +1,49 @@
+
+<style>
+  .create-dialog-box .form-control{ width: auto}
+</style>
+<div class="crumbs">
+  <h3>进展详情</h3>
+  <p><a ui-sref="main.twitter-list" >推客管理</a> > <a ui-sref="main.twitter-ctr-list" >客户列表</a> > <a href="javascript:void(0)" onclick="window.history.go(-1)" >客户详情</a> > 进度详情</p>
+</div>
+
+<div class="content-box">
+  <div class="b f14 mt10"><span class="no-b">客户：</span> {{dataInfo.customerName}}<span class="ml50 no-b" >公司：</span>{{dataInfo.companyName}}</div>
+  <h4 class="mt20" ng-if="stepTypes1==1">已洽谈</h4>
+  <div class="content-box-model mt10"  ng-if="stepTypes1==1">
+    <ul class="model-inline lh220">
+      <li><span>洽谈时间：</span>{{dataInfo.chatNodeInfoDto.chatTime|date:'yyyy-MM-dd HH:mm:ss'}}</li>
+      <li><span>备注：</span>{{dataInfo.chatNodeInfoDto.postscript}}</li>
+    </ul>
+  </div>
+
+
+  <h4 class="mt20" ng-if="stepTypes2==2">已签约</h4>
+  <div class="content-box-model mt10" ng-if="stepTypes2==2">
+    <ul class="model-inline lh220">
+      <li><span>签约时间：</span>{{dataInfo.signNodeInfoDto.signTime |date:'yyyy-MM-dd HH:mm:ss'}}</li>
+      <li><span>签约类型：</span>{{dataInfo.signNodeInfoDto.signContentType}}</li>
+      <li><span>签约金额：</span> {{dataInfo.signNodeInfoDto.signAmount }}</li>
+      <li><span>结佣方式：</span>{{dataInfo.signNodeInfoDto.settleType }} <i ng-if="dataInfo.signNodeInfoDto.settleValue">*{{dataInfo.signNodeInfoDto.settleValue}}%</i></li>
+      <li ng-if="dataInfo.signNodeInfoDto.houseArea"><span>房屋面积：</span>{{dataInfo.signNodeInfoDto.houseArea }} m<sup>2</sup></li>
+      <li><span>待结佣金：</span>{{dataInfo.signNodeInfoDto.settleAmount }}</li>
+      <li><span>备注：</span>{{dataInfo.signNodeInfoDto.postscript}}</li>
+    </ul>
+  </div>
+
+  <h4 class="mt20" ng-if="stepTypes3==3" >已结佣</h4>
+  <div class="content-box-model mt10" ng-if="stepTypes3==3">
+    <ul class="model-inline lh220">
+      <li><span>结佣时间：</span>{{dataInfo.settlementInfoDto.settleTime |date:'yyyy-MM-dd HH:mm:ss'}}</li>
+      <li><span>签约类型：</span>{{dataInfo.settlementInfoDto.signContentType}}</li>
+      <li><span>签约金额：</span> {{dataInfo.settlementInfoDto.signAmount  }}</li>
+      <li><span>结佣方式：</span>{{dataInfo.settlementInfoDto.settleType }} <i ng-if="dataInfo.settlementInfoDto.settleValue">*{{dataInfo.settlementInfoDto.settleValue}}%</i></li>
+      <li ng-if="dataInfo.settlementInfoDto.houseArea"><span>房屋面积：</span>{{dataInfo.settlementInfoDto.houseArea }} m<sup>2</sup></li>
+      <li><span>结佣金额：</span>{{dataInfo.settlementInfoDto.settleAmount }}</li>
+      <li><span>备注：</span>{{dataInfo.settlementInfoDto.postscript}}</li>
+    </ul>
+  </div>
+</div>
+
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

@@ -1,0 +1,98 @@
+
+<style>
+    .datetimepicker{ margin-top: 40px}
+    .remove-img{display: none}
+</style>
+<div class="crumbs">
+    <h3>优惠券详情 </h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.coupon-list" >优惠券管理</a> > <a ui-sref="main.coupon-list" >优惠券列表</a> > 优惠券详情</p>
+</div>
+
+<div class="content-box">
+    <div class="form-inline form-group">
+        <table class="input-table-default">
+            <tr>
+                <td><span>券名称：</span></td>
+                <td>
+                    {{dataInfo.name}}
+                </td>
+            </tr>
+
+            <tr>
+                <td><span>券概要说明：</span></td>
+                <td>
+                    {{dataInfo.description}}
+                </td>
+            </tr>
+
+            <tr>
+                <td><span>券有效期：</span></td>
+                <td>
+                    {{dataInfo.beginTime|date:'yyyy-MM-dd HH:mm:ss' }}----{{dataInfo.endTime|date:'yyyy-MM-dd HH:mm:ss' }}
+                </td>
+            </tr>
+
+            <tr  ng-if="dataInfo.countDown">
+                <td> <span>券倒计时设置：</span></td>
+                <td>
+                   {{dataInfo.countDown}}天
+                </td>
+            </tr>
+
+            <tr ng-if="dataInfo.type==3">
+                <td><span>是否收费：</span></td>
+                <td>
+                    <i ng-if="dataInfo.charge === false">否</i>
+                    <i ng-if="dataInfo.charge === true">是</i>
+                </td>
+            </tr>
+
+            <tr  ng-if="dataInfo.charge==true&&dataInfo.type==3">
+                <td> <span>额度：</span></td>
+                <td>
+                   {{dataInfo.price }} 元
+                </td>
+            </tr>
+
+
+
+            <tr ng-if="dataInfo.type!=3">
+                <td> <span>券额度：</span></td>
+                <td>
+                    {{dataInfo.price }} 元
+                </td>
+            </tr>
+
+            <tr >
+                <td> <span>券折扣：</span></td>
+                <td>
+                    {{dataInfo.discount||"--" }}
+                </td>
+            </tr>
+
+
+            <tr ng-if="dataInfo.type!=3">
+                <td class="v-top"><span>券使用规则说明：</span></td>
+                <td>
+                  {{dataInfo.usageRules }}
+                </td>
+            </tr>
+
+
+
+
+
+
+
+        </table>
+    </div>
+</div>
+
+<div ng-include="'/templates/partial/show-img.html'"></div>
+
+
+
+
+
+
+

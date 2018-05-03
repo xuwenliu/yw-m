@@ -1,0 +1,65 @@
+
+<div class="crumbs">
+    <h3>家居顾问详情</h3>
+    <p><a ui-sref="main.decorate-sell-list" >家居顾问管理</a> > <a ui-sref="main.decorate-sell-list" >家居顾问列表</a> > 家居顾问详情</p>
+</div>
+
+<div class="content-box " style=" min-width: 1100px">
+    <div ng-include="'/templates/center/decorate-sell/d-s-tab-inc.html'"></div>
+
+    <div class="form-inline form-group "  >
+        <h4 class="mb10 mt30 float-left">会话列表</h4>
+        <div class="inline-block f12 float-right pt20">
+            <select class="form-control input-sm "     ng-options="v.code as v.desc for v in allTypes.sessionStatus " ng-model="list.status"   >
+                <option value="">--会话状态--</option>
+            </select>
+            <input type="text" class="form-control input-sm"  placeholder="会话名" maxlength="30" size="12" ng-model="list.sessionName">
+            <input type="text" class="form-control input-sm"  placeholder="公司名" maxlength="30" size="12" ng-model="list.companyName">
+            <input type="text" class="form-control input-sm"  placeholder="客户电话" maxlength="11" size="12" ng-model="list.customerMobilePhone">
+
+            <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+        </div>
+    </div>
+
+    <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+            <td>会话ID</td>
+            <td>会话名</td>
+            <td>所属作品</td>
+            <td>所属公司</td>
+            <td>客户昵称</td>
+            <td>客户电话号码</td>
+            <td>会话状态</td>
+            <td>创建时间</td>
+            <td>最新消息</td>
+            <td>关闭者</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+
+
+        <tbody>
+        <tr ng-repeat="g in grid.result">
+            <td>{{g.id}}</td>
+            <td>{{g.sessionName }}</td>
+            <td>{{g.caseName }}</td>
+            <td>{{g.companyName }}</td>
+            <td>{{g.customerName }}</td>
+            <td>{{g.customerMobilePhone }}</td>
+            <td>{{g.sessionStatusDesc  }}</td>
+            <td>{{g.createDate |date:"yyyy-MM-dd HH:mm:ss"}}</td>
+            <td>{{g.lastDays | date:"yyyy-MM-dd HH:mm:ss" }}</td>
+            <td>{{g.closerName }}</td>
+            <td>
+                <button  class="btn btn-danger btn-xs "  ng-if="g.sessionStatus!==0" ng-click=closeIm(g.id)>关闭会话</button>
+                <a  class="btn btn-success btn-xs " ng-href="#/main/im-list-info?id={{g.id}}"  >查看</a>
+            </td>
+        </tr>
+        <tr ng-if="!grid.result"><td colspan=11 class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+
+</div>
+

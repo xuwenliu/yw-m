@@ -1,0 +1,184 @@
+
+<style>
+    .tab-content> ul> li { display: none}
+</style>
+<div class="crumbs">
+    <h3>监理公司公司详情</h3>
+    <p><a ui-sref="main.jl-company-list" >公司管理</a> > <a ui-sref="main.jl-company-list" >监理公司列表</a> > 监理公司公司详情</p>
+</div>
+
+<div class="content-box " style="min-width: 1100px">
+    <div class="tab-btn">
+        <ul>
+            <li >
+                <a class="hover" href="javascript:void(0)">基本信息</a>
+                <a href="javascript:void(0)">服务标准</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="mt30">
+
+        <div class="tab-content">
+            <ul>
+                <li style="display: block">
+                    <!--基本信息-->
+                    <h4>公司基本信息</h4>
+                    <div class="content-box-model mt10">
+                        <ul class="model-inline lh320">
+                            <li><span class="v-top" >公司LOGO：</span>
+                                <a class="preview-img cursor  "><img ng-src="{{dataInfoBase.logoImage  }}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfoBase.logoImage}}"></a>
+                            </li>
+                            <li class="block"><span>商家名称：</span> {{dataInfoBase.name }}</li>
+                            <li class="block"><span>注册地址：</span>{{dataInfoBase.areaStr }} {{dataInfoBase.address }}</li>
+                            <li class="block"><span>营业执照号：</span>  {{dataInfoBase.licenceNo  }}</li>
+                            <li class="block"><span class="v-top">营业执照：</span>
+                                <a class="preview-img cursor "><img ng-src="{{dataInfoBase.licenceImage}}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfoBase.licenceImage  }}"></a>
+                            </li>
+
+                            <li class="block mt10"><span class="v-top">资质证书：</span>
+                                <a class="preview-img cursor mr10  " ng-repeat="k in  dataInfoBase.supervisorAptitudes"><img ng-src="{{k}}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{k}}"></a>
+                            </li>
+                            <li class="block"><span>监理合同模版：</span> <a ng-href="{{dataInfoBase.supervisorContract}}" class="btn btn-success btn-sm" target="_blank">下载查看模板</a> </li>
+
+
+                            <li class="block"><span class="v-top">公司简介：</span> <div class="inline-block cut-txt lh220" style="width:80%">{{dataInfoBase.description }}</div></li>
+
+                        </ul>
+                    </div>
+
+                    <h4 class="mt20">公司员工资料</h4>
+                    <div class="content-box-model mt10">
+                        <ul class="model-inline lh220">
+                            <li><span>商务代表：</span>{{dataInfoBase.bdName }}</li>
+                            <li><span>手机号码：</span>{{dataInfoBase.bdMobilePhone  }}</li>
+                            <li><span>座机号码：</span>{{dataInfoBase.bdTelephone  }}</li>
+                        </ul>
+                    </div>
+
+                    <h4 class="mt20">荣誉证书</h4>
+                    <div class="content-box-model mt10">
+                        <ul class="model-inline lh220">
+                            <li>
+                                <a class="preview-img cursor mr10  " ng-repeat="k in  dataInfoBase.honors">
+                                    <img ng-src="{{k}}&imageView2/1/w/60/h/60" width="60"  data-target=".myModal" data-toggle="modal"  data-img="{{k}}">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h4 class="mt20">APP展示信息</h4>
+                    <div class="content-box-model mt10">
+                        <ul class="model-inline lh220">
+                            <li class="html-content"></li>
+                        </ul>
+                    </div>
+                    <!--基本信息结束-->
+                </li>
+                <li>
+
+
+                    <div class="form-inline form-group   "  >
+                        <h4 class="inline-block ">服务标准</h4>
+                        <button type="button" class="btn btn-primary btn-sm float-right mb10 " ng-click="createDialog({})"> 新增服务标准</button>
+                    </div>
+
+                    <table class=" table   table-hover table-condensed  table-striped text-center ">
+                        <thead style="background:#8A8BC4; color: #fff">
+                        <tr>
+                            <td>服务标准 </td>
+                            <td>简介说明</td>
+                            <td>定金</td>
+                            <td>原价（元/㎡）</td>
+                            <td>折扣比例</td>
+                            <td>状态</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="g in result">
+                            <td ng-bind="g.name "></td>
+                            <td ng-bind="g.description "></td>
+                            <td ng-bind="g.deposit  "></td>
+                            <td ng-bind="g.original   "></td>
+                            <td ng-bind="g.discount "></td>
+                            <td>{{g.enable?'启用':'禁用'}}</td>
+                            <td>
+                                <button  class="btn btn-primary btn-xs " ng-click="createDialog(g) ">修改</button>
+                                <button  class="btn btn-warning btn-xs " ng-if="!g.enable" ng-click=isAvailable([true,g.id])>启用</button>
+                                <button  class="btn btn-danger btn-xs " ng-if="g.enable"  ng-click=isAvailable([false,g.id])>禁用</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="!result"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+                        </tbody>
+                    </table>
+
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+        
+    </div>
+</div>
+<div ng-include="'/templates/partial/show-img.html'"></div>
+
+
+
+<!--dialog 添加服务标准-->
+<div class="modal fade createDialog ">
+    <div class="modal-dialog " style="width: 750px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >新增监理服务标准</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <dl class="  form-inline form-group" >
+                        <dd>
+                            <span>名称：</span>
+                            <input type="text" class="form-control " maxlength="10" size="50"  placeholder="4-10 个字符,不能为纯数字" ng-model="dialogDataInfo.name "  ng-pattern="pubRegex.reNumber"  ng-maxlength="10" ng-minlength="4"    />
+                        </dd>
+
+
+
+                        <dd>
+                            <span>简介说明：</span>
+                            <input type="text" class="form-control " maxlength="50" size="60" minlength="8"    placeholder="8-50个字符" ng-model="dialogDataInfo.description"    ng-maxlength="50" ng-minlength="8"    />
+                        </dd>
+
+
+
+
+                        <dd>
+                            <span>定金：</span>
+                            <input type="text" class="form-control " maxlength="8" size="15"  placeholder="1.00~10000.00" ng-model="dialogDataInfo.deposit" />  <i class=" f12 c-999 ml10"></i>
+                        </dd>
+
+                        <dd>
+                            <span>原价（元/㎡）：</span>
+                            <input type="text" class="form-control " maxlength="8" size="15"  placeholder="1.00~10000.00" ng-model="dialogDataInfo.original"   />  <i class=" f12 c-999 ml10">（选填）</i>
+                        </dd>
+
+
+                        <dd>
+                            <span>折扣比例：</span>
+                            <input type="text" class="form-control " maxlength="4" size="15"   placeholder="0.01-1之间" ng-model="dialogDataInfo.discount  "   />  <i class=" f12 c-999 ml10"></i>
+                        </dd>
+
+
+
+
+                        <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{dialogDataInfo.errorMsg}}</p>
+                    </dl>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="createDialogSumbit(dialogDataInfo)" >提交选择</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

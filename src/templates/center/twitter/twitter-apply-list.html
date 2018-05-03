@@ -1,0 +1,61 @@
+
+<div class="crumbs">
+  <h3>推客申请列表</h3>
+  <p><a ui-sref="main.twitter-list" >推客管理</a> > 推客申请列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+
+    <select class="form-control input-sm "   ng-options="v.code as v.desc for v in applyStatus" ng-model="list.applyStatus"   >
+      <option value="">--状态不限--</option>
+    </select>
+
+   <div class="float-right">
+     <div class="input-append date form_datetime_start inline-block" >
+       <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+       <input class=" form-control input-sm" size="16" placeholder="申请起始时间" type="text" onkeyup="this.value=''" id="beginTime" >
+     </div> ----
+     <div class="input-append date form_datetime_end inline-block" >
+       <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+       <input class=" form-control input-sm" size="16" type="text"  placeholder="申请结束时间" onkeyup="this.value=''" id="endTime">
+     </div>
+     <input type="hidden" ng-class="{err:!dateThan==''}">
+     <i class="f12 c-red" >{{dateThan}}</i>
+     <input type="text" class="form-control input-sm"  placeholder="申请人" maxlength="30" size="30" ng-model="list.searchKey">
+     <div class="inline-block f12 ">
+       <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+     </div>
+   </div>
+
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>申请人</td>
+      <td>申请日期</td>
+      <td>审核日期</td>
+      <td>审核状态</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.name"></td>
+      <td>{{g.applyTime |date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{g.auditTime |date:'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td>{{g.applyStatusDesc  }}</td>
+      <td >
+        <button  class="btn btn-success btn-xs" ng-click="show(g.applyId,0)" >查看</button>
+        <button  ng-if="g.applyStatus==0" class="btn btn-primary btn-xs" ng-click="show(g.applyId,1)" >审核</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="5" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+

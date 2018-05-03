@@ -1,0 +1,90 @@
+
+<div class="crumbs" >
+  <h3>家居顾问列表</h3>
+  <p><a ui-sref="main.decorate-sell-list" >家居顾问管理</a> > 家居顾问列表</p>
+</div>
+<div class="form-inline clearfix" style="padding: 20px;">
+  <div class="inline-block float-left">
+    服务客户数上限：
+    <input type="tel" class="form-control input-sm" size="20" maxlength="4" ng-model="toplimit" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
+    <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitServeClientsCount(toplimit)">提交</button>
+  </div>
+  <div class="float-left f12 ml50">
+    <p>说明：</p>
+    <p>家居顾问的已关联客户有四个状态：谈单中、已成单、已飞单、已完结</p>
+    <p>服务客户数 = 谈单中客户数 + 已成单客户数，不包含已飞单和已完结的客户</p>
+    <p>服务客户数达到上限的家居顾问，接单状态将强制关闭且无法打开，直到其修改客户状态，让服务客户数小于这个限额后，才能手动开启</p>
+  </div>
+</div>
+
+<div class="content-box" >
+  <div class="form-inline form-group "  >
+    <select class="form-control input-sm "  ng-options="v.id as v.name for v in cityTypes" ng-model="list.areaId"   >
+      <option value="">--服务区域不限--</option>
+    </select>
+    <select class="form-control input-sm " ng-init="isManagers=[{code:1,desc:'是'},{code:2,desc:'否'}]"   ng-options="v.code as v.desc for v in isManagers" ng-model="list.isManager"   >
+      <option value="">--是否客服经理--</option>
+    </select>
+    <select class="form-control input-sm "   ng-init="isDistributions=[{code:1,desc:'是'},{code:0,desc:'否'}]"   ng-options="v.code as v.desc for v in isDistributions" ng-model="list.isDistribution"   >
+      <option value="">--是否接受分配--</option>
+    </select>
+    <select class="form-control input-sm "  ng-init="statuss=[{code:1,desc:'启用'},{code:0,desc:'禁用'}]"  ng-options="v.code as v.desc for v in statuss" ng-model="list.status"   >
+      <option value="">--账户状态不限--</option>
+    </select>
+
+    <div class="inline-block f12 float-right">
+      <input type="text" class="form-control input-sm"  placeholder="手机号/姓名" maxlength="30" size="30" ng-model="list.queryKey">
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="add()">新增平台家居顾问</button>
+    </div>
+  </div>
+
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>姓名</td>
+      <td>电话号码</td>
+      <td>服务区域</td>
+      <td>已关联推客</td>
+      <td>已关联客户</td>
+      <td>当前服务客户</td>
+      <td>未关闭会话</td>
+      <td>未结束订单</td>
+      <td>是否是客服经理</td>
+      <td>是否接受分配</td>
+      <td>账户状态</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.name"></td>
+      <td>{{g.mobilePhone}}</td>
+      <td>{{g.area}}</td>
+      <td>{{g.twitterCount}}</td>
+      <td>{{g.customerCount}}</td>
+      <td ng-style="{background:(g.serviceCustomerCount>=toplimit)?'red':''}">{{g.serviceCustomerCount}}</td> 
+      <td>{{g.notCloseImCount}}</td>
+      <td>{{g.notEndOrderCount}}</td>
+      <td>{{g.customerManager?'是':'否'}}</td>
+      <td>{{g.distribution?'是':'否'}}</td>
+      <td>{{g.accountStatus?'启用':'禁用'}}</td>
+      <td>
+        <button  class="btn btn-warning btn-xs "  ng-if="!g.accountStatus" ng-click=set(g.id,true)>启用</button>
+        <button  class="btn btn-danger btn-xs "  ng-if="g.accountStatus" ng-click=set(g.id,false)>禁用</button>
+        <button  class="btn btn-primary btn-xs "  ng-click=edit(g.id)>修改</button>
+        <button  class="btn btn-success btn-xs "  ng-click=show(g.id,g.userId)>查看</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="11" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+
+

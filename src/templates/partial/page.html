@@ -1,0 +1,31 @@
+
+<style>
+    .pages div div{ display: inline-block; margin: 0px 6px;}
+</style>
+<div class=" float-right mt10 pages form-inline"   style=" width: 600px" >
+    <div class="text-center" ng-if="grid.result.length > 0">
+
+        <div style="margin-left:20%">
+            <a href="javascript:" ng-click="first()">首页</a>
+        </div>
+        <div>
+            <a href="javascript:" ng-click="pre()">上一页</a>
+        </div>
+        <div>
+            <input type="text"  class="form-control input-sm"  style="text-align: center; width:44px" onkeyup="value=value.replace(/[^\d]/g,'')"  ng-model="pagination.currentPageNum" ng-change="pageNumberChanged(pagination.currentPageNum)"> /
+            <em ng-bind="pagination.totalPageNum"></em>
+        </div>
+        <div>
+            <a href="javascript:" ng-click="next()">下一页</a>
+        </div>
+        <div >
+            <a href="javascript:" ng-click="last()">末页</a>
+        </div>
+        <div>
+            <select ng-model="pageSize" ng-change="pageSizeChanged(pageSize)" class="form-control input-sm" style="width: 70px;" ng-options="op for op in pageSizes" ></select>
+        </div>
+        <div class="ml20">
+            共计 {{grid.totalCount}}
+        </div>
+    </div>
+</div>

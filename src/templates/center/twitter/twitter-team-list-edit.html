@@ -1,0 +1,89 @@
+
+<style>
+    input[type="range"]{display: inline-block; width: 300px; vertical-align: middle;outline: none }
+    .model-inline li em:after{ margin-right: 5px; font-size: 14px; color: #999}
+    .model-inline li em:after{content: " ‰";}
+</style>
+<div class="crumbs">
+    <h3>{{type===1?"新增团队":"修改团队"}}</h3>
+    <p><a ui-sref="main.twitter-list" >推客管理</a> > <a ui-sref="main.twitter-list">团队列表</a> > {{type===1?"新增团队":"修改团队"}}</p>
+</div>
+
+<div class="content-box " style="min-width: 1100px">
+    <h4>基本信息</h4>
+    <div class="content-box-model mt10">
+        <dl class="form-inline form-group">
+			<dd>
+				<span>团队名称：</span>
+				<input class="form-control" style="width: 250px;" type="text" placeholder="2-30个字符，不能为纯数字" ng-model="dataInfo.twitterTeamName" ng-maxlength="30" ng-minlength="2" ng-pattern="pubRegex.reNumber" ng-blur="twitterTeamName =!dataInfo.twitterTeamName" ng-class="{err:twitterTeamName }"/>
+			</dd>
+			<dd>
+				<span>所属城市：</span>
+				 <select class="form-control" ng-options="v.id as v.name for v in provinces" ng-model="dataInfo.provinceId" ng-required="true" ng-blur="buildingLevelOne =!dataInfo.provinceId"  ng-class="{err:buildingLevelOne }" >
+                        <option value="">--省--</option>
+                </select>
+
+                <select ng-if="isShowCity" class="form-control" ng-options="v.id as v.name for v in cities" ng-model="dataInfo.areaId" ng-required="true" ng-blur="buildingLevelTwo=!dataInfo.areaId"  ng-class="{err:buildingLevelTwo }"  >
+                    <option value="">--市--</option>
+                </select>
+                <!--<select class="form-control areas" ng-options="v.id as v.name for v in areas" ng-model="dataInfo.levelDto.buildingLevelThree"  ng-if="isAreaShow"  ng-required="true" ng-blur="buildingLevelThree  =!dataInfo.levelDto.buildingLevelThree "  ng-class="{err:buildingLevelThree  }" >
+                    <option value="">--区/县--</option>
+                </select>-->
+			</dd>
+			<dd>
+				<span>管理员姓名：</span>
+				<input class="form-control" style="width: 250px;" type="text" maxlength="10" placeholder="2-10个字符，必须是中文" ng-model="dataInfo.userName" ng-maxlength="10" ng-minlength="2" ng-pattern="pubRegex.realname" ng-blur="userName =!dataInfo.userName" ng-class="{err:userName }" />
+			</dd>
+			<dd>
+				<span>管理员手机号：</span>
+				<input class="form-control" style="width: 250px;" type="tel" maxlength="11" placeholder="11位手机号码" ng-model="dataInfo.userPhone" ng-pattern="pubRegex.phone" ng-blur="userPhone=!dataInfo.userPhone"  ng-class="{err:userPhone }"/>
+			</dd>
+
+			<dd>
+				<span>管理员密码：</span>
+				提交后随机生成，并发送到管理员的手机号中。
+			</dd>
+			<p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{pay.errorMsg}}</p>
+		</dl>
+    </div>
+
+    <h4 class="mt30"><span>佣金比例</span><i class="c-999 f12 ml10">（团队成员的直接报备客户签约成单，所得佣金 = 合同签约金额 * 佣金比例）</i></h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline ">
+        	<li class="block mt10">设计佣金</li>
+            <li class="block mt10"><span>团队：</span>
+                <i  class="c-999 f12">0</i>
+                <input ng-model="dataInfo.designRatioDto.teamRatio" type="range" step="1" min="0" max="100">
+                <i  class="c-999 f12">100</i>
+                <input class="form-control inline-block ml10" type="text" ng-keyup="valInput(dataInfo.designRatioDto.teamRatio)" ng-model="dataInfo.designRatioDto.teamRatio" max="100" style="width: 60px;"/>
+                <em  class="c-red ml10 f18 spl ">{{dataInfo.designRatioDto.teamRatio}}</em>
+            </li>
+
+            <li class="block  mt10"><span>成员：</span>
+                <i  class="c-999 f12">0</i>
+                <input ng-model="dataInfo.designRatioDto.memberRatio" type="range" step="1" min="0" max="100">
+                <i  class="c-999 f12">100</i>
+                <input class="form-control inline-block ml10" type="text" ng-keyup="valInput(dataInfo.designRatioDto.memberRatio)" ng-model="dataInfo.designRatioDto.memberRatio" max="100" style="width: 60px;"/>
+                <em  class="c-red ml10 f18 spl ">{{dataInfo.designRatioDto.memberRatio}}</em>
+            </li>
+			<li class="block mt10">施工佣金</li>
+            <li class="block  mt10"><span>团队：</span>
+                <i  class="c-999 f12">0</i>
+                <input  ng-model="dataInfo.buildRatioDto.teamRatio" type="range" step="1" min="0" max="100">
+                <i  class="c-999 f12">100</i>
+                <input class="form-control inline-block ml10" type="text" ng-keyup="valInput(dataInfo.buildRatioDto.teamRatio)" ng-model="dataInfo.buildRatioDto.teamRatio" max="100" style="width: 60px;"/>
+                <em  class="c-red ml10 f18 spl ">{{dataInfo.buildRatioDto.teamRatio}}</em>
+            </li>
+            <li class="block  mt10"><span>成员：</span>
+                <i  class="c-999 f12">0</i>
+                <input  ng-model="dataInfo.buildRatioDto.memberRatio" type="range" step="1" min="0" max="100">
+                <i  class="c-999 f12">100</i>
+                <input class="form-control inline-block ml10" type="text" ng-keyup="valInput(dataInfo.buildRatioDto.memberRatio)" ng-model="dataInfo.buildRatioDto.memberRatio" max="100" style="width: 60px;"/>
+                <em  class="c-red ml10 f18 spl ">{{dataInfo.buildRatioDto.memberRatio}}</em>
+            </li>
+            <li class="block mt10" style="padding-left: 405px;color: red;">{{dataInfo.errorMsg}}</li>
+        </ul>
+
+    </div>
+    <button ng-click="submitTwitterTeam(dataInfo)"  type="button" class="btn btn-primary mt20 w110">提交</button>
+</div>

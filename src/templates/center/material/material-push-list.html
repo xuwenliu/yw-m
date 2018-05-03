@@ -1,0 +1,47 @@
+<div class="crumbs">
+  <h3>推荐主材列表</h3>
+  <p><a ui-sref="main.material-push-list" >主材管理</a> > 推荐主材列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <div class="inline-block f12  ">
+      <input type="text" class="form-control input-sm"  placeholder="客户姓名或手机号" maxlength="11" size="20" ng-model="list.customer">
+      <input type="text" class="form-control input-sm"  placeholder="推荐人姓名或手机号" maxlength="11" size="20" ng-model="list.referee">
+      <input type="text" class="form-control input-sm"  placeholder="所属公司" maxlength="30" size="20" ng-model="list.company">
+      <button   type="button" class="btn btn-primary btn-sm  input-sm "  ng-click="submitSearch(list)">查询</button>
+    </div>
+
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center  ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>客户姓名</td>
+      <td>手机号码</td>
+      <td>推荐人</td>
+      <td>推荐人电话</td>
+      <td>所属公司</td>
+      <td>推荐时间</td>
+      <td>渠道</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td>{{g.customerName}}</td>
+      <td>{{g.mobilePhone }}</td>
+      <td>{{g.referee }}</td>
+      <td>{{g.refereeMobilePhone }}</td>
+      <td>{{g.company }}</td>
+      <td>{{g.recommendDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{g.channelDesc }}</td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan=7 class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+

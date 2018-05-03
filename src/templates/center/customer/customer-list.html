@@ -1,0 +1,135 @@
+<div class="crumbs">
+  <h3>客户列表</h3>
+  <p><a ui-sref="main.customer" >客户管理</a> > 客户列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <select  class="form-control  input-sm "  ng-options="v.code as v.desc for v in customerTypes" ng-model="list.customerType"   >
+      <option value="">客户分类</option>
+    </select>
+
+    <select  class="form-control  input-sm " ng-init="intentions=[{code:true,desc:'是'},{code:false,desc:'未标注'}]" ng-options="v.code as v.desc for v in intentions" ng-model="list.intention"   >
+      <option value="">意向客户</option>
+    </select>
+
+
+    <select  class="form-control  input-sm " ng-init="logins=[{code:true,desc:'登录过'},{code:false,desc:'未登录过'}]" ng-options="v.code as v.desc for v in logins" ng-model="list.login"   >
+      <option value="">是否登录过App</option>
+    </select>
+
+    <select  class="form-control  input-sm " ng-init="sortKeys=[{code:0,desc:'默认排序'},{code:1,desc:'登录时间'},{code:2,desc:'注册时间'}]" ng-options="v.code as v.desc for v in sortKeys" ng-model="list.sortKey"   >
+      <!-- <option value="">选择排序方式</option> -->
+    </select>
+
+    <div class="float-right mb20" >
+      <div class="input-append date form_datetime_start inline-block " >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" placeholder="注册时间开始段" type="text" onkeyup="this.value=''" id="beginTime" >
+      </div> ----
+      <div class="input-append date form_datetime_end inline-block" >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" type="text"  placeholder="注册时间结束段" onkeyup="this.value=''" id="endTime">
+      </div>
+      <input type="hidden" ng-class="{err:!dateThan==''}">
+      <i class="f12 c-red" >{{dateThan}}</i>
+
+      <input type="text" class="form-control input-sm"  placeholder="所属推客/电话" maxlength="11" size="12" ng-model="list.twitterInfo">
+      <input type="text" class="form-control input-sm"  placeholder="专属家居顾问/电话" maxlength="11" size="12" ng-model="list.peInfo">
+      <input type="text" class="form-control input-sm"  placeholder="客户昵称/电话" maxlength="11" size="12" ng-model="list.customerInfo">
+
+      <div class="inline-block f12 ">
+        <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+      </div>
+    </div>
+
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center " style="background: #fff">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>客户分类</td>
+      <td>所属推客</td>
+      <td>电话</td>
+      <td>昵称</td>
+      <td>最近登录时间</td>
+      <td>登录IP所在地</td>
+      <td>注册时间</td>
+      <td>注册IP所在地</td>
+      <td>账户状态</td>
+      <td>意向客户</td>
+      <td>备注</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.customerDto.id"></td>
+      <td ng-bind="g.customerDto.customerTypeDesc "></td>
+      <td>{{g.customerDto.twitterName }}<br>{{g.customerDto.twitterPhone?('(' + g.customerDto.twitterPhone+ ')'):'' }}</td>
+      <td ng-bind="g.customerDto.userPhone"></td>
+      <td ng-bind="g.customerDto.nickName"></td>
+      <td ng-bind="g.customerDto.lastLoginTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+      <td ng-bind="g.customerDto.loginAddress "></td>
+      <td ng-bind="g.customerDto.createTime | date:'yyyy-MM-dd HH:mm:ss'"></td>
+      <td ng-bind="g.customerDto.registerAddress "></td>
+      <td>
+        <i ng-if="g.customerDto.available">启用</i>
+        <i ng-if="!g.customerDto.available">禁用</i>
+      </td>
+      <td>{{g.customerDto.intention?'是':'否' }}</td>
+
+      <td >
+        <div style="width: 150px; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; height: 16px; ">{{g.customerDto.remarks}}</div>
+      </td>
+      <td>
+        <button ng-if="!g.customerDto.available" class="btn btn-warning btn-xs" ng-click="reStart(g.customerDto.id, g.customerDto.userPhone)">启用</button>
+        <button ng-if="g.customerDto.available" class="btn btn-danger btn-xs" ng-click="forbid(g.customerDto.id, g.customerDto.userPhone)">禁用</button>
+
+        <button  class="btn btn-primary btn-xs "  ng-click=setPlanDialog(g.customerDto)>备注</button>
+        <button  class="btn btn-success btn-xs "  ng-click=show(g.customerDto.id,g.customerDto.customerTwitterId)>查看</button>
+
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="13" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+<!--dialog 备注-->
+<div class="modal fade createDialog ">
+  <div class="modal-dialog " style="width: 500px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >备注</h4>
+      </div>
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group text-left" >
+
+            <dd>
+              <input type="checkbox" ng-checked="plan.intention" ng-model="plan.intention"/>是意向客户
+              <input type="hidden" ng-model="plan.customerId" />
+            </dd>
+
+            <dd>
+              <em >描写备注</em>
+              <textarea ng-model="plan.remarks" maxlength="200" style="width: 90%" placeholder="填写备注，200字内"  rows="5"></textarea>
+            </dd>
+
+
+            <p class="text-center c-red f12 mt10 "> <i class="loading f12 c-green block"></i>{{plan.errorMsg}}</p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary "  ng-click="setPlan(plan)" >提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

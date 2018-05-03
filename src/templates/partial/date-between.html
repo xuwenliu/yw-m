@@ -1,0 +1,10 @@
+<div class="input-append date form_datetime_start inline-block" >
+    <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+    <input class=" form-control input-sm" size="16" placeholder="起始时间" type="text" onkeyup="this.value=''" id="beginTime" >
+</div> ----
+<div class="input-append date form_datetime_end inline-block" >
+    <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+    <input class=" form-control input-sm" size="16" type="text"  placeholder="结束时间" onkeyup="this.value=''" id="endTime">
+</div>
+<input type="hidden" ng-class="{err:!dateThan==''}">
+<i class="f12 c-red" >{{dateThan}}</i>

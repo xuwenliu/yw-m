@@ -1,0 +1,72 @@
+<div>
+  <h4 class="inline-block mr50" >业者信息</h4>
+  <table class=" table   table-hover table-condensed  table-striped text-center mt20 ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>姓名</td>
+      <td>电话</td>
+      <td>职位</td>
+      <td id="caseNum" ng-click="sort('caseNum')" class="cursor">绑定作品
+        <span class="table-sort">
+          <i ng-class="['glyphicon','glyphicon-triangle-top','f12','opacity-over',{'opacity-deep':currentSort['caseNum'] === true}]"></i>
+          <i ng-class="['glyphicon','glyphicon-triangle-bottom','f12','opacity-over',{'opacity-deep':currentSort['caseNum'] === false}]"></i>
+        </span>
+      </td>
+      <!--<td id="currentChatCount" ng-click="sort('currentChatCount')" class="cursor">当前聊天-->
+        <!--<span class="table-sort">-->
+          <!--<i ng-class="['glyphicon','glyphicon-triangle-top','f12','opacity-over',{'opacity-deep':currentSort['currentChatCount'] === true}]"></i>-->
+          <!--<i ng-class="['glyphicon','glyphicon-triangle-bottom','f12','opacity-over',{'opacity-deep':currentSort['currentChatCount'] === false}]"></i>-->
+        <!--</span>-->
+      <!--</td>-->
+      <td id="totalChatCount" ng-click="sort('totalChatCount')" class="cursor">咨询总量
+        <span class="table-sort">
+          <i ng-class="['glyphicon','glyphicon-triangle-top','f12','opacity-over',{'opacity-deep':currentSort['totalChatCount'] === true}]"></i>
+          <i ng-class="['glyphicon','glyphicon-triangle-bottom','f12','opacity-over',{'opacity-deep':currentSort['totalChatCount'] === false}]"></i>
+        </span>
+      </td>
+      <!--<td>详情</td>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.name"></td>
+      <td ng-bind="g.userPhone"></td>
+      <td ng-bind="g.userDetailTypeStr"></td>
+      <td ng-bind="g.caseNum"></td>
+      <!--<td ng-bind="g.currentChatCount"></td>-->
+      <td ng-bind="g.totalChatCount"></td>
+      <!-- <td><button  class="btn btn-primary btn-xs " ng-click="show(g.id)" data-target='.myModal' data-toggle='modal'>查看</button></td> -->
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+<!--dialog-->
+<div class="modal fade myModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">从业者信息详情</h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content lh200">
+          <div class="ti10">姓名：{{dialog.name}}</div>
+          <div class="ti10">职位：{{dialog.userDetailTypeStr}}</div>
+          <div class="ti10">绑定作品：{{dialog.caseNum}}</div>
+          <div class="ti10">电话：{{dialog.phone}}</div>
+          <div class="ti10">身份证号：{{dialog.idCard}}</div>
+          <div class="ti10">当前聊天:{{dialog.currSessions}}</div>
+          <div class="ti10">聊天总量:{{dialog.totalSessions}}</div>
+          <div class="ti10">持证照：<img ng-src="{{dialog.idHoldImage}}" width="100" class="vt"></div>
+          <div class="ti10">身份证正面照：<img ng-src="{{dialog.idImageA}}" width="100" class="vt"></div>
+          <div class="ti10">形象展示：
+            <img ng-repeat="item in dialog.lifePhotos track by $index" class="float-left mr10" width="100" ng-src="{{item}}" alt="">
+          </div>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

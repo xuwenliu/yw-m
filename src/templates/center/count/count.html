@@ -1,0 +1,47 @@
+<div class="crumbs">
+    <h3>首页</h3>
+    <p><a ui-sref="main.count" >首页</a> > 统计简报</p>
+</div>
+
+<div class="content-box">
+    <table class=" table table-hover table-condensed table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+          <td>统计内容</td>
+          <td>统计数据</td>
+        </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>注册装修公司总数统计</td>
+                <td ng-bind="result.companyTotal"></td>
+            </tr>
+            <tr>
+                <td>注册从业者总数统计</td>
+                <td ng-bind="result.employeeTotal"></td>
+            </tr>
+            <tr>
+                <td>注册客户总数统计</td>
+                <td ng-bind="result.customerTotal"></td>
+            </tr>
+            <tr>
+                <td>正在聊天中的总数统计</td>
+                <td ng-bind="result.activeSessionTotal"></td>
+            </tr>
+            <tr>
+                <td>累计聊天总数统计</td>
+                <td ng-bind="result.hisSessionTotal"></td>
+            </tr>
+            <tr>
+                <td>上架中的作品总数统计</td>
+                <td ng-bind="result.activeCaseTotal"></td>
+            </tr>
+            <tr>
+                <td>历史作品总数统计</td>
+                <td ng-bind="result.hisCaseTotal"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

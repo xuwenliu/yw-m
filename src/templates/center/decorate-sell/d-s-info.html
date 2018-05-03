@@ -1,0 +1,100 @@
+
+<style>
+    .tab-btn-content li:nth-child(1)>table td{ padding: 8px 10px; border:1px solid #DCEAF5}
+</style>
+
+<div class="crumbs">
+    <h3>家居顾问详情</h3>
+    <p><a ui-sref="main.decorate-sell-list" >家居顾问管理</a> > <a ui-sref="main.decorate-sell-list" >家居顾问列表</a> > 家居顾问详情</p>
+</div>
+
+<div class="content-box " style=" min-width: 1100px" >
+    <div ng-include="'/templates/center/decorate-sell/d-s-tab-inc.html'" ></div>
+    <div class="tab-btn-content mt30">
+        <ul>
+            <!--基本信息-->
+            <li style="display: block">
+                <h4 class="mb10 mt10 float-left">基本信息</h4>
+                <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6" >
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">编号</td>
+                        <td>{{dataInfo.platformEmployeeDto.id}}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">姓名</td>
+                        <td>{{dataInfo.platformEmployeeDto.name  }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">电话号码</td>
+                        <td>{{dataInfo.platformEmployeeDto.mobilePhone  }}</td>
+                    </tr>
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA">服务区域</td>
+                        <td>{{(dataInfo.platformEmployeeDto.areaId==2294)?'成都':(dataInfo.platformEmployeeDto.areaId==2252)?'重庆':''  }}</td>
+                        <td align="center" bgcolor="#EFF4FA">是否接受分配</td>
+                        <td>{{dataInfo.platformEmployeeDto.distribution?'是':'否'  }}</td>
+                        <td align="center" bgcolor="#EFF4FA">账户状态</td>
+                        <td>{{dataInfo.enable?'启用':'禁用'  }}</td>
+                    </tr>
+                    <tr>
+
+                        <td align="center" bgcolor="#EFF4FA">是否是客户经理</td>
+                        <td colspan="5">{{dataInfo.platformEmployeeDto.manager ?'是':'否'  }}</td>
+                    </tr>
+                </table>
+
+                <h4 class="mb10 mt20 float-left">相关数据</h4>
+                <table width="100%" border="#DCEAF5" cellspacing="0"  >
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">关联推客数</td>
+                        <td colspan="5">{{dataInfo.twitterCount  }}</td>
+
+                    </tr>
+                </table>
+                <table width="100%" border="#DCEAF5" cellspacing="0" class="mt10"  >
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">关联客户数</td>
+                        <td>{{dataInfo.customerCount  }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">已成单客户</td>
+                        <td>{{dataInfo.completeCustomerCount  }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">已飞单客户</td>
+                        <td>{{dataInfo.refuseCustomerCount  }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="border-left:1px solid #fff;border-right:1px solid #fff"></td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" bgcolor="#EFF4FA" style=" width:160px">关联会话数</td>
+                        <td>{{dataInfo.sessionCount  }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">未关闭</td>
+                        <td>{{dataInfo.notCloseSessionCount   }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">已关闭</td>
+                        <td>{{dataInfo.closeSessionCount  }}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6" style="border-left:1px solid #fff;border-right:1px solid #fff"></td>
+                    </tr>
+
+                    <tr>
+
+                        <td align="center"  rowspan="2" bgcolor="#EFF4FA" style=" width:160px">关联订单数</td>
+                        <td  rowspan="2">{{dataInfo.orderCount  }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">待付款</td>
+                        <td>{{dataInfo.waitPayOrderCount   }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">进行中</td>
+                        <td>{{dataInfo.ongoingOrderCount  }}</td>
+                    </tr>
+                    <tr>
+
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">已完成</td>
+                        <td>{{dataInfo.completeOrderCount   }}</td>
+                        <td align="center" bgcolor="#EFF4FA"  style=" width:160px">已关闭</td>
+                        <td>{{dataInfo.closeOrderCount  }}</td>
+                    </tr>
+                </table>
+
+
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div ng-include="'/templates/partial/show-img.html'"></div>

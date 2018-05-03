@@ -1,0 +1,97 @@
+<!--基础信息-->
+<style>
+    .tab-btn-content  table td{ padding: 8px 10px; border:1px solid #DCEAF5}
+</style>
+
+<li style="display: block" class="tab-btn-content">
+
+    <h4 class="mb10 mt20">基本信息</h4>
+    <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6  ">
+
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">客户昵称</td>
+            <td>{{cinfo.customer.nickName}}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">客户手机</td>
+            <td>{{cinfo.customer.userPhone}}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">客户头像</td>
+            <td> <a class="preview-img cursor "><img ng-src="{{cinfo.customer.showHead }}&imageView2/1/w/30/h/30" width="30"  data-target=".myModal" data-toggle="modal"  data-img="{{cinfo.customer.showHead }}"></a></td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">客户分类</td>
+            <td>{{cinfo.customer.customerTypeDesc  }}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">所属推客</td>
+            <td>{{cinfo.customer.twitterName }}<br>{{cinfo.customer.twitterPhone?('(' + cinfo.customer.twitterPhone+ ')'):'' }}</td>
+        </tr>
+        <tr>
+            <td align="center" bgcolor="#EFF4FA">注册时间</td>
+            <td >{{cinfo.customer.createTime | date:'yyyy-MM-dd HH:mm:ss'  }}</td>
+            <td align="center" bgcolor="#EFF4FA">注册IP所在地</td>
+            <td >{{cinfo.customer.registerAddress  }}</td>
+            <td align="center" bgcolor="#EFF4FA">最近登录时间</td>
+            <td >{{cinfo.customer.lastLoginTime  | date:'yyyy-MM-dd HH:mm:ss'  }}</td>
+            <td align="center" bgcolor="#EFF4FA">登录IP所在地</td>
+            <td >{{cinfo.customer.loginAddress  }}</td>
+            <td align="center" bgcolor="#EFF4FA">推客所属团队</td>
+            <td >{{cinfo.customer.teamName  }}</td>
+        </tr>
+    </table>
+    <h4 class="mb10 mt20">资金信息</h4>
+    <table width="60%" border="#DCEAF5" cellspacing="0" cellpadding="6  ">
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">账户余额</td>
+            <td>{{cinfo.balance }}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">冻结资金</td>
+            <td>{{cinfo.frozenCapital}}</td>
+        </tr>
+    </table>
+
+    <h4 class="mb10 mt20">备注信息</h4>
+    <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6  ">
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">意向客户</td>
+            <td style=" width:160px">{{cinfo.customer.intention?'是':'否' }}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">备注</td>
+            <td>{{cinfo.customer.remarks }}</td>
+        </tr>
+    </table>
+
+    <h4 class="mb10 mt20">相关数据</h4>
+    <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6  ">
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">收藏作品</td>
+            <td>{{cinfo.informationDto.caseCollectionCount }}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">收藏业者</td>
+            <td>{{cinfo.informationDto.employeeCollectionCount }}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">收藏公司</td>
+            <td>{{cinfo.informationDto.companyCollectionCount   }}</td>
+        </tr>
+        <tr>
+            <td align="center" bgcolor="#EFF4FA">创建会话</td>
+            <td >{{cinfo.informationDto.sessionCount   }}</td>
+            <td align="center" bgcolor="#EFF4FA">设计/施工订单</td>
+            <td >{{cinfo.informationDto.orderCount   }}</td>
+            <td align="center" bgcolor="#EFF4FA">监理订单</td>
+            <td >{{cinfo.informationDto.supervisorOrderCount    }}</td>
+            <td align="center" bgcolor="#EFF4FA">主材补贴</td>
+            <td >{{cinfo.informationDto.materialCount   }}</td>
+            <td align="center" bgcolor="#EFF4FA">优惠活动</td>
+            <td >{{cinfo.informationDto.activityCount   }}</td>
+        </tr>
+    </table>
+
+    <h4 class="mb10 mt20">专属家居顾问 {{!cinfo.platformEmployeeInfoDtos?': 无':''}}</h4>
+    <table width="40%" border="#DCEAF5" cellspacing="0" cellpadding="6 " ng-if="cinfo.platformEmployeeInfoDtos">
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">城市</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">姓名</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">手机号码</td>
+        </tr>
+        <tr ng-repeat="g in cinfo.platformEmployeeInfoDtos ">
+            <td align="center">{{g.cityName}}</td>
+            <td align="center">{{g.peName}}</td>
+            <td align="center" >{{g.phone}}</td>
+        </tr>
+    </table>
+
+
+
+</li>
+<!--基础信息-->

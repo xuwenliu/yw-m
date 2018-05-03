@@ -1,0 +1,55 @@
+<div class="crumbs">
+    <h3>结佣清单</h3>
+    <p><a ui-sref="main.twitter-list" >推客管理</a> > 结佣清单</p>
+</div>
+
+<div class="content-box" >
+    <div class="form-inline form-group clearfix">
+    	<div class="inline-block f14 b float-left">
+    		总金额：{{totalAmount | currency:""}} 时间范围：
+    		<i ng-show="!time.startTime && !time.endTime">产品上线 至今</i>
+    		<i ng-show="time.startTime && !time.endTime">{{time.startTime}} 至今</i>
+    		<i ng-show="time.endTime && !time.startTime">产品上线 至 {{time.endTime}}</i>
+    		<i ng-show="time.startTime && time.endTime">{{time.startTime}} 至 {{time.endTime}}</i>
+    	</div>
+        <div class="inline-block f12 float-right">
+        	<div class="input-append date form_datetime_start inline-block">
+				<i class="add-on pa mt30"><i class="icon-th"></i></i>
+				<input class=" form-control input-sm" size="16" placeholder="开始时间段" type="text" onkeyup="this.value=''" id="beginTime">
+			</div> ----
+			<div class="input-append date form_datetime_end inline-block">
+				<i class="add-on pa mt30"><i class="icon-th"></i></i>
+				<input class=" form-control input-sm" size="16" type="text" placeholder="结束时间段" onkeyup="this.value=''" id="endTime">
+			</div>
+			<input type="hidden" ng-class="{err:!dateThan==''}">
+			<i class="f12 c-red">{{dateThan}}</i>
+ 
+            <button type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+        </div>
+    </div>
+
+
+    <table class=" table table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+                <td>日期</td>
+                <td>结佣总额</td>
+                <td>给团队</td>
+                <td>给推客</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="g in grid.result">
+                <td>{{g.detailDate | date:'yyyy-MM-dd'}}</td>
+                <td>{{g.sumAmount | currency:""}}</td>
+                <td>{{g.teamAmount | currency:""}}</td>
+                <td>{{g.twitterAmount | currency:""}}</td>
+            </tr>
+            <tr ng-if="!grid.result"><td colspan="19" class="f12 c-999" >没有相关数据!</td></tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+

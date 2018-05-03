@@ -1,0 +1,140 @@
+<style>
+    .twitter-box {width: 440px; margin: 0 auto; height: 90px; overflow: hidden; position: relative;}
+    .twitter-step  {width: 60px; height: 90px; margin: 0 10px; text-align: center; color:#2da5ee; border-color: #2da5ee;}
+    .twitter-step div {width: 60px; height: 60px; border: 1px solid; border-radius: 50%;line-height: 60px; font-size: 24px;}
+    .twitter-step p {width: 100%; height: 30px; line-height: 30px;}
+    .twitter-line {width: 100px; border-top: 1px solid #2da5ee; height: 20px; margin-top: 30px;}
+    .twitter-active div {background-color: #2da5ee; color: #ffffff;}
+    .twitter-invalid {border-color: #cccccc; color: #cccccc;}
+</style>
+
+<div class="crumbs">
+    <h3>推客详情</h3>
+    <p>推客管理 > <a ui-sref="main.twitter-list" >推客列表</a> > 推客详情</p>
+</div>
+
+<div class="content-box " style="min-width: 1100px">
+    <div class="twitter-box mb10">
+        <div class="twitter-step float-left">
+            <div>1</div>
+            <p>申请</p>
+        </div>
+        <div class="twitter-line float-left"></div>
+        <div class="twitter-step float-left" ng-class="twitterActive(dataInfo.userAuthRecord.applyStatus)">
+            <div>2</div>
+            <p>平台审核</p>
+        </div>
+        <div class="twitter-line float-left" ng-class="twitterInvalid(dataInfo.userAuthRecord.applyStatus)"></div>
+        <div class="twitter-step float-left" ng-class="twitterInvalid(dataInfo.userAuthRecord.applyStatus)">
+            <div>3</div>
+            <p ng-if="dataInfo.userAuthRecord.applyStatus == 1">已认证</p>
+            <p ng-if="dataInfo.userAuthRecord.applyStatus == 2">未通过</p>
+        </div>
+    </div>
+
+    <h4 ng-switch="dataInfo.userAuthRecord.applyStatus">基本信息(<span ng-switch-when="0" class="c-red">待审核</span><span ng-switch-when="1">已认证</span><span ng-switch-when="2" class="c-red">未通过</span>)</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+            <li><span>推客类型：</span> <i ng-if="dataInfo.userAuthInfo.userType === 'c'">大众推客</i><i ng-if="dataInfo.userAuthInfo.userType === 'e'">专属推客</i></li>
+            <li><span>姓名：</span> {{dataInfo.userAuthInfo.name}}</li>
+            <li ng-if="dataInfo.userAuthInfo.mail"><span>邮箱：</span>  {{dataInfo.userAuthInfo.mail}}</li>
+            <li><span>性别：</span> {{dataInfo.userAuthInfo.gender | gender}}</li>
+            <li ng-if="dataInfo.userAuthInfo.age"><span>年龄：</span> {{dataInfo.userAuthInfo.age}}</li>
+            <li ng-if="dataInfo.userAuthRecord"><span>申请时间：</span> {{dataInfo.userAuthRecord.applyTime |date:'yyyy-MM-dd HH:mm:ss'}}</li>
+            <li ng-if="dataInfo.userAuthRecord.applyStatus == 1"><span>邀请码：</span> {{dataInfo.myCode}}</li>
+            <li ng-if="dataInfo.userAuthRecord.applyStatus == 2"><span>拒绝理由：</span> {{dataInfo.userAuthRecord.rejectedReason}}</li>
+        </ul>
+        <p class="mt20" ng-show="dataInfo.userAuthRecord.applyStatus == 0">
+            <button class="btn btn-primary btn-sm mr20" ng-click="submit({status:1})">通过审核</button>
+            <button class="btn btn-primary btn-sm" data-target='.authModal' data-toggle='modal' ng-click="bootDialog({status:2, title:'打回申请'})">打回申请</button>
+        </p>
+    </div>
+
+    <h4 class="mt20" ng-if="dataInfo.identityAuthRecord" ng-switch="dataInfo.identityAuthRecord.applyStatus">身份证信息(<span ng-switch-when="0" class="c-red">待审核</span><span ng-switch-when="1">已认证</span><span ng-switch-when="2" class="c-red">未通过</span>)</h4>
+    <div class="content-box-model mt10" ng-show="dataInfo.identityAuthRecord">
+        <ul class="model-inline lh220 twitter-identity-box">
+            <li><span>身份证号：</span> {{dataInfo.userAuthInfo.idCard}}</li>
+            <li><span>申请时间：</span> {{dataInfo.identityAuthRecord.applyTime | date:'yyyy-MM-dd HH:mm:ss'}}</li>
+            <li class="mb10"><span style="vertical-align:top">身份证正面：</span>
+                <a class="preview-img cursor "><img ng-src="{{dataInfo.userAuthInfo.idImageA}}&imageView2/1/w/100/h/100" width="100"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfo.userAuthInfo.idImageA}}" style="vertical-align:top"></a></li>
+            <li class="mb10"><span style="vertical-align:top">身份证背面：</span>
+                <a class="preview-img cursor "><img ng-src="{{dataInfo.userAuthInfo.idImageB}}&imageView2/1/w/100/h/100" width="100"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfo.userAuthInfo.idImageB}}" style="vertical-align:top"></a></li>
+            <li class="mb10"><span style="vertical-align:top">身份证正面持证照：</span>
+                <a class="preview-img cursor "><img ng-src="{{dataInfo.userAuthInfo.idHoldImage}}&imageView2/1/w/100/h/100" width="100"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfo.userAuthInfo.idHoldImage}}" style="vertical-align:top;"></a></li>
+            <li class="mb10"><span style="vertical-align:top">身份证背面持证照：</span>
+                <a class="preview-img cursor "><img ng-src="{{dataInfo.userAuthInfo.idHoldImageB}}&imageView2/1/w/100/h/100" width="100"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfo.userAuthInfo.idHoldImageB}}" style="vertical-align:top"></a></li>
+            <li ng-if="dataInfo.identityAuthRecord.applyStatus == 2"><span>拒绝理由：</span> {{dataInfo.identityAuthRecord.rejectedReason}}</li>
+        </ul>
+        <p class="mt20" ng-show="dataInfo.identityAuthRecord.applyStatus == 0">
+            <button class="btn btn-primary btn-sm mr20" ng-click="submit({status:3})">通过审核</button>
+            <button class="btn btn-primary btn-sm" data-target='.authModal' data-toggle='modal' ng-click="bootDialog({status:4, title:'打回认证'})">打回认证</button>
+        </p>
+    </div>
+
+    <h4 class="mt20" ng-if="dataInfo.bankCardInfo">银行卡信息</h4>
+    <div class="content-box-model mt10" ng-if="dataInfo.bankCardInfo">
+        <ul class="model-inline lh220">
+            <li><span>银行卡号：</span> {{dataInfo.bankCardInfo.cardNo}}</li>
+            <li><span>银行名称：</span> {{dataInfo.bankCardInfo.bankName}}</li>
+            <li><span>手机号：</span> {{dataInfo.bankCardInfo.mobilePhone}}</li>
+        </ul>
+    </div>
+
+    <h4 class="mt20">统计信息</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+            <li><span>总佣金：</span> {{dataInfo.statisticsInfo.totalCommission}}</li>
+            <li><span>已收佣金：</span> {{dataInfo.statisticsInfo.payedCommission}}</li>
+            <li><span>待收佣金：</span> {{dataInfo.statisticsInfo.unpayedCommission}}</li>
+            <li><span>咨询量：</span> {{dataInfo.statisticsInfo.chatCount}}</li>
+            <li><span>订单量：</span> {{dataInfo.statisticsInfo.orderCount}}</li>
+        </ul>
+    </div>
+
+    <h4 class="mt20">客户信息</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+            <li><span>意向客户：</span> {{dataInfo.statisticsInfo.intentionCustomer}}</li>
+            <li><span>咨询客户：</span> {{dataInfo.statisticsInfo.chatCustomer}}</li>
+            <li><span>订单客户：</span> {{dataInfo.statisticsInfo.succCustomer}}</li>
+        </ul>
+    </div>
+    
+    <h4 class="mt20">订单信息</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+            <li><span>已结佣：</span> {{dataInfo.statisticsInfo.payedOrderCount}}</li>
+            <li><span>未结佣：</span> {{dataInfo.statisticsInfo.unpayedOrderCount}}</li>
+        </ul>
+    </div>
+</div>
+
+<!--dialog-->
+<div class="modal fade authModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>{{dialog.title}}</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content lh200 form-inline form-group">
+          <div>
+            <dl>
+                <dd class="js-reject">
+                    <textarea class="form-control" ng-model="dialog.data.reason"  ng-maxlength="200" maxlength="200" rows="4" ng-required="true" placeholder="请输入的理由，200字以内(必填)" style="width:100%;" ng-blur="reason = !dialog.data.reason" ng-class="{err:reason}"></textarea>
+                    <span class="float-right">字数：{{dialog.data.reason | monitorWords}}/200</span>
+                </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
+        <button type="button" class="btn btn-danger" ng-click="submit(dialog)">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

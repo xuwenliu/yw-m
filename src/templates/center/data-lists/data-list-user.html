@@ -1,0 +1,35 @@
+<div class="crumbs">
+    <h3>E端帐号列表</h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.data-lists-e" >E端用户数据</a>  > E端帐号列表</p>
+</div>
+<div class="content-box "  >
+    <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+            <td>用户ID</td>
+            <td>姓名</td>
+            <td>手机号</td>
+            <td>角色</td>
+            <td>所属公司</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="g in grid.result">
+            <td ng-bind="g.id"></td>
+            <td ng-bind="g.name  "></td>
+            <td>{{g.phone }}</td>
+            <td>{{g.userDetailTypeDesc }}</td>
+            <td>{{g.companyName }}</td>
+        </tr>
+        <tr ng-if="!grid.result"><td colspan="5" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+
+
+
+
+

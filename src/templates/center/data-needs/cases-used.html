@@ -1,0 +1,50 @@
+<div class="crumbs">
+    <h3>作品功能使用数据图</h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.data-cases-used" >C端用户数据</a>  > 作品功能使用数据图</p>
+</div>
+<div class="content-box "  >
+    <div style="background: #eee; display: block">
+        <div class="form-inline form-group float-right " ng-init="list.statisticsType=1" >
+            <select class="form-control input-sm "  ng-options="v.code as v.desc for v in phoneSystemTypes" ng-model="list.systemType"   >
+                <option value="">--移动设备不限--</option>
+            </select>
+            <select class="form-control input-sm "   ng-init="statisticsTypes=[{code:1,desc:'造价'},{code:2,desc:'风格'},{code:3,desc:'房型'}]" ng-options="v.code as v.desc for v in statisticsTypes" ng-model="list.statisticsType"   >
+            </select>
+
+            <select class="form-control input-sm "  ng-init="decorateTypes=[{code:1,desc:'设计'},{code:2,desc:'硬装'},{code:3,desc:'软装'},{code:4,desc:'全装'}]" ng-options="v.code as v.desc for v in decorateTypes" ng-model="list.decorateType"   >
+                <option value="">--装修类型不限--</option>
+            </select>
+
+            <select  ng-init="list.timeRangeType=3" class="form-control input-sm "   ng-options="v.code as v.desc for v in timeRangeTypes" ng-model="list.timeRangeType" >
+            </select>
+
+
+            <div class="inline-block v-top" ng-show="list.timeRangeType===1">
+                <div class="input-append date form_datetime_start inline-block" >
+                    <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                    <input class=" form-control input-sm  " size="15" placeholder="起始时间" type="text"    onkeyup="this.value=''" id="beginTime" >
+                </div> --
+                <div class="input-append date form_datetime_end inline-block" >
+                    <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                    <input class=" form-control input-sm  " size="15" type="text"    placeholder="结束时间" onkeyup="this.value=''" id="endTime">
+                </div>
+                <input type="hidden" ng-class="{err:!dateThan==''}">
+                <i class="f12 c-red block" ng-if="dateThan" >Error: {{dateThan}}</i>
+            </div>
+
+            <div class="inline-block f12 ">
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="myCharts" class=" mt50" style=" height: 640px; border-top: 1px solid #eee; padding-top: 20px"></div>
+</div>
+
+
+
+
+
+
+

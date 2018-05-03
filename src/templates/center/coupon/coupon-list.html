@@ -1,0 +1,51 @@
+
+<div class="crumbs">
+  <h3>优惠券列表</h3>
+  <p><a ui-sref="main.coupon-list" >优惠券管理</a> > 优惠券列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <select class="form-control" ng-options="v.code as v.desc for v in couponClass" ng-model="dataInfo.couponClass">
+        <option value="">--选择券类型--</option>
+    </select>
+    <select class="form-control"  ng-options="v.code as v.desc for v in couponTypes" ng-model="list.couponType" ng-change="searchSubmit(list.couponType)">
+        <option value="">--选择券--</option>
+    </select>
+    <div class="form-inline form-group float-right"  >
+      <button type="button" class="btn btn-primary btn-sm  " ui-sref="main.coupon-list-add" > 新增优惠券</button>
+    </div>
+
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>优惠券名称</td>
+      <td>优惠券类型</td>
+      <td>优惠券额度(元)</td>
+      <td>优惠券折扣</td>
+      <td>是否关联活动</td>
+      <td>优惠券起止时间</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.name"></td>
+      <td ng-bind="g.typeDesc "></td>
+      <td>{{g.price}}</td>
+      <td>{{g.discount}}</td>
+      <td ng-if="g.activityName">{{g.activityName}}</td>
+      <td ng-if="!g.activityName">否</td>
+      <td>{{g.beginTime|date:'yyyy-MM-dd HH:mm:ss' }}----{{g.endTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td>
+        <button  class="btn btn-success btn-xs" ng-click="show(g.id,g.type)" >查看</button>
+        <button   class="btn btn-danger btn-xs" ng-click="del(g.id)" >删除</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>

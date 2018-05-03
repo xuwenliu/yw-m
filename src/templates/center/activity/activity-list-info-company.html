@@ -1,0 +1,178 @@
+<style>
+    .input-table-default td{ padding: 6px 8px !important;}
+</style>
+<div class="crumbs">
+    <h3>公司详情</h3>
+    <p><a ui-sref="main.activity-list" >活动管理</a> > <a href="/#/main/activity-list-info?id={{getId}}" >活动参与公司列表</a> > 公司详情</p>
+</div>
+
+<div class="content-box " style="min-width: 1100px">
+    <div class="tab-btn">
+        <ul>
+            <li >
+                <a>基本信息</a>
+                <a>活动作品</a>
+                <a>公司宣传</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-btn-content mt30" >
+        <ul>
+            <!--tab1-->
+            <li ui-view="" style="display: block"></li>
+            <!--tab2-->
+            <li>
+                <div >
+                    <div class="form-inline form-group "  >
+                        <div class="float-left"><h4> 作品列表</h4></div>
+                        <div class="float-right mb10">
+                            <div class="inline-block f12 ">
+                                <button type="button" class="btn btn-primary btn-sm"  ng-click="dialogMyModalChooseCase(null)"> 添加作品</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <table class=" table   table-hover table-condensed  table-striped text-center ">
+                        <thead style="background:#8A8BC4; color: #fff">
+                        <tr>
+                            <td>作品ID</td>
+                            <td>作品基本信息</td>
+                            <td>作品类型</td>
+                            <td>当前咨询 / 咨询总量 / 电话联系</td>
+                            <td>作品状态</td>
+                            <td>评论</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="g in grid.result">
+                            <td ng-bind="g.caseId"></td>
+                            <td>
+                                <p ng-bind="g.caseName" ng-click="show(g.caseId)" class="c-blue cursor" ></p>
+                                <p ng-bind="g.areaName"></p>
+                            </td>
+                            <td ng-bind="g.caseTypeDesc"></td>
+                            <td>
+                                <p>当前咨询：{{g.currentChatCount}}</p>
+                                <p>咨询总量：{{g.totalChatCount}}</p>
+                                <p>电话联系：{{g.contactCount}}</p>
+                            </td>
+                            <td ng-bind="g.statusDesc"></td>
+                            <td>
+                                <p ng-click="commentAudit(g.caseId, true)" class="cursor c-blue">未审核：{{g.commentAuditCount}}</p>
+                                <p ng-click="commentAudit(g.caseId)" class="cursor c-blue">评论数：{{g.commentTotal}}</p>
+                            </td>
+
+                            <td>
+                                <button    class="btn btn-danger btn-xs" ng-click="del(g.caseId)" >移除</button>
+
+                            </td>
+                        </tr>
+                        <tr ng-if="!grid.result"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+                        </tbody>
+                    </table>
+                    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+                </div>
+                <!--dialog-->
+                <div class="modal fade myModalChooseCase" >
+                    <div class="modal-dialog " style="width: 600px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">选择作品</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="dialog-content f12  lh200">
+                                    <div>
+                                        <div class=" form-inline">
+                                            <input type="text" class="form-control input-sm inline-block"  placeholder="作品名称" maxlength="30" size="30" ng-model="companyName"> <button   type="button" class="btn btn-primary btn-sm  input-sm inline-block" ng-click="searchCase(companyName)">查询</button> <i class="f12 c-999">(注:查询结果最多显示10条数据，请精确查找)</i>
+                                        </div>
+
+                                        <table class=" table   table-hover table-condensed  table-striped text-center mt10 ">
+                                            <thead style="background:#8A8BC4; color: #fff">
+                                            <tr>
+                                                <td style="min-width: 100px">作品名称</td>
+                                                <td>所属公司</td>
+                                                <td>作品状态</td>
+                                                <td>操作</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="g in cases.result" >
+                                                <td ng-bind="g.caseName"></td>
+                                                <td ng-bind="g.companyName"></td>
+                                                <td ng-bind="g.statusDesc"></td>
+                                                <td>
+                                                    <button  class="btn btn-primary btn-xs " ng-click=submitChooseCase([g.caseId,g.caseName])>选择</button>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="cases&&!(cases.result)"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <table class="input-table-default  form-inline text-left " style="background: #f8f8f8">
+                                        <tr>
+                                            <td>已选作品：</td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm"  placeholder="已选作品名" disabled maxlength="30" size="30" ng-model="dialogInfo.caseName">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>作品标签：</td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm"  placeholder="作品标签1-6字,选填" maxlength="6" size="30" ng-model="dialogInfo.simpleName ">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="text-right"> <button type="button" class="btn btn-primary btn-sm  mt10"  ng-click="submitChooseCaseDialog(dialogInfo)"> 确认提交</button></div>
+                                    <p class="f12 c-red text-center">{{dialogInfo.errorText}}</p>
+
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
+            </li>
+            <!--tab3-->
+            <li>
+                <div class="form-inline form-group  "   >
+                    <div class="float-left mb10"><h4> 公司宣传</h4></div>
+                    <table class="input-table-default  form-inline text-left  " style="background: #f8f8f8">
+                        <tr>
+                            <td class="v-top"> 宣传图片：</td>
+                            <td>
+                                <div class="inline-block">
+                                    <button type="button"  class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+                                    <i class=" f12 c-999 ml10">(图片比例不限、图片宽度1000像素以上； 建议大小1MB-10MB之间)</i>
+                                    <div class="img-show-box create-dialog"></div> <input type="hidden"  ng-model="showInfo.picUrl"  />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="v-top">公司宣传文本：</td>
+                            <td>
+                               <textarea ng-model="showInfo.populationContext"  ng-required="true"  class="form-control" maxlength="200" rows="5"  placeholder="请输入公司宣传的文本内容（200字以内）" style="width: 600px"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm  mt10"  ng-click="submitShow(showInfo)"> 确认保存</button>
+                                <p class="c-red f12">{{showInfo.errorText}}</p>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div ng-include="'/templates/partial/show-img.html'"></div>

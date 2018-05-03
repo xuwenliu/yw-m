@@ -1,0 +1,244 @@
+
+<style>
+  .create-dialog-box .form-control{ width: auto}
+</style>
+<div class="crumbs">
+  <h3>客户详情</h3>
+  <p><a ui-sref="main.twitter-list" >推客管理</a> > <a ui-sref="main.twitter-ctr-list" >客户列表</a> > 客户详情</p>
+</div>
+
+<div class="content-box">
+  <!--申请信息-->
+  <h4 class="mt20">报备信息</h4>
+  <div class="content-box-model mt10">
+    <ul class="model-inline lh220">
+      <li><span>客户姓名：</span>{{dataInfo2.customerName}}</li>
+      <li><span>报备时间：</span>{{dataInfo2.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</li>
+      <li><span>客户电话：</span> {{dataInfo2.customerPhone}}</li>
+      <li><span>推客姓名：</span> {{dataInfo2.twitterName}}</li>
+      <li><span>推客电话：</span>{{dataInfo2.twitterPhone}}</li>
+      <li><span>备注：</span>{{dataInfo2.postscript}}</li>
+    </ul>
+  </div>
+
+
+  <div class="form-inline form-group mt30 "  >
+    <h4 class="mt20 inline-block">进展信息</h4>
+    <button type="button"  ng-if="type!==1"  class="btn btn-primary btn-sm inline-block  ml20 " ng-click="addPayInfoDialog()" > 新增进展</button>
+  </div>
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>时间</td>
+      <td>编号</td>
+      <td>公司</td>
+      <td>节点</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in stepLists">
+      <td>{{g.currentNodeTime   |date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{g.serialNumber    }}</td>
+      <td>{{g.companyName   }}</td>
+      <td>{{g.progressTypeDesc    }}</td>
+      <td>
+        <button   ng-if="g.canView"  class="btn btn-success btn-xs "  ng-click=show(g.procedureId)>查看</button>
+        <button   ng-if="g.canUpdate&&type!==1"  class="btn btn-primary btn-xs" ng-click="addPayInfoDialog(g.procedureId)">更新节点</button>
+        <button   ng-if="g.canRemove&&type!==1" class="btn btn-danger btn-xs" ng-click="del(g.procedureId)">删除</button>
+      </td>
+    </tr>
+    <tr ng-if="!stepLists"><td colspan="5" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+
+  <div  ng-if="type==1"  class=" mt30">
+    <h4 class="mt20">费用信息</h4>
+    <table class=" table   table-hover table-condensed  table-striped text-center ">
+      <thead style="background:#8A8BC4; color: #fff">
+      <tr>
+        <td>签约时间</td>
+        <td>编号</td>
+        <td>公司</td>
+        <td>签约类型</td>
+        <td>涉及推客（元）</td>
+        <td>费用比例</td>
+        <td>应付(元)</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="g in paysInfo">
+        <td>{{g.signTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>{{g.serialNumber    }}</td>
+        <td>{{g.companyName   }}</td>
+        <td>{{g.signContentTypeDesc  }}</td>
+        <td>
+          <span ng-repeat=" k in g.costItemDtos">
+            {{k.twitterName}}({{k.incomeAmount}})
+          </span>
+        </td>
+        <td>
+          <span ng-repeat=" k in g.costItemDtos">
+            {{k.baseAmount}}*{{k.ratio}}%
+          </span>
+        </td>
+        <td>{{g.dueToPayAmount    }}</td>
+
+
+      </tr>
+      <tr ng-if="!paysInfo"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+</div>
+
+
+<!--dialog上传图文模块-->
+<div class="modal fade upInfoDialog  create-dialog-box">
+  <div class="modal-dialog " style="width: 700px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >节点操作</h4>
+      </div>
+
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+
+            <dd ><span>客户：</span>
+              <span style="text-align: left">{{dataInfo2.customerName }}</span>
+            </dd>
+
+            <dd ><span>公司：</span>
+              <input  class="form-control " required="true" ng-disabled="true"  type="text"  ng-model="dataInfo.companyName" maxlength="30"  placeholder=""  ng-pattern="pubRegex.reNumber"  autocomplete="off">
+              <input ng-if="stepTypes===0" class="form-control " type="hidden"  ng-init="createUpInfo.companyId"  ng-model="createUpInfo.companyId  " >
+              <button  ng-if="stepTypes===0"  class="btn btn-success btn-sm "  ng-click=myModalChooseCompany()>选择公司</button>
+            </dd>
+
+            <dd ng-if="stepTypes===0"><span>节点：</span>
+              <select class="form-control "  required="true"  ng-init="progressTypes2=[{code:1,desc:'已洽谈'},{code:2,desc:'已签约'}]" ng-options="v.code as v.desc for v in progressTypes2" ng-model="createUpInfo.progressType  " >
+                <option value="">--选择方式--</option>
+              </select></dd>
+
+            <dd ng-if="stepTypes===1" ng-init="createUpInfo.progressType=2" ><span>节点：</span>
+              <select class="form-control "  required="true"  ng-init="progressTypes2=[{code:2,desc:'已签约'}]" ng-options="v.code as v.desc for v in progressTypes2" ng-model="createUpInfo.progressType  " >
+                <option value="">--选择方式--</option>
+              </select></dd>
+
+            <dd ng-if="stepTypes===2" ng-init="createUpInfo.progressType=3"><span>节点：</span>
+              <select class="form-control "  required="true"  ng-init="progressTypes2=[{code:3,desc:'已结佣'}]" ng-options="v.code as v.desc for v in progressTypes2" ng-model="createUpInfo.progressType  " >
+                <option value="">--选择方式--</option>
+              </select></dd>
+
+
+            <dd ng-if="createUpInfo.progressType==2" ><span>签约类型：</span>
+              <select class="form-control "  required="true"   ng-options="v.code as v.desc for v in signContentTypes" ng-model="createUpInfo.signContentType  " >
+                <option value="">--选择方式--</option>
+              </select></dd>
+
+            <dd ng-if="createUpInfo.progressType==3" ><span>签约类型：</span>
+              <span style="text-align: left">{{signContentType }}</span>
+            </dd>
+
+            <dd ng-if="createUpInfo.progressType==3" ><span>签约金额：</span>
+              <span style="text-align: left">{{signAmount }}</span>
+            </dd>
+
+            <dd ng-if="createUpInfo.progressType==3" ><span>结佣金额：</span>
+              <span style="text-align: left">{{settleAmount}}</span>
+            </dd>
+
+            <dd ng-if="(signContentCode==3||signContentCode==4||signContentCode==5)&&stepTypes===2" ><span>房屋面积：</span>
+              <span style="text-align: left">{{houseArea }} (平方米)</span>
+            </dd>
+
+            <dd ng-if="createUpInfo.signContentType==3||createUpInfo.signContentType==4||createUpInfo.signContentType==5" ><span>房屋面积：</span>
+              <input  class="form-control " required="true"  type="text"  ng-model="createUpInfo.houseArea " maxlength="7"  placeholder="0.00"  ng-pattern="pubRegex.price"  autocomplete="off"><i class="f12 c-999"> (平方米)</i>
+            </dd>
+
+            <dd ng-if="createUpInfo.progressType==2"><span>签约金额：</span>
+              <input  class="form-control " required="true"  type="text"  ng-model="createUpInfo.signAmount " maxlength="8"  placeholder="￥0.00"  ng-pattern="pubRegex.price"  autocomplete="off">
+            </dd>
+
+
+
+            <dd ng-show="stepTypes!==2" ><span>日期：</span>
+              <div class="input-append date form_datetime_start inline-block" >
+                <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                <input class=" form-control " size="16" placeholder="时间" type="text" onkeyup="this.value=''" id="beginTime" ng-model="createUpInfo.addTime" >
+                <!--//<input ng-model="createUpInfo.addTime"/>-->
+              </div>
+            </dd>
+
+
+            <dd><span>备注：</span>
+              <input class="form-control " ng-model="createUpInfo.postscript"   size="55"   ng-maxlength="15" maxlength="15" placeholder="15字以内"/>
+              <i class="f12 c-999">（选填）</i>
+              <br>
+              <span></span><i>{{createUpInfo.postscript  | monitorWords}}/15</i></dd>
+
+            <p class="text-center c-red f12 "><em ng-bind="createUpInfo.errorMsg"></em></p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-primary "  ng-click="createUpInfoSumbit(createUpInfo)" >确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+<!--dialog-->
+<div class="modal fade myModalChooseCompany" >
+  <div class="modal-dialog " style="width: 500px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">选择公司</h4>
+      </div>
+      <div class="modal-body" style="max-height: 500px; overflow-y: auto">
+        <div class="dialog-content f12  lh200">
+
+          <div class="form-inline form-group "  >
+            <input type="text" class="form-control input-sm"  placeholder="公司名称" maxlength="30" size="30" ng-model="list.searchKey">
+            <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="getCompanysList(list.searchKey)">查询</button>
+          </div>
+
+
+
+          <table class=" table   table-hover table-condensed  table-striped text-center ">
+            <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+              <td>ID</td>
+              <td>公司名称</td>
+              <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="g in getCompanysList" >
+              <td ng-bind="g.companyId"></td>
+              <td ng-bind="g.companyName"></td>
+              <td>
+                <button  class="btn btn-primary btn-xs " ng-click=myModalChooseCompanySubmit([g.companyId,g.companyName])>选择</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

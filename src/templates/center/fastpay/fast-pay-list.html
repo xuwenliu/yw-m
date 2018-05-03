@@ -1,0 +1,170 @@
+
+<div class="crumbs">
+  <h3>用户列表</h3>
+  <p><a ui-sref="main.fast-pay" >快捷收款</a> > 用户列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+
+    <select class="form-control input-sm "  ng-init="bindingCards=[{code:true,desc:'已绑定'},{code:false,desc:'未绑定'}]"  ng-options="v.code as v.desc for v in bindingCards" ng-model="list.bindingCard"   >
+      <option value="">--是否绑定收款银行卡--</option>
+    </select>
+    <select class="form-control input-sm "  ng-init="developPermissions=[{code:true,desc:'是'},{code:false,desc:'否'}]"  ng-options="v.code as v.desc for v in developPermissions" ng-model="list.developPermission"   >
+      <option value="">--是否可以发展渠道商--</option>
+    </select>
+    <select class="form-control input-sm "  ng-init="spreadPermissions=[{code:true,desc:'是'},{code:false,desc:'否'}]"  ng-options="v.code as v.desc for v in spreadPermissions" ng-model="list.spreadPermission"   >
+      <option value="">--是否可以推广快捷收款--</option>
+    </select>
+    <select class="form-control input-sm "   ng-init="withdrawDeposits=[{code:true,desc:'是'},{code:false,desc:'否'}]"  ng-options="v.code as v.desc for v in withdrawDeposits" ng-model="list.withdrawDeposit"   >
+      <option value="">--是否存在提现申请--</option>
+    </select>
+
+   <div class="float-right">
+     <div class="input-append date form_datetime_start inline-block" >
+       <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+       <input class=" form-control input-sm" size="16" placeholder="注册开始时间段" type="text" onkeyup="this.value=''" id="beginTime" >
+     </div> ----
+     <div class="input-append date form_datetime_end inline-block" >
+       <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+       <input class=" form-control input-sm" size="16" type="text"  placeholder="注册结束时间段" onkeyup="this.value=''" id="endTime">
+     </div>
+     <input type="hidden" ng-class="{err:!dateThan==''}">
+     <i class="f12 c-red" >{{dateThan}}</i>
+     <input type="text" class="form-control input-sm"  placeholder="手机号/姓名" maxlength="30" size="30" ng-model="list.searchKey">
+     <div class="inline-block f12 ">
+       <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+     </div>
+   </div>
+
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>手机号</td>
+      <td>姓名</td>
+      <td>注册快捷收款时间</td>
+      <td>绑定收款银行卡</td>
+      <td>存在提现申请</td>
+      <td>待处理提现金额（元）</td>
+      <td>已提现金额（元）</td>
+      <td>快捷收款权限</td>
+      <td>其它权限</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.phone "></td>
+      <td ng-bind="g.name"></td>
+      <td>{{g.registerTime  |date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{g.bindingCard===true?'已绑定':'未绑定'}}</td>
+      <td>{{g.withdrawDepositApply===true?'是':'否'}}</td>
+      <td ng-bind="g.withdrawDepositAmount"></td>
+      <td ng-bind="g.totalWithdrawDepositAmount"></td>
+      <td>{{g.collectionPermission===2?'启用':g.collectionPermission===1?'未启用':g.collectionPermission===3?'禁用':''}}</td>
+      <td >{{g.spreadPermission ==2?'推广快捷收款':''}} {{(g.spreadPermission ==2&&g.developPermission==2)?" / ":""}}{{g.developPermission==2?'发展渠道商':''}} </td>
+      <td >
+        <button  class="btn btn-primary btn-xs" ng-click="createDialog(g)" >修改权限</button>
+        <button  class="btn btn-success btn-xs ml10" ng-if="g.withdrawDepositApply" ng-click="createDialogPayAdd([g.id,g.withdrawDepositAmount,g.userId])" >处理提现申请</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="9" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+
+<!--dialog 修改权限-->
+<div class="modal fade createDialog ">
+  <div class="modal-dialog " style="width: 500px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >修改权限</h4>
+      </div>
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+            <dd>
+              <span class=" f14 c-666 lh200">姓名：</span>{{rootSet.name}}
+            </dd>
+            <dd>
+              <span class=" f14 c-666 lh200">手机号：</span>{{rootSet.phone}}
+            </dd>
+
+
+            <dd>
+              <span class=" f14 c-666  v-top">权限：</span>
+              <div class="inline-block lh200">
+                <label class="block"><input type="checkbox" ng-model="roots.get"  />快捷收款</label>
+                <label class="block"><input type="checkbox" ng-model="roots.develop" />发展渠道商</label>
+                <label class="block"><input type="checkbox" ng-model="roots.spread "  />推广快捷收款</label>
+              </div>
+
+            </dd>
+
+            <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{roots.errorMsg}}</p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary "  ng-click="createDialogSumbitRoot(roots)" >确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!--dialog 处理提现申请-->
+<div class="modal fade createDialog2 ">
+  <div class="modal-dialog " style="width: 750px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >处理提现申请</h4>
+      </div>
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+            <dd>
+              <span>提现金额：</span>{{pay.amount}}
+            </dd>
+
+
+            <dd>
+              <span>打款方式：</span>
+              <select class="form-control" ng-options="v.code as v.desc for v in payToolTypes" ng-model="pay.payMode " ng-required="true"  >
+                <option value="">--选择打款方式--</option>
+              </select>
+            </dd>
+            <dd>
+              <span class="v-top">上传凭证：</span>
+              <div class="inline-block">
+                <button type="button"  class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+                <i class=" f12 c-999 ml10">(图片比例不限、图片宽度1000像素以上； 建议大小1MB-10MB之间)</i>
+                <div class="img-show-box create-dialog"></div> <input type="hidden"  ng-model="pay.voucher"  />
+              </div>
+            </dd>
+
+            <dd>
+              <span>备注：</span>
+              <input type="text" class="form-control " maxlength="15" size="50"  placeholder="15字以内" ng-model="pay.remark"  />  <i class=" f12 c-999 ml10">（选填）</i>
+            </dd>
+            <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{pay.errorMsg}}</p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary "  ng-click="createDialogSumbitPay(pay)" >提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

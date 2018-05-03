@@ -1,0 +1,85 @@
+<style>
+  #qrcode img{ max-width: 400px; max-height: 400px;  margin: 0 auto}
+  .content-box img:hover{ opacity: 0.5}
+</style>
+<div class="crumbs">
+  <h3>拼团列表</h3>
+  <p><a ui-sref="main.groupbuy-list" >拼团管理</a> > 拼团列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+
+
+    <select class="form-control input-sm " ng-init="states=[{code:1,desc:'启用'},{code:2,desc:'关闭'},{code:3,desc:'已截止'}]"  ng-options="v.code as v.desc for v in states" ng-model="list.state"   >
+      <option value="">--状态不限--</option>
+    </select>
+    <select class="form-control input-sm "  ng-init="orderBys=[{code:1,desc:'参团人数最多'},{code:2,desc:'参团人数最少'}]"  ng-options="v.code as v.desc for v in orderBys" ng-model="list.orderBy"   >
+      <option value="">--参团人数不限--</option>
+    </select>
+    <input type="text" class="form-control input-sm"  placeholder="主题名称" maxlength="30" size="30" ng-model="list.name">
+    <div class="inline-block f12 ">
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+    </div>
+    <div class="form-inline form-group float-right"  >
+      <button type="button" class="btn btn-primary btn-sm  " ui-sref="main.groupbuy-list-add" > 新增拼团</button>
+    </div>
+  </div>
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>主题名称</td>
+      <td>当前拼团（已达成/总拼团）</td>
+      <td>参团总人数</td>
+      <td>开始日期</td>
+      <td>截止日期</td>
+      <td>拼团券（已使用/总数）</td>
+      <td>状态</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.name"></td>
+      <td >{{g.finishGroup }}/{{g.allGroup }}</td>
+      <td ng-bind="g.allPersonCount "></td>
+      <td>{{g.startDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{g.overDate|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td >{{g.usedTicket  }}/{{g.allTicket }}</td>
+      <td>{{g.stateDesc}}</td>
+      <td >
+
+        <!--<button  ng-if="g.activityState==1" class="btn btn-primary btn-xs" ng-click="edit(g.id)" >修改</button>-->
+        <button  class="btn btn-primary btn-xs" ng-click="edit(g.id)" >修改</button>
+        <button  ng-if="g.state!=3" class="btn btn-warning btn-xs" ng-class="{'btn-warning':(g.state===2),'btn-danger':(g.state===1)}" ng-click="isStart(g.id,g.state)" >{{g.state===1?"关闭":g.state===2?"启用":""}}</button>
+        <button  class="btn btn-primary btn-xs" ng-click="doAll(g.id)" >全部使用</button>
+        <button   class="btn btn-success btn-xs" ng-click="show(g.id)" >查看</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="9" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+<!--dialog-->
+<div class="modal fade myModalCode" >
+  <div class="modal-dialog " style="width: 460px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{qrcode.name}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content f12  text-center  lh200">
+          <div id="qrcode" ></div>
+          <i class="f12 c-666 lh240">(下载请点击右键,另存为图片)</i>
+
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

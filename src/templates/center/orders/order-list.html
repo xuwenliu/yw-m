@@ -1,0 +1,70 @@
+
+<div class="crumbs" >
+  <h3>订单列表</h3>
+  <p><a ui-sref="main.orders-list" >订单管理</a> > 订单列表</p>
+</div>
+
+
+<div class="content-box" >
+  <div class="form-inline form-group "  >
+    <select class="form-control input-sm "  ng-options="v.code as v.desc for v in orderTypes" ng-model="list.orderType"   >
+      <option value="">--订单类型不限--</option>
+    </select>
+    <select class="form-control input-sm "   ng-options="v.code as v.desc for v in orderStatusTypes" ng-model="list.orderStatus"   >
+      <option value="">--订单状态不限--</option>
+    </select>
+    <select class="form-control input-sm "   ng-options="v.code as v.desc for v in orderPhaseTypes" ng-model="list.orderPhase"   >
+      <option value="">--最近支付款项不限--</option>
+    </select>
+
+    <div class="inline-block f12 float-right">
+      <input type="text" class="form-control input-sm"  placeholder="订单编号" maxlength="12" size="12" ng-model="list.orderNum">
+      <input type="text" class="form-control input-sm"  placeholder="装修公司" maxlength="30" size="20" ng-model="list.companyName">
+      <input type="text" class="form-control input-sm"  placeholder="客户电话" maxlength="11" size="12" ng-model="list.customerPhone">
+      <input type="text" class="form-control input-sm"  placeholder="客户名称" maxlength="10" size="20" ng-model="list.customerName">
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+    </div>
+  </div>
+
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>订单编号</td>
+      <td>类型</td>
+      <td>状态</td>
+      <td>已付金额（元）</td>
+      <td>装修公司</td>
+      <td>客户名称</td>
+      <td>客户电话</td>
+      <td>创建时间</td>
+      <td>结束时间</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.orderNum"></td>
+      <td ng-bind="g.typeDesc "></td>
+      <td> {{g.statusDesc}}<i ng-if="g.currentPhaseDesc">({{g.currentPhaseDesc}})</i></td>
+      <td ng-bind="g.prepaidAmount  "></td>
+      <td ng-bind="g.companyName  "></td>
+      <td ng-bind="g.customerName  "></td>
+      <td ng-bind="g.customerPhone  "></td>
+      <td ng-bind="g.createTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+      <td ng-bind="g.finishTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+      <td>
+        <button  class="btn btn-success btn-xs "  ng-click=show(g.id)>查看</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="10" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+
+

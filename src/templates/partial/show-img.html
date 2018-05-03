@@ -1,0 +1,24 @@
+<style>
+    .img-big-show {
+        max-width: 600px;
+    }
+</style>
+
+<!--dialog showIMG-->
+<div class="modal fade myModal text-center "  >
+    <div class="modal-dialog" style="display: inline-block; width: auto; ">
+        <div class="modal-content"  style="padding: 10px">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            <div><a ng-href="{{preview}}" target="_blank"><img ng-src="{{preview}}&imageView2/2/w/600" class="img-big-show"></a></div>
+
+
+            <p ng-if="isPreview" style="padding: 20px 0 10px 0"  >
+                <i class="cursor" ng-click="previewPre()"  style="padding: 2px 8px; border:1px solid #ddd; background: #f8f8f8; color: #666; border-radius: 4px; margin-right: 20px" ng-style="{color:(i==0)?'#ccc':'#666'}">上一张</i>
+                <i>{{(i+1)+"/"+len}}</i>
+                <i class="cursor" ng-click="previewNext()"  style="padding: 2px 8px; border:1px solid #ddd; background: #f8f8f8; color: #666; border-radius: 4px; margin-left: 20px" ng-style="{color:(i+1==len)?'#ccc':'#666'}">下一张</i>
+            </p>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

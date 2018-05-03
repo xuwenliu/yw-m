@@ -1,0 +1,41 @@
+<div class="crumbs">
+  <h3>免费报价用户数据详情</h3>
+  <p><a ui-sref="main.ask-price" >C端主页管理</a> > 免费报价用户数据详情</p>
+</div>
+
+<div class="content-box">
+
+  <div class="tab-content  mt20">
+    <div>
+      <h4 class="mt20">基本信息</h4>
+      <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+          <li><span>客户名称：</span>{{dataInfo.name   }}</li>
+          <li><span>联系电话：</span> {{dataInfo.phone }}</li>
+          <li><span>所在地区：</span> {{dataInfo.area }}</li>
+          <li><span>装饰预算：</span><i>{{dataInfo.cost  }}</i> </li>
+          <li><span>房屋户型：</span><i>{{dataInfo.houseType}}</i> </li>
+          <li><span>装饰风格：</span><i>{{dataInfo.style }}</i> </li>
+          <li><span>房屋面积：</span><i>{{dataInfo.houseArea}}</i> </li>
+          <li><span>提交日期：</span><i>{{dataInfo.createDate  |date:'yyyy-MM-dd HH:mm:ss'}}</i> </li>
+          <li><span>跟进人员：</span>
+            <!--<select class="form-control input-sm  "  style="width: 180px; display: inline-block"  ng-disabled="oldpeCity||dataInfo.register==3"  ng-options="v.id as v.name for v in cityTypes" ng-model="dataInfo.peCity"   >-->
+              <!--<option value="">&#45;&#45;区域&#45;&#45;</option>-->
+            <!--</select>-->
+            <select class="form-control input-sm  "  style="width: 180px; display: inline-block"  ng-disabled="oldpeId||dataInfo.register==3" ng-options="v.id as v.name for v in peids" ng-model="dataInfo.peId"   >
+              <option value="">--家居顾问--</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+
+      <h4 class="mt20">用户备注</h4>
+      <textarea class="form-control mt10" ng-model="dataInfo.remark"  style="width:530px"   rows="4"     ng-maxlength="300" maxlength="300" placeholder="备注300字以内"></textarea>
+
+      <button type="button" class="btn btn-primary pr20 pl20  "  style="margin-top: 30px" ng-click="submitInfo(dataInfo)" >提交</button>
+    </div>
+  </div>
+
+</div>
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

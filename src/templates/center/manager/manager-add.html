@@ -1,0 +1,45 @@
+
+<div class="crumbs">
+  <h3>添加平台业者</h3>
+  <p><a ui-sref="main.manager" >平台业者管理</a> > 添加平台业者</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group">
+    <div>
+      <dl>
+        <dd><span>登录帐号：</span><input type="text" size="30"  maxlength="20"   ng-pattern="pubRegex.username" class="form-control required" ng-model="managerInfo.userName"    placeholder="8-20位 数字和字母"  ng-blur="userName =!managerInfo.userName"  ng-class="{err:userName }" /></dd>
+
+        <dd><span>手机号码：</span><input type="tel"  size="30" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="managerInfo.userPhone"  ng-blur="userPhone=!managerInfo.userPhone "  placeholder="请填写11位手机号码" ng-class="{err:userPhone }"/></dd>
+        <dd><span>姓名：</span><input type="text"  size="30" class="form-control "    maxlength="10" placeholder="2-10位真实中文名字字符"  ng-pattern="pubRegex.realname" ng-model="managerInfo.name"   ng-blur="name =!managerInfo.name"  ng-class="{err:name }" /></dd>
+        <dd><span>角色：</span><label ><input type="radio" ng-model="managerInfo.userDetailType" ng-value="2" >商务经理</label>
+          <label class="ml50"><input type="radio" ng-model="managerInfo.userDetailType" ng-value="3" >平台管家</label>
+          <label class="ml50"><input type="radio" ng-model="managerInfo.userDetailType" ng-value="1" >普通（默认）</label></dd>
+        <dd class="mt20">
+          <span></span>
+          <input type="hidden" ng-model="managerInfo.quitJobs" ng-value="false" >
+          <button ng-click="submit([managerInfo,true])"  type="button" class="btn btn-primary w110">添加</button>
+        </dd>
+      </dl>
+    </div>
+
+  </div>
+</div>
+
+<!--dialog-->
+<div class="modal fade myModal text-center "  >
+  <div class="modal-dialog" style="display: inline-block; width: auto; ">
+    <div class="modal-content"  style="padding: 10px">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div><img ng-src="{{preview}}&imageView2/2/w/600" class="img-big-show"></div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+

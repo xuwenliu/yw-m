@@ -1,0 +1,186 @@
+
+<style>
+  .create-dialog-box .form-control{ width: auto}
+  .roomsTab li{ display: inline-block; padding: 6px 12px; border: 1px solid #ccc; border-bottom: none; margin-right: -1px; cursor: pointer; margin-bottom: -1px}
+  .roomsTab li.hover{ border-bottom: 1px solid #fff}
+  .roomsTab { border-bottom: 1px solid #ccc; margin-bottom: 10px}
+  .roomsContent{ display: none}
+  #editor span{ min-width:0px}
+  .add-phone,.delete-phone{ width: 30px;height: 30px; text-align: center;line-height: 30px; border-radius: 50%; background: #5BC0DE;display: inline-block; font-size: 16px; color: #fff; cursor: pointer; margin-left: 10px}
+  .delete-phone{   border:1px solid #E53573; color: #E53573; background: #fff; font-weight: bold; line-height: 26px }
+  .err{ border: 1px solid #ff0000}
+
+</style>
+
+
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/lang/zh-cn/zh-cn.js"></script>
+
+<div class="crumbs">
+  <h3>拼团详情</h3>
+  <p><a ui-sref="main.groupbuy-list" >拼团管理</a> > <a ui-sref="main.groupbuy-list" >拼团列表</a> > 拼团详情</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <div class="tab-btn">
+      <ul>
+        <li>
+          <a onclick="javascript:void(0)" class="hover"  >基本信息</a>
+          <a onclick="javascript:void(0)" class="" >参团信息</a>
+          <a onclick="javascript:void(0)"  >活动公告</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content  mt20">
+    <div>
+      <!--申请信息-->
+      <h4 class="mt20">拼团信息</h4>
+      <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+          <li class="block"><span class="v-top">主题图片：</span><a class="preview-img cursor f12 inline-block "><img ng-src="{{dataInfo.picUrl }}&imageView2/1/w/60/h/60" width="60"  ng-click="showImg(dataInfo.userAuthInfo.idImageA)" data-target=".myModal" data-toggle="modal"  ></a></li>
+          <li><span>主题名称：</span>{{dataInfo.name  }}</li>
+          <li><span>支付金额：</span> {{dataInfo.payAmount}}</li>
+          <li><span>达成标准：</span> {{dataInfo.personCount}}</li>
+          <li><span>开始日期：</span><i>{{dataInfo.startDate |date:'yyyy-MM-dd HH:mm:ss'}}</i> </li>
+          <li><span>截止日期：</span><i>{{dataInfo.overDate |date:'yyyy-MM-dd HH:mm:ss'}}</i> </li>
+          <li><span>当前达成团数：</span><i>{{dataInfo.finishGroupCount}}</i> </li>
+          <li><span>当前参团总数：</span><i>{{dataInfo.groupCount}}</i> </li>
+          <li><span>当前拼团总人数：</span><i>{{dataInfo.allPersonCount}}</i> </li>
+        </ul>
+      </div>
+      <!--申请信息结束-->
+
+
+      <!--基本信息-->
+      <h4 class="mt20 ">公告</h4>
+      <!--style给定宽度可以影响编辑器的最终宽度-->
+      <script id="editor" type="text/plain" style="width:940px;height:300px; overflow-x:hidden; margin-top:10px"></script>
+      <!--style给定宽度可以影响编辑器的最终宽度结束-->
+
+      <!--基本信息结束-->
+      <button type="button" class="btn btn-primary mt20 "  ng-click="createNotice()" >发布公告</button>
+    </div>
+
+    <!--##################################-->
+
+    <div style="display: none">
+      <div class="form-inline form-group "  >
+        <select class="form-control input-sm " ng-init="states=[{code:1,desc:'已拼成'},{code:0,desc:'未拼成'}]"   ng-options="v.code as v.desc for v in states" ng-model="list.state"   >
+          <option value="">--所有状态--</option>
+        </select>
+        <input type="text" class="form-control input-sm"  placeholder="昵称" maxlength="30" size="30" ng-model="list.name">
+        <input type="text" class="form-control input-sm"  placeholder="手机号" maxlength="30" size="30" ng-model="list.phone">
+
+        <div class="inline-block f12 ">
+          <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+        </div>
+      </div>
+
+      <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+          <td>ID</td>
+          <td>拼团</td>
+          <td>团主昵称</td>
+          <td>团主号码</td>
+          <td>参团状态</td>
+          <td>人数</td>
+          <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="g in grid.result">
+          <td ng-bind="g.id "></td>
+          <td>{{g.groupName  }}</td>
+          <td>{{g.name }}</td>
+          <td>{{g.phone }}</td>
+          <td>{{g.stateDesc}}</td>
+          <td>{{g.personCount}}</td>
+          <td >
+            <button class="btn btn-success btn-xs" ng-click="show(g.id)" >查看</button>
+          </td>
+        </tr>
+        <tr ng-if="!grid.result"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+      </table>
+      <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+
+    </div>
+
+
+
+    <!--#############################-->
+    <div style="display: none">
+      <table class="input-table-default form-inline form-group">
+        <tr>
+          <td><span>编辑通知：</span></td>
+          <td>
+              <textarea placeholder="不超过70字" ng-model="noticeData.notice" maxlength="70" ng-blur="notice=!noticeData.notice" ng-maxlength="70"  rows="2" cols="100" class="form-control"  ng-class="{'err':notice}"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td><span>站内信：</span></td>
+          <td>
+            <select class="form-control input-sm "   ng-options="v.code as v.desc for v in sendUserType" ng-model="noticeData.mailUserType "   >
+              <option value="">--不选择用户--</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><span>短信：</span></td>
+          <td>
+            <select class="form-control input-sm " ng-options="v.code as v.desc for v in sendUserTypeNoc" ng-model="noticeData.smsUserType "   >
+              <option value="">--不选择用户--</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="hidden"   ng-class="{'err':ck}"  class="form-control input-sm " ng-blur="ck=!(noticeData.mailUserType)&&!(noticeData.smsUserType)"/>
+            <i class="c-red f12" ng-if="ck">站内信或短信至少选择一种用户！</i>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <button type="button" class="btn btn-primary mt20 "  ng-click="addNotice(noticeData)" >发布通知</button>
+          </td>
+        </tr>
+      </table>
+      <h4>历史通知</h4>
+      <table class=" table   table-hover table-condensed  table-striped text-center mt10 ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+          <td style="width: 200px;">发布时间</td>
+          <td >站内信</td>
+          <td >短信</td>
+          <td>通知内容</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="k in noticeList">
+          <td>{{k.createDate |date:'yyyy-MM-dd' }}</td>
+          <td>{{k.mailUserTypeDesc}}</td>
+          <td>{{k.smsUserTypeDesc}}</td>
+          <td>{{k.notice}}</td>
+        </tr>
+        <tr ng-if="!noticeList"><td colspan="4" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

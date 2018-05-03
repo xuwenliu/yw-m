@@ -1,0 +1,70 @@
+
+
+<style>
+    input[type="range"]{display: inline-block; width: 300px; vertical-align: middle;outline: none }
+    .model-inline li em:after{ margin-right: 5px; font-size: 14px; color: #999}
+    .model-inline li em:after{content: " %";}
+    .model-inline li:nth-child(1) em:not(.spl):after{content: " ‰ ";}
+</style>
+<div class="crumbs">
+    <h3>推客设置</h3>
+    <p><a ui-sref="main.twitter-list" >推客管理</a> > 推客设置</p>
+</div>
+
+<div class="content-box " style="min-width: 1100px">
+    <h4>软装/硬装设计</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline ">
+            <li class="block "><span>签约金额：</span>
+                <i  class="c-999 f12">0</i>
+                <input ng-init="dataInfo.revenueRule.designProportion=30" ng-model="dataInfo.revenueRule.designProportion "  type="range" step="1" min="0" max="80">
+                <i  class="c-999 f12">100</i>
+                <em  class="c-red ml20 f18" >{{dataInfo.revenueRule.designProportion}}</em><i class="c-999 f12">（佣金=签约金额的千分之几，注意：默认为30‰）</i>
+            </li>
+
+
+        </ul>
+    </div>
+
+    <h4 class="mt30">软装/硬装/施工/全装</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline ">
+        <li class="block  c-999"><span>签约金额：</span>
+            <i  class="c-999 f12">0</i>
+            <input ng-init="dataInfo.revenueRule.buildProportion=40"   ng-model="dataInfo.revenueRule.buildProportion "  type="range" step="1" min="0" max="80">
+            <i  class="c-999 f12">100</i>
+            <em  class="c-red ml20 f18" >{{dataInfo.revenueRule.buildProportion}}</em><i class="c-999 f12">（佣金=签约金额的千分之几，注意：默认为40‰）</i>
+        </li>
+        </ul>
+    </div>
+
+    <h4 class="mt30">三级比例<i class="c-999 f12 ml10">（向上第三级为种子推客; 推客所得=佣金的百分之几）</i></h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline ">
+            <li class="block c-999 "><span>种子推客：</span>
+                <i  class="c-999 f12">0</i>
+                <input ng-init="dataInfo.revenueProportion.seedTwitterProportion =20"  ng-model="dataInfo.revenueProportion.seedTwitterProportion "   type="range" step="1" min="0" max="100">
+                <i  class="c-999 f12">100</i>
+                <em  class="c-red ml20 f18 spl ">{{dataInfo.revenueProportion.seedTwitterProportion}}</em>
+            </li>
+
+            <li class="block  mt10"><span>一级推客：</span>
+                <i  class="c-999 f12">0</i>
+                <input ng-init="dataInfo.oneLevelTwitterProportion=40"  ng-model="dataInfo.revenueProportion.oneLevelTwitterProportion "   type="range" step="1" min="0" max="100">
+                <i  class="c-999 f12">100</i>
+                <em  class="c-red ml20 f18" >{{dataInfo.revenueProportion.oneLevelTwitterProportion}}</em>
+            </li>
+
+            <li class="block  mt10"><span>二级推客：</span>
+                <i  class="c-999 f12">0</i>
+                <input ng-init="dataInfo.twoLevelTwitterProportion=40"  ng-model="dataInfo.revenueProportion.twoLevelTwitterProportion"  type="range" step="1" min="0" max="100">
+                <i  class="c-999 f12">100</i>
+                <em  class="c-red ml20 f18" >{{dataInfo.revenueProportion.twoLevelTwitterProportion}}</em>
+            </li>
+            <li class="f12 c-red ml20 mt10" ng-if="dataCheckRes3"> <input ng-class="{err:!!dataCheckRes3}" type="hidden">{{dataCheckRes3}}</p></li>
+
+        </ul>
+
+    </div>
+    <button ng-click="submit(dataInfo)"  type="button" class="btn btn-primary mt20 w110">保存设置</button>
+</div>

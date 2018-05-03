@@ -1,0 +1,91 @@
+<div class="crumbs">
+  <h3>banner列表</h3>
+  <p><a ui-sref="main.banner-list" >C端主页管理</a> > banner列表</p>
+</div>
+
+
+
+<div class="content-box  ">
+  <div class="form-inline form-group text-right  "  >
+    <button type="button" class="btn btn-primary btn-sm  input-sm ml10 " ng-click="addBannerDialog()">新增banner</button>
+  </div>
+  <table class=" table  form-group table-hover table-condensed  table-striped  text-center " style="background: #fff">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>序号</td>
+      <td>banner图片</td>
+      <td>标题</td>
+      <td>图片跳转URL</td>
+      <td>状态</td>
+      <td>排序位置</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in girdList track by $index">
+      <td ng-bind="$index+1"></td>
+      <td><img ng-src="{{g.image}}&imageView2/2/h/30/"/></td>
+      <td>{{g.title}}</td>
+      <td ng-bind="g.url" class="cut-txt en-cut-txt" style="width: 60%"></td>
+      <td>{{g.enable===false?"禁用":g.enable===true?"启用":""}}</td>
+      <td class="form-inline form-group">
+        <input ng-model="g.orderNo" type="text" ng-pattern="pubRegex.short_number"   ng-blur="num= !g.orderNo" class="form-control text-center "  ng-class="{err:(g.orderNo>girdList.length)||g.orderNo<1||num||checkNumber(g.orderNo,$index,girdList).indexOf($index)>-1}" style="width: 50px" maxlength="2" />
+      </td>
+      <td>
+        <button  class="btn btn-xs btn-danger " ng-click=del(g.id)>删除</button>
+        <button  ng-if="g.enable===false" class="btn btn-primary btn-xs " ng-click=isAllow(g.id,1)>启用</button>
+        <button  ng-if="g.enable===true" class="btn btn-warning btn-xs " ng-click=isAllow(g.id,0)>禁用</button>
+        <button  class="btn btn-primary btn-xs " ng-click=addBannerDialog(g)>修改</button>
+      </td>
+    </tr>
+    <tr >
+      <td colspan="7" class="text-left"><button  class="btn btn-primary" ng-click=sortButton(girdList)>提交排序</button></td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+<!--dialog上传图文模块-->
+<div class="modal fade upInfoDialog  create-dialog-box">
+  <div class="modal-dialog " style="width: 700px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >编辑banner</h4>
+      </div>
+
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+            <dd><span>标题：</span>
+              <input class="form-control " ng-model="createUpInfo.title"   size="55"   ng-maxlength="15" maxlength="15" placeholder="跳转页标题"/> <i class="f12 c-ccc">（选填）</i>
+            </dd>
+
+            <dd>
+              <span>上传图片：</span>
+              <div class="inline-block"><button type="button"  class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+                <i class=" f12 c-999 ml10">({{tagsBaseText.common}})</i>
+                <div class="img-show-box create-dialog"></div> <input type="hidden"  ng-model="createUpInfo.image"  />
+              </div>
+            </dd>
+
+            <dd><span>跳转url：</span>
+              <input class="form-control " ng-model="createUpInfo.url"   size="55"   ng-maxlength="200" maxlength="200" placeholder="将链接粘贴到此"/> <i class="f12 c-ccc">（选填）</i>
+            </dd>
+
+            <p class="text-center c-red f12 "><em ng-bind="createUpInfo.errorMsg"></em></p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-primary "  ng-click="createUpInfoSumbit(createUpInfo)" >确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

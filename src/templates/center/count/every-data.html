@@ -1,0 +1,103 @@
+<style>
+    .all-count tbody td:nth-child(odd){  background: #D0D1E7; width: 9%}
+    .count-list thead tr:nth-child(2) td{ background: #D0D1E7; color: #333; }
+    .count-list thead tr:nth-child(1) td{ vertical-align: middle }
+    .count-list  td,.all-count  td{ border:1px solid #6D70B6 }
+
+</style>
+<div class="crumbs">
+    <h3>每日数据</h3>
+    <p><a ui-sref="main.every-data" >首页</a> > 每日数据</p>
+</div>
+
+<div class="content-box" >
+
+    <table class=" table   table-hover table-condensed  table-striped text-center all-count mb20 ">
+        <thead style="background:#8A8BC4; color: #fff;" >
+        <tr>
+            <td colspan="12">数据总计</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>总用户数</td>
+            <td ng-bind="dataInfo.customerCount "></td>
+            <td>总注册数</td>
+            <td ng-bind="dataInfo.customerRegisterCount "></td>
+            <td>总会话数</td>
+            <td ng-bind="dataInfo.imSessionCount  "></td>
+            <td>总订单数</td>
+            <td ng-bind="dataInfo.orderCount"></td>
+            <td>总推客数</td>
+            <td ng-bind="dataInfo.twitterCount"></td>
+            <td>已登录推客数</td>
+            <td ng-bind="dataInfo.loginedTwitterCount"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="form-inline form-group "  >
+        <div class="float-right mb10">
+            <div class="input-append date form_datetime_start inline-block" >
+                <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                <input class=" form-control input-sm" size="16" placeholder="开始时间" type="text" onkeyup="this.value=''" id="beginTime" >
+            </div> ----
+            <div class="input-append date form_datetime_end inline-block" >
+                <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                <input class=" form-control input-sm" size="16" type="text"  placeholder="结束时间" onkeyup="this.value=''" id="endTime">
+            </div>
+            <input type="hidden" ng-class="{err:!dateThan==''}">
+            <i class="f12 c-red" >{{dateThan}}</i>
+            <div class="inline-block f12 ">
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+            </div>
+        </div>
+    </div>
+
+
+    <table class=" table   table-hover table-condensed  table-striped text-center mt10 count-list  ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+            <td rowspan="2">日期</td>
+            <td colspan="3">新增用户</td>
+            <td colspan="3">活跃用户</td>
+            <td rowspan="2">新增注册</td>
+            <td rowspan="2">新增会话</td>
+            <td rowspan="2">新增订单</td>
+            <td colspan="3">推客数据</td>
+        </tr>
+        <tr>
+            <td>iOS</td>
+            <td>安卓</td>
+            <td>合计</td>
+            <td>iOS</td>
+            <td>安卓</td>
+            <td>合计</td>
+            <td>新增推客</td>
+            <td>已登录推客</td>
+            <td>报备客户</td>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <tr ng-repeat="g in grid.result">
+            <td>{{g.date |date:'yyyy-MM-dd'}}</td>
+            <td ng-style="{'background':(g.iosNewUser===0)?'#FBE6CA':'none'}">{{g.iosNewUser}}</td>
+            <td ng-style="{'background':(g.androidNewUser===0)?'#FBE6CA':'none'}">{{g.androidNewUser }}</td>
+            <td ng-style="{'background':(g.totalNewUser===0)?'#FBE6CA':'none'}">{{g.totalNewUser }}</td>
+            <td ng-style="{'background':(g.iosActiveUser===0)?'#FBE6CA':'none'}">{{g.iosActiveUser }}</td>
+            <td ng-style="{'background':(g.androidActiveUser===0)?'#FBE6CA':'none'}">{{g.androidActiveUser}}</td>
+            <td ng-style="{'background':(g.totalActiveUser===0)?'#FBE6CA':'none'}">{{g.totalActiveUser }}</td>
+            <td ng-style="{'background':(g.registerCount===0)?'#FBE6CA':'none'}">{{g.registerCount }}</td>
+            <td ng-style="{'background':(g.imSessionCount===0)?'#FBE6CA':'none'}">{{g.imSessionCount }}</td>
+            <td ng-style="{'background':(g.orderCount===0)?'#FBE6CA':'none'}">{{g.orderCount }}</td>
+            <td ng-style="{'background':(g.twitterCount===0)?'#FBE6CA':'none'}">{{g.twitterCount }}</td>
+            <td ng-style="{'background':(g.loginedTwitterCount===0)?'#FBE6CA':'none'}">{{g.loginedTwitterCount }}</td>
+            <td ng-style="{'background':(g.twitterCustomerCount===0)?'#FBE6CA':'none'}">{{g.twitterCustomerCount }}</td>
+        </tr>
+        <!--<tr ng-if="!grid.result"><td colspan="13" class="f12 c-999 " >没有相关数据!</td></tr>-->
+        </tbody>
+    </table>
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>

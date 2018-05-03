@@ -1,0 +1,58 @@
+<style>
+    .table > tbody > tr > td {vertical-align: middle;}
+    td span {display: inline-block; vertical-align:middle;}
+    td p {margin-bottom: 5px;}
+    td p:last-child {margin-bottom: 0;}
+    .portrait {width: 40px;height: 40px;border-radius: 50%;}
+    .userInfo {line-height: 40px;}
+    .content {line-height: 28px;}
+</style>
+
+<div class="crumbs">
+    <h3>评论列表</h3>
+    <p><a ui-sref="main.case-list" >作品管理</a> > 评论列表</p>
+</div>
+
+<div class="content-box">
+    <div class="form-inline form-group clearfix">
+        <button type="button" ng-click="selectAll()" class="btn btn-primary btn-sm  float-left mr20">全选</button>
+        <button type="button" ng-click="auditArr(1)" class="btn btn-primary btn-sm  float-left mr20">通过选中的评论</button>
+        <button type="button" ng-click="auditArr(2)" class="btn btn-primary btn-sm  float-left ">屏蔽选中的评论</button>
+    </div>
+
+    <table class=" table   table-hover table-condensed  table-striped text-center " style="table-layout:fixed">
+        <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+                <td width="10%">选中</td>
+                <td width="10%">评论者</td>
+                <td width="60%">评论内容</td>
+                <td width="10%">状态</td>
+                <td width="10%">操作</td>
+            </tr>
+        </thead>
+    <tbody>
+        <tr ng-repeat="g in grid.result" on-Module-Finished>
+            <td><input type="checkbox" ng-attr-commentId="{{g.id}}"></td>
+            <td>
+                <img class="portrait" ng-src="{{g.userShowHead}}" />
+                <span class="userInfo"> {{g.userShowName}} | <i ng-bind="getUserType(g.userType, g.userDetailType)"></i></span>
+            </td>
+            <td>
+                <p ng-bind="g.content" class="content"></p>
+                <span>评论时间：{{g.createTime | date:'yyyy.MM.dd HH:MM'}}</span>
+            </td>
+            <td ng-bind="getStatus(g.status)"></td>
+            <td>
+                <p><button class="btn btn-primary btn-xs" ng-show="g.status !== 1" ng-click="audit(g.caseId, g.id, 1)">审核通过</button></p>
+                <p><button class="btn btn-primary btn-xs" ng-show="g.status !== 2" ng-click="audit(g.caseId, g.id, 2)">屏蔽评论</button></p>
+            </td>
+        </tr>
+        
+    </tbody>
+  </table>
+
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+

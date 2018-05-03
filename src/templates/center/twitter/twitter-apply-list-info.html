@@ -1,0 +1,64 @@
+<div class="crumbs">
+    <h3>申请详情</h3>
+    <p><a ui-sref="main.twitter-list" >推客管理</a> > <a ui-sref="main.twitter-apply-list" >推客申请列表</a>   > 申请详情</p>
+</div>
+
+
+<div class="content-box " style="min-width: 1100px">
+    <!--申请信息-->
+    <h4 class="mt20">申请信息</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+            <li><span>申请主体：</span>个人</li>
+            <li><span>邀请人：</span>{{inviterName  }}</li>
+            <li><span>申请时间：</span> {{dataInfo.twitterApplyInfo.applyTime|date:'yyyy-MM-dd HH:mm:ss'}}</li>
+            <li><span>审核时间：</span> {{dataInfo.twitterApplyInfo.auditTime|date:'yyyy-MM-dd HH:mm:ss'}}</li>
+            <li><span>状态：</span>
+                <i ng-if="dataInfo.twitterApplyInfo.applyStatus==0"> 待审核</i>
+                <i ng-if="dataInfo.twitterApplyInfo.applyStatus==1"> 已认证</i>
+                <i ng-if="dataInfo.twitterApplyInfo.applyStatus==2"> 被驳回</i>
+            </li>
+        </ul>
+    </div>
+    <!--申请信息结束-->
+
+
+    <!--基本信息-->
+    <h4 class="mt20">申请信息</h4>
+    <div class="content-box-model mt10">
+        <ul class="model-inline lh220">
+            <li><span>真实姓名：</span>{{dataInfo.userAuthInfo.name}}</li>
+            <li><span>身份证号：</span>{{dataInfo.userAuthInfo.idCard}}</li>
+            <li><span>年龄：</span> {{dataInfo.userAuthInfo.age}}</li>
+            <li><span>性别：</span>
+                <i ng-if="dataInfo.userAuthInfo.gender==0"> 保密</i>
+                <i ng-if="dataInfo.userAuthInfo.gender==1"> 男</i>
+                <i ng-if="dataInfo.userAuthInfo.gender==2"> 女</i>
+            <li><span>手机号码：</span> {{dataInfo.userAuthInfo.phone}}</li>
+
+            <li><span>所在城市：</span> {{dataInfo.twitterInfo.area.namePath }}</li>
+
+            <li><span>行业：</span> {{dataInfo.twitterInfo.industryDesc}}</li>
+
+            <li class="block"><span class="v-top">认证照片：</span>
+                <a class="preview-img cursor f12 inline-block "><img ng-src="{{dataInfo.userAuthInfo.idImageA  }}&imageView2/1/w/60/h/60" width="60"  ng-click="showImg(dataInfo.userAuthInfo.idImageA)" data-target=".myModal" data-toggle="modal"  ><br>身份证正面</a>
+
+                <a class="preview-img cursor ml20 f12  inline-block"><img ng-src="{{dataInfo.userAuthInfo.idHoldImage  }}&imageView2/1/w/60/h/60" width="60" ng-click="showImg(dataInfo.userAuthInfo.idHoldImage)"   data-target=".myModal" data-toggle="modal" ><br>手持身份证</a>
+            </li>
+
+            <li class="block mt20" ng-init="check.approval=true" ng-show="s==1"><span>审核结果：</span>
+                <label ><input type="radio" ng-model="check.approval" ng-value=true >通过审核</label>
+                <label class="ml50"><input type="radio" ng-model="check.approval" ng-value=false >打回申请</label>
+            </li>
+            <li class="block" ng-if="check.approval===false" ng-show="s==1"><span>驳回理由：</span>
+                <input class="form-control inline-block " style="width: auto" ng-model="check.rejectedReason"    size="55"   ng-maxlength="30" maxlength="30" placeholder="30字以内"/>
+            </li>
+
+            <li class="mt50" ng-show="s==1"><span style="visibility: hidden">驳回理由：</span><button ng-click="submit(check)"  type="button" class="btn btn-primary ">确定</button></li>
+
+        </ul>
+    </div>
+    <!--基本信息结束-->
+</div>
+<div ng-include="'/templates/partial/show-img.html'"></div>
+

@@ -1,0 +1,81 @@
+<style>
+  label{ line-height: normal}
+</style>
+
+<div class="crumbs" >
+  <h3>广告设置</h3>
+  <p><a ui-sref="main.a-d-list-add" >广告管理</a> > <a ui-sref="main.a-d-list-add" >广告列表</a> >广告设置</p>
+</div>
+
+
+<div class="content-box" >
+
+  <div class="form-inline form-group">
+    <table class="input-table-default">
+
+      <tr>
+        <td><span>广告位置：</span></td>
+        <td>
+          <select class="form-control" ng-init="locations=[{id:1,name:'启动页'}]" ng-options="v.id as v.name for v in locations" ng-model="dataInfo.location  " ng-required="true" ng-blur="location=!dataInfo.location "  ng-class="{err:location  }"   >
+            <option value="">--选择位置--</option>
+          </select>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>广告名称：</span></td>
+        <td>
+          <input type="text" class="form-control required " size="50"  maxlength="30" placeholder="广告名2-30个字符"  ng-model="dataInfo.name" ng-required="true"   ng-maxlength="30" ng-minlength="2"  ng-blur="name = !dataInfo.name"  ng-class="{err:name }"  />
+        </td>
+      </tr>
+      <tr>
+        <td><span>播放时间：</span></td>
+        <td>
+          <input type="text" class="form-control " size="20" ng-minlength="0"  maxlength="1" placeholder="2-8秒" ng-model="dataInfo.playTime "  ng-blur="playTime  = !dataInfo.playTime " ng-pattern="pubRegex.price"  ng-class="{err:playTime||(dataInfo.playTime>8||dataInfo.playTime<2)}" />
+        </td>
+      </tr>
+      <tr>
+        <td><span>开始时间：</span></td>
+        <td>
+          <div class="input-append date form_datetime_start inline-block" >
+            <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+            <input class=" form-control " size="20" placeholder="起始时间" type="text"  ng-model="dataInfo.startDate"   onkeyup="this.value=''" id="beginTime" >
+          </div>
+          <input type="hidden" ng-class="{err:!dateThan==''}">
+          <i class="f12 c-red" >{{dateThan}}</i>
+        </td>
+      </tr>
+      <tr>
+        <td><span>插入图片：</span></td>
+        <td>
+            <!---->
+            <div class="upimg-inline-block ">
+                  <dl>
+                    <dd ><button type="button"  class="btn btn-info " id="upImages">上传广告图<i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="brandInfo.advertsImage " /></dd>
+                    </dl>
+            </div>
+            <!---->
+        </td>
+      </tr>
+
+
+
+
+
+      <tr>
+        <td></td>
+        <td>
+          <button ng-click="submit([dataInfo,true])"  type="button" class="btn btn-primary w110">提交</button>
+        </td>
+      </tr>
+
+
+    </table>
+  </div>
+
+</div>
+
+
+
+

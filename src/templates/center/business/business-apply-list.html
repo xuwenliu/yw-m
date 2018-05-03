@@ -1,0 +1,54 @@
+<div class="crumbs">
+  <h3>申请入驻列表</h3>
+  <p><a ui-sref="main.business" >公司管理</a> > 申请入驻列表</p>
+</div>
+
+<div class="content-box">
+    
+    <div class="form-inline form-group "  >
+        <select class="form-control input-sm" ng-init="applyStatusList=[{code:'-1',desc:'全部'},{code:'0',desc:'待审核'},{code:'2',desc:'已拒绝'},{code:'1',desc:'已签约'}]" ng-options="v.code as v.desc for v in applyStatusList
+        " ng-model="list.status" >
+            <option value="">--申请状态--</option>
+        </select>
+
+        <div class="inline-block f12 float-right">
+            <input type="text" class="form-control input-sm"  placeholder="申请人手机号" maxlength="12" size="20" ng-model="list.searchKey">
+            <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+        </div>
+    </div>
+
+    <table class=" table table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+                <td>姓名</td>
+                <td>手机号</td>
+                <td>公司名称</td>
+                <td>所在地</td>
+                <td>接待BD</td>
+                <td>状态</td>
+                <td>申请时间</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="g in grid.result">
+                <td ng-bind="g.contactName"></td>
+                <td ng-bind="g.contactPhone"></td>
+                <td ng-bind="g.companyName"></td>
+                <td ng-bind="g.areaName"></td>
+                <td ng-bind="g.auditUserName"></td>
+                <td ng-bind="showStatus(g.status)"></td>
+                <td ng-bind="g.applyTime | date:'yyyy-MM-dd HH:mm:ss'"></td>
+                <td>
+                    <button class="btn btn-success btn-xs" ng-click="show(g.id)" >详情</button>
+                    <button  ng-show="g.status === 0" class="btn btn-primary btn-xs" ng-click="show(g.id)" >审核</button>
+                </td>
+            </tr>
+
+            <tr ng-if="!grid.result"><td colspan="10" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+
+</div>

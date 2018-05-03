@@ -1,0 +1,61 @@
+
+<style>
+    .datetimepicker{ margin-top: 40px}
+    .remove-img{display: none}
+</style>
+<div class="crumbs">
+    <h3>活动详情 </h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.activity" >活动管理</a> > <a ui-sref="main.activity" >活动列表</a>  > 活动详情</p>
+</div>
+
+<div class="content-box">
+    <div class="form-inline form-group">
+        <div>
+            <dl>
+                <dd><span>活动名称：</span>{{dataInfo.activityName}}</dd>
+                <dd ng-show="dataInfo.description"><span > 活动描述：</span>{{dataInfo.description}}</dd>
+                <dd>
+                    <span class="v-top">活动列表图：</span>
+                    <a class="preview-img cursor "><img ng-src="{{dataInfo.listImage }}&imageView2/1/w/100/h/100" width="100"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfo.listImage}}"></a>
+                </dd>
+                <dd ng-show="dataInfo.bannerImage">
+                    <span  class="v-top">活动页Banner：</span>
+                    <a class="preview-img cursor "><img ng-src="{{dataInfo.bannerImage  }}&imageView2/1/w/100/h/100" width="100"  data-target=".myModal" data-toggle="modal"  data-img="{{dataInfo.bannerImage}}"></a>
+
+                </dd>
+                <dd ng-show="dataInfo.specification">
+                    <span class="inline-block v-top">活动细则：</span>
+                    <div class="inline-block" style=" width: 60%">{{dataInfo.specification}}</div>
+                </dd>
+
+                <dd ng-show="dataInfo.specificationImage">
+                    <span class="v-top">活动细则图：</span>
+                    <div class="img-show-box create-dialog inline-block"></div>
+                </dd>
+                <dd>
+                    <span>活动时间：</span>{{dataInfo.beginTime}}至{{dataInfo.endTime}}
+                </dd>
+                <dd>
+                    <span>活动区域：</span>{{dataInfo.activityAreaName}}
+                </dd>
+                <dd>
+                    <span>选择优惠券：</span><div class="inline-block" id="getcoupon"><ul><li></li></ul></div>
+                </dd>
+                <dd>
+                    <span>是否推荐：</span><i ng-if="dataInfo.recommend">是</i><i ng-if="!dataInfo.recommend">否</i>
+                </dd>
+
+
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div ng-include="'/templates/partial/show-img.html'"></div>
+
+
+
+
+
+
+

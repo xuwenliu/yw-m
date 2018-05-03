@@ -1,0 +1,109 @@
+<style>
+  .table > tbody > tr > td {vertical-align: middle;}
+  .table > tbody > tr > td p {margin-bottom: 5px;}
+  .table > tbody > tr > td p:last-child {margin-bottom: 0}
+  .cursor {cursor: pointer; }
+</style>
+<div class="crumbs">
+  <h3>作品列表</h3>
+  <p><a ui-sref="main.case-list" >作品管理</a> > 作品列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <input type="text" class="form-control input-sm"  placeholder="作品名/公司名" maxlength="30" size="30" ng-model="list.searchKey">
+    <button type="button" class="btn btn-primary btn-sm " ng-click="submitSearch(list.searchKey)"> 查询</button>
+
+    <select  class="form-control  input-sm " ng-options="v.code as v.desc for v in decorateTypes" ng-model="list.decorateType"   >
+      <option value="">内容分类不限</option>
+    </select>
+
+    <select ng-init="caseTypeArr=[{id:1,name:'竣工作品'},{id:2,name:'设计作品'}]" class="form-control  input-sm " ng-options="v.id as v.name for v in caseTypeArr" ng-model="list.caseType" >
+      <option value="">类型不限</option>
+    </select>
+    <select ng-init="caseStatusArr=[{id:1,name:'上架'},{id:2,name:'下架'},{id:3,name:'待审核'},{id:4,name:'待完善'}]" class="form-control  input-sm " ng-options="v.id as v.name for v in caseStatusArr" ng-model="list.caseStatus" >
+      <option value="">状态不限</option>
+    </select>
+
+    <select ng-init="commentArr=[{id:0,name:'评论未审核'},{id:1,name:'评论已审核'},{id:2,name:'评论已屏蔽'}]" class="form-control  input-sm" ng-options="v.id as v.name for v in commentArr" ng-model="list.commentStatus" >
+      <option value="">评论不限</option>
+    </select>
+    <select class="form-control input-sm "  ng-options="v.id as v.name for v in cityTypes" ng-model="list.cityId"   >
+      <option value="">--作品区域不限--</option>
+    </select>
+  </div>
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>作品ID</td>
+      <td>作品基本信息</td>
+      <td>公司名称</td>
+      <td>当前咨询 / 咨询总量 / 电话联系</td>
+      <td>作品状态</td>
+      <td>评论</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.caseId"></td>
+      <td>
+        <p ng-bind="g.caseName" ng-click="show(g.caseId)" class="c-blue cursor" ></p>
+        <p ng-bind="g.areaName"></p>
+      </td>
+      <td ng-bind="g.companyName"></td>
+      <td>
+        <p>当前咨询：{{g.currentChatCount}}</p>
+        <p>咨询总量：{{g.totalChatCount}}</p>
+        <p>电话联系：{{g.contactCount}}</p>
+      </td>
+      <td ng-bind="g.statusDesc"></td>
+      <td>
+        <p ng-click="commentAudit(g.caseId, true)" class="cursor c-blue">未审核：{{g.commentAuditCount}}</p>
+        <p ng-click="commentAudit(g.caseId)" class="cursor c-blue">评论数：{{g.commentTotal}}</p>
+      </td>
+
+      <td>
+        <button   ng-show="g.canAudit"      class="btn btn-primary btn-xs" ng-click="show(g.caseId)" >审核</button>
+        <button   ng-show="g.canUp"   class="btn btn-warning btn-xs" ng-click="caseUp(g.caseId)" >上架</button>
+        <button   ng-show="g.canDown"   data-target='.myModal'   data-toggle='modal'  class="btn btn-danger btn-xs" ng-click="bootDialog({status:0,id:g.caseId})" >下架</button>
+
+        <button   ng-show="g.canQueryReason"  data-target='.myModal'   data-toggle='modal'   class="btn btn-info btn-xs" ng-click="bootDialog({status:1,id:g.caseId})" >下架理由</button>
+        <button   ng-show="g.canViewRejectReason"  data-target='.myModal'   data-toggle='modal'   class="btn btn-warning btn-xs" ng-click="bootDialog({status:2,id:g.caseId})" >拒绝理由</button>
+
+        <a ng-href="/#/main/case-add-p1?id={{g.caseId}}&s={{g.decorateType}}&e=1"  class="btn btn-primary btn-xs"  ng-show="!g.canComplete&&g.canModify">修改</a>
+        <!--<button   class="btn btn-primary btn-xs" ng-click="edit([g.caseId,g.statusCode])"  >修改作品</button>-->
+        <button  ng-show="g.canRemove"    class="btn btn-danger btn-xs" ng-click="del(g.caseId)" >删除</button>
+        <button  ng-if="!g.addToHot"   class="btn btn-success btn-xs" ng-click="isHot(g.caseId)" >设为推荐</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+<!--dialog-->
+<div class="modal fade myModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{dialog.title}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content lh200">
+          <div ng-if="dialog.form">
+            下架理由：{{dialog.reason | monitorWords}}/140
+            <textarea class="form-control" ng-model="dialog.reason"  ng-maxlength="140" maxlength="140" rows="4" placeholder="请输入理由"></textarea>
+            <em ng-bind="dialog.message" class="f12 c-red"></em>
+          </div>
+          <div class="dialog-reason"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-bind="dialog.submitDef">取消</button>
+        <button type="button" class="btn btn-danger"  ng-if="dialog.submitName"  ng-model="dialog.submitID" ng-click="dialogSubmit(dialog.submitID)">{{dialog.submitName}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

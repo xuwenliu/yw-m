@@ -1,0 +1,81 @@
+<div class="crumbs">
+    <h3>统计首页简报</h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.data-lists-default" >统计首页</a>  > 统计首页简报</p>
+</div>
+<div class="content-box "  >
+    <div style="background: #eee; display: block">
+        <div class="form-inline form-group float-right "  >
+            <select  ng-init="list.timeRangeType=3" class="form-control input-sm "   ng-options="v.code as v.desc for v in timeRangeTypes" ng-model="list.timeRangeType" >
+
+            </select>
+
+            <div class="inline-block v-top" ng-show="list.timeRangeType===1">
+                <div class="input-append date form_datetime_start inline-block" >
+                    <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                    <input class=" form-control input-sm  " size="15" placeholder="起始时间" type="text"    onkeyup="this.value=''" id="beginTime" >
+                </div> --
+                <div class="input-append date form_datetime_end inline-block" >
+                    <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                    <input class=" form-control input-sm  " size="15" type="text"    placeholder="结束时间" onkeyup="this.value=''" id="endTime">
+                </div>
+                <input type="hidden" ng-class="{err:!dateThan==''}">
+                <i class="f12 c-red block" ng-if="dateThan" >Error: {{dateThan}}</i>
+            </div>
+
+            <div class="inline-block f12 ">
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+            </div>
+        </div>
+    </div>
+
+
+    <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+            <td>设备</td>
+            <td>C端用户量</td>
+            <td>C端注册数</td>
+            <td>转化率</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>iOS</td>
+            <td>{{dataInfo.customerInfoMap['1'].customerCount}}</td>
+            <td>{{dataInfo.customerInfoMap['1'].registerCount}}</td>
+            <td>{{dataInfo.customerInfoMap['1'].conversionPercent}} %</td>
+        </tr>
+        <tr>
+            <td>安卓</td>
+            <td>{{dataInfo.customerInfoMap['2'].customerCount}}</td>
+            <td>{{dataInfo.customerInfoMap['2'].registerCount}}</td>
+            <td>{{dataInfo.customerInfoMap['2'].conversionPercent}} %</td>
+        </tr>
+        <tr style=" background: #ccc; border-bottom: 1px solid #666">
+            <td>合计</td>
+            <td>{{dataInfo.customerInfoMap['0'].customerCount}}</td>
+            <td>{{dataInfo.customerInfoMap['0'].registerCount}}</td>
+            <td>{{dataInfo.customerInfoMap['0'].conversionPercent}} %</td>
+        </tr>
+        <tr style=" background: #eee" >
+            <td colspan="2"></td>
+            <td colspan="2">创建数</td>
+        </tr>
+        <tr style=" background: #fff">
+            <td colspan="2">作品</td>
+            <td colspan="2">{{dataInfo.caseCount}}</td>
+        </tr>
+        <tr style=" background: #fff">
+            <td colspan="2">会话</td>
+            <td colspan="2">{{dataInfo.imCount}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+

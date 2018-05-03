@@ -1,0 +1,59 @@
+
+<style>
+    .dateTabByData{ display: inline-block; vertical-align: top; font-size: 12px }
+    .dateTabByData li{ display: inline-block; width: 50px; height: 30px; line-height: 30px; background: #ccc; text-align: center; border-radius: 2px; }
+    .dateTabByData li:hover,.dateTabByData li.hover{ cursor: pointer; background: #5bc0de; color: #fff;}
+
+    .dateTabByData li.no-act{ cursor:default; background: #eee; color: #ccc}
+</style>
+<div class="crumbs">
+    <h3>用户数据趋势 </h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.data-user-trend" >C端用户数据</a>  > 用户数据趋势</p>
+</div>
+<div class="content-box "  >
+   <div style="background: #eee; display: block">
+       <div class="form-inline form-group float-right "  >
+           <select class="form-control input-sm "  ng-options="v.code as v.desc for v in phoneSystemTypes" ng-model="list.systemType"   >
+               <option value="">--移动设备不限--</option>
+           </select>
+           <select  ng-init="list.timeRangeType=3" class="form-control input-sm "   ng-options="v.code as v.desc for v in timeRangeTypes" ng-model="list.timeRangeType" >
+
+           </select>
+
+           <div class="inline-block v-top" ng-show="list.timeRangeType===1">
+               <div class="input-append date form_datetime_start inline-block" >
+                   <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                   <input class=" form-control input-sm  " size="15" placeholder="起始时间" type="text"    onkeyup="this.value=''" id="beginTime" >
+               </div> --
+               <div class="input-append date form_datetime_end inline-block" >
+                   <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                   <input class=" form-control input-sm  " size="15" type="text"    placeholder="结束时间" onkeyup="this.value=''" id="endTime">
+               </div>
+               <input type="hidden" ng-class="{err:!dateThan==''}">
+               <i class="f12 c-red block" ng-if="dateThan" >Error: {{dateThan}}</i>
+           </div>
+
+           <div class="inline-block f12 ">
+               <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+           </div>
+
+           <div class="dateTabByData ml20" ng-if="support">
+               <ul>
+                   <li  ng-class="{'no-act':support.daySupported===false,'hover':timeSearchType===1}"  ng-click="support.daySupported?submitSearch(list,1):''">按日</li>
+                   <li  ng-class="{'no-act':support.weekSupported===false,'hover':timeSearchType===2}" ng-click="support.weekSupported?submitSearch(list,2):''" >按周</li>
+                   <li  ng-class="{'no-act':support.monthSupported===false,'hover':timeSearchType===3}" ng-click="support.monthSupported?submitSearch(list,3):''">按月</li>
+               </ul>
+           </div>
+       </div>
+
+   </div>
+
+    <div id="myCharts" class=" mt50" style=" height: 640px; border-top: 1px solid #eee; padding-top: 20px"></div>
+</div>
+
+
+
+
+
+
+

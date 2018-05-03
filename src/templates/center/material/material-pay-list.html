@@ -1,0 +1,103 @@
+<div class="crumbs">
+  <h3>补贴资格列表</h3>
+  <p><a ui-sref="main.material-list" >主材管理</a> > 补贴资格列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <div class="inline-block f12  ">
+      <select class="form-control input-sm "   ng-options="v.id as v.name for v in cityTypes" ng-model="list.areaId"   >
+        <option value="">--区域--</option>
+      </select>
+    </div>
+    <div class="float-right">
+      <div class="input-append date form_datetime_start inline-block " >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" placeholder="时间段（开始）" type="text" onkeyup="this.value=''" id="beginTime" >
+      </div> ----
+      <div class="input-append date form_datetime_end inline-block" >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" type="text"  placeholder="时间段（结束）" onkeyup="this.value=''" id="endTime">
+      </div>
+      <input type="hidden" ng-class="{err:!dateThan==''}">
+      <i class="f12 c-red" >{{dateThan}}</i>
+      <input type="text" class="form-control input-sm"  placeholder="主材品牌" maxlength="10" size="20" ng-model="list.brand">
+      <input type="text" class="form-control input-sm"  placeholder="业主或手机号" maxlength="11" size="20" ng-model="list.customer">
+
+      <button   type="button" class="btn btn-primary btn-sm  input-sm "  ng-click="submitSearch(list)">查询</button>
+    </div>
+
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center  ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>客户姓名</td>
+      <td>手机号码</td>
+      <td>区域</td>
+      <td>主材品牌</td>
+      <td>主材专员</td>
+      <td>相关设计师及所属公司</td>
+      <td>获取时间</td>
+      <td>已付定金</td>
+      <td>是否打款</td>
+      <td>打款凭证</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td>{{g.customerName }}</td>
+      <td>{{g.customerMobilePhone  }}</td>
+      <td>{{g.areaName  }}</td>
+      <td>{{g.materialName  }}</td>
+      <td>{{g.contact  }}</td>
+      <td>{{g.employeeName  }}<br>{{g.companyName}}</td>
+      <td>{{g.createDate | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td>{{g.deposit==0?"免费":g.deposit }}</td>
+      <td>{{g.giveMoney?'是':'否' }}</td>
+      <td ><a ng-href="{{g.giveInfo}}"  class="v-top" target="_blank"><img ng-src="{{g.giveInfo}}&imageView2/1/w/60/h/60 "  width="40" /></a></td>
+      <td> <button  class="btn btn-primary btn-xs "  ng-click=createDialog(g.id)>打款</button></td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan=10 class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+<!--dialog 打款凭证-->
+<div class="modal fade createDialog ">
+  <div class="modal-dialog " style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >上传打款凭证</h4>
+      </div>
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+
+            <dd>
+              <div class="inline-block">
+                <button type="button"  class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+                <i class=" f12 c-999 ml10">(图片比例不限、图片宽度1000像素以上； 建议大小1MB-10MB之间)</i>
+                <div class="img-show-box create-dialog"></div> <input type="hidden"  ng-model="payInfo.giveInfo"  />
+              </div>
+            </dd>
+
+            <p class="text-center c-red f12 mt10 "> <i class="loading f12 c-green block"></i>{{payInfo.errorMsg}}</p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary "  ng-click="pay(payInfo)" >提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

@@ -1,0 +1,79 @@
+<style>
+  #qrcode img{ max-width: 400px; max-height: 400px;  margin: 0 auto}
+  .content-box img:hover{ opacity: 0.5}
+</style>
+<div class="crumbs">
+  <h3>团内详情</h3>
+  <p><a ui-sref="main.groupbuy-list" >拼团管理</a> > <a ui-sref="main.groupbuy-list" >拼团列表</a> > <a ui-sref="main.groupbuy-list-info" >拼团详情</a> > 团内详情 </p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group"  >
+    <h4 class="float-left">团内成员数：{{gridParent.personCount}}</h4>
+   <div class="float-right  mb10">
+     <input type="text" class="form-control input-sm"  placeholder="输入昵称或号码，识别码" maxlength="30" size="30" ng-model="list.searchCondition">
+     <div class="inline-block f12 ">
+       <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+     </div>
+   </div>
+
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>用户昵称</td>
+      <td>身份属性</td>
+      <td>姓名</td>
+      <td>新报备客户</td>
+      <td>联系电话</td>
+      <td>拼团券识别码</td>
+      <td>支付金额(元）</td>
+      <td>状态</td>
+      <td>操作</td>
+      <td>        <button  class="btn btn-primary btn-xs" ng-click="doAll()" >全部使用</button>
+      </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.nickName "></td>
+      <td>{{g.userTypeDesc }}</td>
+      <td ng-bind="g.name "></td>
+      <td>{{g.newReportDesc }}</td>
+      <td>{{g.phone  }}</td>
+      <td >{{g.ticketNo  }}</td>
+      <td>{{g.payAmount }}</td>
+      <td>{{g.stateDesc }}</td>
+      <td >
+        <button  ng-if="g.state!==2" class="btn btn-warning btn-xs" ng-class="{'btn-warning':(g.state===1),'btn-danger':(g.state===0)}" ng-click="isStart(g.id,g.state)" >{{g.state===1?"恢复":g.state===0?"使用":""}}</button>
+      </td>
+      <td></td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="11" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+<!--dialog-->
+<div class="modal fade myModalCode" >
+  <div class="modal-dialog " style="width: 460px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{qrcode.name}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content f12  text-center  lh200">
+          <div id="qrcode" ></div>
+          <i class="f12 c-666 lh240">(下载请点击右键,另存为图片)</i>
+
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

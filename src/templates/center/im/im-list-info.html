@@ -1,0 +1,318 @@
+
+<style>
+  @media screen and (max-width:1480px){ .float-right{float: none}}
+
+  /*tab*/
+  .tabContent { border-top: 1px solid #ccc; padding-top: 10px;  }
+  .tabContent li{display: none}
+  .tab i{ display: inline-block; padding: 4px 16px; font-size: 12px; border: 1px solid #ccc; margin-bottom: -1px; cursor: pointer; margin-right: -1px; z-index: 999;background: #eee;  border-radius: 4px 4px 0 0  }
+  .tab i:hover, .tab i.hover{ border-bottom-color: #fff; background: none }
+
+  /*im-fans*/
+  .im-fans{ position: relative; padding: 30px; display: flex; justify-content: flex-start; flex-direction: row; box-sizing: content-box}
+  .im-left{ width: 300px;  border-radius: 4px; background: #fff; box-shadow: 1px 1px 10px 1px #999; height: 660px; }
+  .im-left-header{padding: 14px; background: #e5f4ff; border-radius: 4px 4px 0 0 ;}
+  .im-left-content{ height: 600px; overflow-y: auto}
+  .im-left-content li.list{ display: flex;  flex-direction: row; justify-content: flex-start;  align-items: center; word-break: break-all; border-bottom: 1px solid #eee; padding: 8px 10px; cursor: pointer;  }
+  /*.im-left-content li.list:nth-child(2n){ background: #f9f9f9}*/
+  .im-left-content li.list:hover,.im-left-content li.list.hover{ background: #f7f7f7;}
+  .im-left-content li.list.hover:after{content: "●";  display: block; color: #66a8cc;  margin-right: -50px}
+  .header-img{ display: inline-block; width: 40px; height: 40px; background: center no-repeat; background-size: cover; border-radius: 100%; border:1px solid #f8f8f8; }
+  .im-left-list-title{width: 200px; margin-left: 10px;}
+
+  /*im-right*/
+  .im-right{  border-radius: 4px; max-width: 1000px; min-width: 620px; background: #fff; box-shadow: 1px 1px 10px 1px #999; height: 660px; width: 100%; position: relative }
+  .im-right-header{ padding:20px 20px 10px 20px; border-bottom: 1px solid #eee}
+  .im-right-header i.headImg{display: inline-block; width: 60px; height: 60px; background: center no-repeat; background-size: cover; border-radius: 100%; border:1px solid #f8f8f8; }
+  .im-right-header i.headImg img{ border-radius: 100%}
+  .im-right-header section p{color: #666}
+  .im-right-header section span{color: #999; display: inline-block; margin-left: 30px}
+  .im-right-header section p span:nth-child(1){margin-left: 0px}
+
+  .c-success{ color: #4cae4c}
+  .c-success-bg{ background:#4cae4c }
+  .c-danger{ color: #e9322d}
+  .c-danger-bg{ background:#e9322d }
+  .c-important{ color:#0e90d2}
+  .c-important-bg{ background:#0e90d2 }
+  .c-default-bg{background: #66a8cc }
+  .c-warning-bg{background:#d58512 }
+  .c-disabled-bg{background: #ccc !important; cursor: not-allowed }
+
+
+
+  /*chat-content*/
+  .chat-content{min-height:300px;}
+  /*chat-tool*/
+  .chat-tool{ background: #E5F4FF; padding: 8px; display: flex; justify-content: space-between}
+  .chat-tool button{ border: none; margin-right: 10px; border-radius: 4px; padding: 2px 10px; display: inline-block; text-align: center; font-size: 12px; outline: none; color: #fff}
+  .chat-tool button:hover{ opacity: 0.8}
+    /*chat-text-area*/
+  .chat-text-area{ position: absolute; left: 0; right: 0; bottom: 0}
+  .chat-text-area textarea{ border:none; padding: 6px; outline: none; resize: none}
+  /*chat-send*/
+  .chat-send button{ border-radius: 4px; border:none;outline: none; padding: 4px 20px ; background: #ddd; margin: 0 20px 10px 0}
+  .chat-send button:hover{background: #66a8cc; color: #fff}
+  /*history*/
+  .history-head{padding: 20px; background:#e5f4ff;  border-radius: 6px 6px 0 0; text-align: center }
+  .history-head-back{padding: 6px 10px; background: #eee; border-radius: 4px; cursor: pointer; border:1px solid #ddd; position: absolute; left: 20px; top:15px}
+  .history-body .tc{ text-align: center}
+  .history-body .radius5px{ border-radius: 20px}
+
+  /*other*/
+  .j-loadMore{ cursor: pointer}
+  .icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url(/static/libs/NIM_Web_SDK_v4.2.0/images/icons.png);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+  }
+  /* 滚动条样式 */
+  .im-right ::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+  }
+  .im-right ::-webkit-scrollbar-thumb {
+    background-color: #8899a7;
+    border-radius: 4px;
+  }
+
+  .im-right ::-moz-scrollbar {
+    width: 6px;
+    background-color: transparent;
+  }
+  .im-right ::-moz-scrollbar-thumb {
+    background-color: #8899a7;
+    border-radius: 4px;
+  }
+
+</style>
+
+<!--yunxin-->
+<script src="/static/libs/NIM_Web_SDK_v4.3.0.js"> </script>
+<script src="/static/js/yx.base.js"> </script>
+
+<!--表情包相关-->
+<link rel="stylesheet" href="/static/libs/NIM_Web_SDK_v4.2.0/css/CEmojiEngine.css" />
+<script src="/static/libs/NIM_Web_SDK_v4.2.0/js/emoji.js"> </script>
+<!--表情包相关结束-->
+
+<script src="/static/libs/NIM_Web_SDK_v4.2.0/js/util.js"> </script>
+<!--消息样式-->
+<link rel="stylesheet" href="/static/libs/NIM_Web_SDK_v4.2.0/css/chat-ui.css" />
+<script src="/static/libs/NIM_Web_SDK_v4.2.0/js/ui.js"> </script>
+<!---消息样式结束-->
+<script src="/static/js/yx.message.js"> </script>
+
+
+
+<div class="crumbs" >
+  <h3>会话详情</h3>
+  <p><a ui-sref="main.im-list" >会话管理</a> > <a ui-sref="main.im-list" >会话列表</a> > 会话详情</p>
+</div>
+
+<div class="im-fans">
+  <div class="im-left inline-block">
+    <div class="im-left-header f16">
+      <em>会话名称</em>
+      <i class="im-close float-right f12 cursor "  ng-click="imClose()"> 关闭 </i>
+    </div>
+    <div class="im-left-content">
+      <ul>
+        <li class="list" ng-repeat="g in getChatListGrid.result" ng-click="getChatListInfo(g.id)" ng-class="{'hover':(g.id==id)}">
+          <i class="header-img" ng-style="{'background-image': 'url({{g.headImage}}&imageView2/2/w/64)'}"></i><span class="  im-left-list-title ">{{g.name}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--im-right-->
+   <!--会话属性-->
+  <div class="im-right inline-block v-top ml50">
+    <!--历史记录-->
+    <div class="im-right" id="imHistoryBox" style="position: absolute; z-index: 999 ; display: none">
+      <div class="history-head">
+        <i class="history-head-back" ng-click="closeHistory()" ng-show="getChatListInfoData.joinState==1">返回</i>
+        <h4 class="v-top">历史记录</h4>
+      </div>
+      <div class="cloud-msg-container history-body" id="cloudMsgContainer" >
+        <div class="info-content" >
+          <div class="u-status tc"><span class="radius5px">正在加载中……</span></div>
+          <ul id="cloudMsgList" class="f-cb"> </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="im-right-header">
+      <i class="headImg" ><img ng-src="{{getChatListInfoData.headImage}}&imageView2/2/w/64" > </i>
+      <section class="inline-block ml10 v-top f12 ">
+        <h4 style="margin-bottom: 6px">{{getChatListInfoData.name}} {{getChatListInfoData.id}}</h4>
+        <p><span>会话作品：</span> {{getChatListInfoData.caseName}} <span>业者公司：</span>{{getChatListInfoData.companyName}}</p>
+        <p>
+          <span>创建时间：</span>{{getChatListInfoData.createTime |date:'yyyy-MM-dd HH:mm:ss' }}
+          <span>会话状态：</span>{{getChatListInfoData.stateDesc}}
+          <span>电联次数：</span>{{getChatListInfoData.callTotal}}次
+
+          <span>群组状态：</span><i  class="b" ng-class="[{'c-success':getChatListInfoData.groupState===0,'c-danger':getChatListInfoData.groupState==2,'c-important':getChatListInfoData.groupState==1}]">{{getChatListInfoData.groupStateDesc}}</i>
+        </p>
+      </section>
+    </div>
+
+    <!-- 聊天记录 -->
+
+    <div class="chat-msg-container history-body">
+        <div class="chat-content box-sizing" id="chatContent" ng-style="{'bottom':(getChatListInfoData.joinState ==1?'140px':getChatListInfoData.state===0?'0px':'50px')}">
+          <div class="u-status tc"  ng-show="getChatListInfoData.state===0||getChatListInfoData.joinState==2"><span class="radius5px">正在加载中……</span></div>
+          <div id="chatContentList"></div>
+        </div>
+    </div>
+
+
+    <!-- 聊天记录end -->
+
+    <div class="chat-text-area" ng-show="getChatListInfoData.state!==0">
+      <div class="chat-tool"  >
+        <div class="inline-block"  ng-show="getChatListInfoData.joinState===1">
+          <div id="emojiTag" class="m-emojiTag"></div>
+          <label class="pa c-999" style="margin-top: -2px" title="发表情"><i ng-click="emojiSend()" class="iconfont f18 cursor " >&#xe614;</i></label>
+          <label class="pa c-999" style="margin-left: 30px" title="发文件">
+            <i class="iconfont f16 cursor " >&#xe63e;</i>
+            <em id="progressing" class="f12  c-999 "></em>
+            <input multiple="multiple" type="file" style="display: none"   name="file" id="uploadFileDom" onchange="angular.element(this).scope().messageSendFile()" >
+          </label>
+        </div>
+        <span class="float-right inline-block">
+           <button  ng-repeat="k in  groupStatus" ng-class="(getChatListInfoData.groupState!=k.code)?[{'c-warning-bg':(k.code==2),'c-success-bg':(k.code==0),'c-important-bg':(k.code==1)}]:[{'c-disabled-bg':true}]" ng-disabled="getChatListInfoData.groupState==k.code" ng-click="chatTag(k.code,id)">{{k.desc}}</button>
+
+          <!--<button class="c-danger-bg" ng-click="chatTag(1)">风险</button>-->
+          <!--<button class="c-success-bg" ng-click="chatTag(2)">正常</button>-->
+          <!--<button class="c-important-bg" ng-click="chatTag(3)">重要</button>-->
+         <i class=" c-999">|</i>
+          <button class="c-default-bg ml10" ng-click="editGroup()">成员管理</button>
+          <button class="c-default-bg ml10" ng-click="joinChat(id)" ng-if="getChatListInfoData.joinState==2">加入会话</button>
+          <button class="c-default-bg" ng-click="showHistoryMessage()" ng-show="getChatListInfoData.joinState===1">查看记录</button>
+          <button class="c-danger-bg" ng-click="closeChat(id)" >解散</button>
+        </span>
+
+      </div>
+      <textarea id="sendTextArea" ng-show="getChatListInfoData.joinState==1" autofocus="autofocus" maxlength="500"  rows="2" style="width: 100%" placeholder="请输入内容..." ng-model="dataInfo.messageValue" ng-keydown="messageSendTextKeyDown(dataInfo)" ></textarea>
+
+      <div class="text-right chat-send" ng-show="getChatListInfoData.joinState==1"><i class="c-ccc ml10 " style="float: left">{{dataInfo.messageValue | monitorWords}}/500</i> <i class="f12 c-ccc mr10">( 可以 'Ctrl+enter' 发送 )</i><button ng-click="messageSendText(dataInfo)">发送</button></div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<!--dialog 创建会话-->
+<div class="modal fade createDialog ">
+  <div class="modal-dialog " style="min-width: 900px; max-width: 1200px; width: 100%">
+    <div class="modal-content">
+
+      <div class="modal-header" >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >成员管理</h4>
+      </div>
+      <div class="modal-body"  >
+        <div class="dialog-content  ">
+          <div class="  form-inline form-group inline-block" style=" padding:5px 20px 5px 5px; border-right: 1px dashed #ddd; width: 50%" >
+            <ul><li class="tab"><i class="hover">查找业主</i><i>查找业者</i> </li> </ul>
+            <ul class="tabContent"  ng-init="keys={}">
+              <li style="display: block">
+                <input type="text" class="form-control input-sm"  placeholder="输入用户手机号码（账号进行添加）" maxlength="11"  ng-model="phone" style="width: 85%">
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearchCE(phone)">查询</button>
+              </li>
+
+              <li ng-init="keys.type=1" >
+                <select class="form-control input-sm "   ng-init="searchTypes=[{code:1,desc:'电话'},{code:2,desc:'姓名'}]"   ng-options="v.code as v.desc for v in searchTypes" ng-model="keys.type"   >
+                  <!--<option value="">&#45;&#45;查询方式&#45;&#45;</option>-->
+                </select>
+                <input type="text" class="form-control input-sm"   placeholder="输入关键词" maxlength="30"  ng-model="keys.searshData" style="width: 60%">
+                <!--<input type="text" class="form-control input-sm"  placeholder="输入关键词" ng-if="keys.type==3"  maxlength="30"  ng-model="keys.searshData" style="width: 60%">-->
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearchCE(keys)">查询</button>
+
+              </li>
+            </ul>
+
+            <!--查询结果-->
+            <div class=" mt20">
+              <i class="c-999">查询结果：</i>
+              <table class=" table   table-hover table-condensed  table-striped text-center mt5 f12 ">
+                <thead style="background:#ddd; color: #333">
+                <tr>
+                  <td>用户名</td>
+                  <td>手机号码</td>
+                  <td>属性</td>
+                  <td>所在公司</td>
+                  <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="g in searchCE">
+                  <td>{{g.name}}</td>
+                  <td ng-bind="g.mobilePhone"></td>
+                  <td ng-bind="g.userDetailType "></td>
+                  <td ng-bind="g.company "></td>
+                  <td><button class="btn btn-danger btn-xs " ng-click="setChatMember(g.userId,g.userType,1)">添加</button></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+
+
+
+          <!--已经选中列表-->
+          <div class="  form-inline form-group inline-block v-top"  style=" padding: 0 0 0 20px ;  width: 49%">
+
+            <div>
+              <i class="c-999">已经选中：</i>
+              <table class=" table   table-hover table-condensed  table-striped text-center mt5 f12 ">
+                <thead style="background:#8A8BC4; color: #fff">
+                <tr>
+                  <td>用户名</td>
+                  <td>手机号码</td>
+                  <td>用户属性</td>
+                  <td>所在公司</td>
+                  <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="g in ChatMembers" >
+                  <td>{{g.name}}</td>
+                  <td ng-bind="g.mobilePhone"></td>
+                  <td ng-bind="g.userDetailType "></td>
+                  <td ng-bind="g.company "></td>
+                  <td><button class="btn btn-danger btn-xs " ng-click="setChatMember(g.userId,g.userType,2)">移除</button></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </div>
+        <p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary "  ng-click="createDialogSumbitRoot()" >完成</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script>
+
+
+</script>
+
+

@@ -1,0 +1,44 @@
+
+<div class="crumbs">
+  <h3>监理公司列表</h3>
+  <p><a ui-sref="main.jl-company-list" >公司管理</a> > 监理公司列表</p>
+</div>
+
+<div class="content-box">
+
+
+  <div class="form-inline form-group "  >
+    <button type="button" class="btn btn-primary btn-sm float-right mb10 " ui-sref="main.jl-company-list-add" > 新增监理公司</button>
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>公司名称</td>
+      <td>商务代表</td>
+      <td>手机号码</td>
+      <td>所在地区</td>
+      <td>状态</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.name"></td>
+      <td ng-bind="g.bdName "></td>
+      <td ng-bind="g.bdMobilePhone  "></td>
+      <td ng-bind="g.areaStr"></td>
+      <td>{{g.enable?'启用':'禁用'}}</td>
+      <td>
+        <a class="btn btn-success btn-xs " ng-href="/#/main/jl-company-list-info?id={{g.id}}">查看</a>
+        <a  class="btn btn-primary btn-xs " ng-href="/#/main/jl-company-list-add?id={{g.id}}">修改</a>
+        <button  class="btn btn-warning btn-xs " ng-if="!g.enable" ng-click=isAvailable([true,g.id])>启用</button>
+        <button  class="btn btn-danger btn-xs " ng-if="g.enable"  ng-click=isAvailable([false,g.id])>禁用</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>

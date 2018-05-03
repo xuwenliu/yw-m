@@ -1,0 +1,79 @@
+<style>
+    .firstTitle{background: #fff; padding-top: 20px !important;}
+</style>
+<div class="crumbs">
+    <h3>E端用户数据表</h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.data-lists-e" >E端用户数据</a>  > E端用户数据表</p>
+</div>
+<div class="content-box "  >
+    <div style="background: #eee; display: block">
+        <div class="form-inline form-group float-right "  >
+            <select  class="form-control input-sm "  ng-init="citys=[{code:2294,desc:'成都'},{code:2252,desc:'重庆'}]"  ng-options="v.code as v.desc for v in citys" ng-model="list.cityId" >
+                <option value="">--城市不限--</option>
+            </select>
+
+            <div class="inline-block f12 ">
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+            </div>
+        </div>
+    </div>
+
+
+    <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+            <td style="width: 260px"></td>
+            <td>是否关联作品</td>
+            <td>总数</td>
+            <td>设计师</td>
+            <td>项目经理</td>
+            <td>商务代表</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat=" a in all track by $index">
+            <td ng-if="$index==0" rowspan="2" class="firstTitle">所有业者帐号</td>
+            <td><i ng-if="a.key==1">不限</i><i ng-if="a.key==2">已关联</i></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=0&hasCase={{a.key==2?true:false}}&employeeType=">{{a.totalCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=0&hasCase={{a.key==2?true:false}}&employeeType=1">{{a.designerCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=0&hasCase={{a.key==2?true:false}}&employeeType=2">{{a.pmCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=0&hasCase={{a.key==2?true:false}}&employeeType=3">{{a.advisorCount}}</a></td>
+        </tr>
+        <tr ng-repeat=" a in logined track by $index">
+            <td  ng-if="$index==0" rowspan="2" class="firstTitle">曾经登录过的业者帐号</td>
+            <td><i ng-if="a.key==1">不限</i><i ng-if="a.key==2">已关联</i></td>
+
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=1&hasCase={{a.key==2?true:false}}&employeeType=">{{a.totalCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=1&hasCase={{a.key==2?true:false}}&employeeType=1">{{a.designerCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=1&hasCase={{a.key==2?true:false}}&employeeType=2">{{a.pmCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=1&hasCase={{a.key==2?true:false}}&employeeType=3">{{a.advisorCount}}</a></td>
+
+        </tr>
+        <tr ng-repeat=" a in notLogined track by $index">
+            <td  ng-if="$index==0" rowspan="2" class="firstTitle">从未登录过的业者帐号</td>
+            <td><i ng-if="a.key==1">不限</i><i ng-if="a.key==2">已关联</i></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=2&hasCase={{a.key==2?true:false}}&employeeType=">{{a.totalCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=2&hasCase={{a.key==2?true:false}}&employeeType=1">{{a.designerCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=2&hasCase={{a.key==2?true:false}}&employeeType=2">{{a.pmCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=2&hasCase={{a.key==2?true:false}}&employeeType=3">{{a.advisorCount}}</a></td>
+        </tr>
+        <tr ng-repeat=" a in latestNotLogined track by $index">
+            <td ng-if="$index==0" rowspan="2" class="firstTitle">最近7天未登录过的业者帐号</td>
+            <td><i ng-if="a.key==1">不限</i><i ng-if="a.key==2">已关联</i></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=3&hasCase={{a.key==2?true:false}}&employeeType=">{{a.totalCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=3&hasCase={{a.key==2?true:false}}&employeeType=1">{{a.designerCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=3&hasCase={{a.key==2?true:false}}&employeeType=2">{{a.pmCount}}</a></td>
+            <td><a ng-href="/#/main/data-lists-user-e?cityId={{list.cityId}}&loginedHistoryType=3&hasCase={{a.key==2?true:false}}&employeeType=3">{{a.advisorCount}}</a></td>
+        </tr>
+        <!--<tr ng-if="all.length<1"><td colspan="9" class="f12 c-999 " >没有相关数据!</td></tr>-->
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+
+
+

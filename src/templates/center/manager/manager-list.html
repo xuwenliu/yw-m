@@ -1,0 +1,51 @@
+<div class="crumbs">
+  <h3>平台业者列表</h3>
+  <p><a ui-sref="main.manager" >平台业者管理</a> > 平台业者列表</p>
+</div>
+
+<div class="form-inline form-group searchs"  >
+  <input type="text" class="form-control input-sm"  placeholder="请输入姓名搜索" size="30" ng-model="list.searchKey">
+  <button type="button" class="btn btn-primary btn-sm " ng-click="submitSearch(list.searchKey)"> 查询</button>
+  <button type="button" class="btn btn-primary btn-sm float-right " ui-sref="main.manager-add" > 新增平台业者</button>
+</div>
+
+
+<div class="content-box">
+  <table class=" table   table-hover table-condensed  table-striped text-center " style="background: #fff">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>用户名</td>
+      <td>手机号</td>
+      <td>姓名</td>
+      <td>角色</td>
+      <td>在职状态</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.userName"></td>
+      <td ng-bind="g.userPhone"></td>
+      <td ng-bind="g.name"></td>
+      <td>
+        <i ng-if="g.userDetailType==1">普通</i>
+        <i ng-if="g.userDetailType==2">商务经理</i>
+        <i ng-if="g.userDetailType==3">平台管家</i>
+      </td>
+      <td>
+        <i ng-if="g.quitJobs">离职</i>
+        <i ng-if="!g.quitJobs">在职</i>
+      </td>
+      <td>
+        <button  class="btn btn-warning btn-xs " ng-if="!g.available" ng-click=isAvailable([true,g.id])>启用</button>
+        <button  class="btn btn-danger btn-xs " ng-if="g.available"  ng-click=isAvailable([false,g.id])>禁用</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+

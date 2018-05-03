@@ -1,0 +1,50 @@
+<div class="crumbs">
+  <h3>热门作品推荐</h3>
+  <p><a ui-sref="main.hot-case" >C端主页管理</a> > 热门作品推荐</p>
+</div>
+<div class="content-box form-inline form-group">
+  <div class=" text-right   "  >
+    <div class="f14 c-666 mb10 inline-block">推荐作品数： {{girdinfo.length||0}}/10（上限10个，剩余可用 {{10-(girdinfo.length||0)*1}})</div>
+    <a  class="btn btn-primary btn-sm  input-sm ml10 inline-block " ui-sref="main.case-list" >新增热门推荐</a>
+  </div>
+  <table class=" table   table-hover table-condensed  table-striped  mt10 " style="background: #fff">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>序号</td>
+      <td>作品基本信息</td>
+      <td>作品ID</td>
+      <td>公司名称</td>
+      <td>设计师</td>
+      <td>浏览量</td>
+      <td>排序位置</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in girdinfo track by $index ">
+      <td>{{$index+1}}</td>
+      <td >
+        <p ng-bind="g.caseName"  class="c-blue" ></p>
+        <p ng-bind="g.areaName"></p>
+      </td>
+      <td ng-bind="g.caseId"></td>
+      <td>{{g.companyName}}</td>
+      <td>{{g.hardDesigner?g.hardDesigner+"(硬装)":""}}{{g.softDesigner?g.softDesigner+"(软装)":""}}</td>
+      <td>{{g.viewCount}}</td>
+      <td class="form-inline form-group">
+        <input ng-model="g.orderNo" type="text" ng-pattern="pubRegex.short_number"   ng-blur="num= !g.orderNo" class="form-control text-center "  ng-class="{err:(g.orderNo>girdinfo.length)||g.orderNo<1||num||checkNumber(g.orderNo,$index,girdinfo).indexOf($index)>-1}" style="width: 50px" maxlength="2" />
+      </td>
+      <td><button  class="btn btn-primary btn-xs" ng-click=del(g.id)>移除</button></td>
+    </tr>
+    <tr ng-if="girdinfo.length==0">
+      <td colspan="8" class="f12 c-999">没有相关数据！</td>
+    </tr>
+    <tr >
+      <td colspan="8"><button  class="btn btn-primary" ng-click=sortButton(girdinfo)>提交排序</button></td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+

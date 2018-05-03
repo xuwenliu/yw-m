@@ -1,0 +1,164 @@
+<div class="crumbs">
+    <h3>推客列表</h3>
+    <p><a ui-sref="main.twitter-list" >推客管理</a> > 推客列表</p>
+</div>
+
+<div class="content-box" >
+    <div class="form-inline form-group ">
+		<select class="form-control input-sm " ng-init="isTeams=[{code:true,desc:'是'},{code:false,desc:'否'}]" ng-options="v.code as v.desc for v in isTeams" ng-model="list.isTeam" >
+            <option value="">--是否属于推客团队--</option>
+        </select>
+        <select class="form-control input-sm " ng-init="isAllows=[{code:true,desc:'是'},{code:false,desc:'否'}]" ng-options="v.code as v.desc for v in isAllows" ng-model="list.isAllow" >
+            <option value="">--是否允许发展下线--</option>
+        </select>
+        <select class="form-control input-sm " ng-init="isToSettles=[{code:true,desc:'是'},{code:false,desc:'否'}]"  ng-options="v.code as v.desc for v in isToSettles" ng-model="list.isToSettle" >
+            <option value="">--是否存在待结佣金--</option>
+        </select>
+
+
+        <div class="inline-block f12 float-right">
+            <input type="text" class="form-control input-sm"  placeholder="手机号/姓名" maxlength="12" size="20" ng-model="list.queryKey">
+            <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+        </div>
+    </div>
+
+
+    <table class=" table table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+                <td>推客姓名</td>
+                <td>手机号码</td>
+                <td>所属团队</td>
+                <td>报备客户数</td>
+                <td>登录过APP的<br />报备客户数</td>
+                <td>报备客户进展统计<br />（洽谈中 / 已签约）</td>
+                <td>下级推客数</td>
+                <td>登录过APP的<br />下级推客数</td>
+                <td>总佣金</td>
+                <td>已结佣金额</td>
+                <td>待结佣金额</td>
+                <td>最近登录时间</td>
+                <td>状态</td>
+                <td>可发展下线</td>
+                <td>操作</td>
+            </tr>
+            <style>.table-striped thead tr td{vertical-align: middle;}</style>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="g in grid.result">
+                <td ng-bind="g.twitterName"></td>
+                <td ng-bind="g.twitterPhone"></td>
+                <td ng-bind="g.teamName"></td>
+                <td ng-bind="g.customerCount"></td><!--报备客户数-->
+                <td ng-bind="g.customerLoginCount"></td><!--登录过APP的报备客户数-->
+                <td>{{g.chattingCount}}/{{g.signedCount}}</td>
+                <td ng-bind="g.branchCount"></td><!--下级推客数-->
+                
+                <td ng-bind="g.loginCount"></td><!--登录过APP的下级推客数-->
+                <td>{{g.totalAmount | currency:""}}</td><!--总佣金-->
+                <td>{{g.settleAmount | currency:""}}</td><!--已结佣金额-->
+                <td>{{g.toSettleAmount | currency:""}} <br /><button ng-show="g.toSettleAmount!=0" class="btn btn-primary btn-xs" ng-click="atOnceAccount(g.twitterId)">立即结佣</button></td><!--待结佣金额-->
+                <td ng-bind="g.lastLoginTime"></td><!--最近登录时间-->
+                <td>
+                    <i ng-show="g.available">启用</i>
+                    <i ng-show="!g.available">禁用</i>
+                </td>
+                <td>
+                    <input type="checkbox" ng-checked="g.allowUnder" ng-model="isBl" ng-click="isAllowUnder(g.twitterId,isBl)">
+                </td>
+                <td>
+                	<button class="btn btn-success btn-xs" ng-click="show(g.twitterId)">查看</button>
+                	<button class="btn btn-primary btn-xs" ng-click="setPlanDialog(g.twitterId)">备注</button>
+                    <button ng-show="!g.available" class="btn btn-warning btn-xs" ng-click="isAble(g.twitterId ,true)" >启用</button>
+                    <button ng-show="g.available" class="btn btn-danger btn-xs" ng-click="isAble(g.twitterId ,false)" >禁用</button>
+                </td>
+            </tr>
+            <tr ng-if="!grid.result"><td colspan="19" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+        <style>.table-striped tbody tr td{vertical-align: middle;}</style>
+    </table>
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+<!--dialog 备注-->
+<div class="modal fade createDialog-remarks">
+  <div class="modal-dialog " style="width: 500px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >备注</h4>
+      </div>
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group text-left" >
+            <dd>
+              <textarea ng-model="plan.remarks" maxlength="300" style="width: 90%" placeholder="填写备注，300字内"  rows="5"></textarea>
+            </dd>
+            <p class="text-center c-red f12 mt10 "> <i class="loading f12 c-green block"></i>{{plan.errorMsg}}</p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary "  ng-click="setPlan(plan)" >提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+	
+<!--dialog 立即结佣-->
+<div class="modal fade createDialog-atOnceAccount ">
+	<div class="modal-dialog " style="width: 750px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">新增结佣记录</h4>
+			</div>
+			<div class="modal-body">
+				<div class="dialog-content ml20 ">
+					<dl class="  form-inline form-group">
+						<dd>
+							<span>待结佣：</span>{{pay.toSettleAmount}}
+						</dd>
+						<dd>
+							<span>结佣金额：</span>
+							<input class="form-control" type="text" placeholder="￥0.00" ng-model="pay.inputSettleAmount"/>
+						</dd>
+						<dd>
+							<span>打款方式：</span>
+							<select class="form-control" ng-options="v.code as v.desc for v in payToolTypes" ng-model="pay.payMode " ng-required="true">
+								<option value="">--选择打款方式--</option>
+							</select>
+						</dd>
+						<dd>
+							<span class="v-top">上传凭证：</span>
+							<div class="inline-block">
+								<button type="button" class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+								<i class=" f12 c-999 ml10">(图片比例不限、图片宽度1000像素以上； 建议大小1MB-10MB之间)</i>
+								<div class="img-show-box create-dialog"></div> <input type="hidden" ng-model="pay.voucher" />
+							</div>
+						</dd>
+
+						<dd>
+							<span>备注：</span>
+							<input type="text" class="form-control " maxlength="50" size="50" placeholder="50字以内" ng-model="pay.remark" /> 
+							<i class=" f12 c-999 ml10">（选填）</i><i>{{pay.remark  | monitorWords}}/50</i>
+						</dd>
+						<p class="text-center c-red f12 "> <i class="loading f12 c-green block"></i>{{pay.errorMsg}}</p>
+					</dl>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary " ng-click="createDialogSumbitAtOnceAccount(pay)">提交</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

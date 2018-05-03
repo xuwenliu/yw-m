@@ -1,0 +1,109 @@
+
+<div class="crumbs">
+  <h3>新增装修公司</h3>
+  <p><a ui-sref="main.business" >公司管理</a> > 新增装修公司列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group">
+    <p class=" model-title  ">公司基本信息</p>
+    <div>
+      <dl>
+        <dd><span>公司全称：</span><input type="text" class="form-control required " size="50"  maxlength="30" placeholder="请输入公司全称2-30个字符，不能为纯数字" ng-disabled="isCompany" ng-model="businessInfo.name" ng-pattern="pubRegex.reNumber"  ng-maxlength="30" ng-minlength="2"  ng-blur="name = !businessInfo.name"  ng-class="{err:name }"  /></dd>
+        <dd><span>注册地址：</span>
+          <select class="form-control " ng-options="v.id as v.name for v in provinces" ng-model="businessInfo.provinceId"   ng-required="true" ng-blur="provinceId =!businessInfo.provinceId"  ng-class="{err:provinceId }" >
+            <option value="">--省--</option>
+          </select>
+
+          <select class="form-control " ng-options="v.id as v.name for v in cities" ng-model="businessInfo.cityId"  ng-required="true" ng-blur="cityId =!businessInfo.cityId"  ng-class="{err:cityId }"  >
+            <option value="">--市--</option>
+          </select>
+          <select class="form-control areas " ng-options="v.id as v.name for v in areas" ng-model="businessInfo.areaId" ng-if="isAreaShow"  ng-required="true" ng-blur="areaId =!businessInfo.areaId"  ng-class="{err:areaId }" >
+            <option value="">--区/县--</option>
+          </select>
+          <input type="text"   class="form-control" size="50" ng-model="businessInfo.address" ng-required="true" ng-blur="address =!businessInfo.address"  ng-class="{err:address }"  maxlength="30"  placeholder="详细地址不能为纯数字" ng-pattern="pubRegex.reNumber" />
+        </dd>
+        <dd><span>公司简介：</span><textarea class="form-control" ng-model="businessInfo.description" cols="80"  rows="3" ng-required="true" ng-blur="description =!businessInfo.description"  ng-class="{err:description }" ng-maxlength="500" maxlength="500" placeholder="500字以内"></textarea> <i style=" ">{{businessInfo.description | monitorWords}}/500</i></dd>
+        <dd><span>公司LOGO：</span>
+          <!---->
+          <div class="upimg-inline-block ">
+            <dl>
+              <dd ><button type="button"  class="btn btn-info " id="logoImage"> 上传公司LOGO <i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="businessInfo.logoImage " /></dd>
+            </dl>
+          </div>
+          <!---->
+    </dd>
+        <dd><span>营业执照：</span>
+          <!---->
+          <div class="upimg-inline-block ">
+            <dl>
+              <dd ><button type="button"  class="btn btn-info " id="lisenceImage"> 上传营业执照<i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="businessInfo.lisenceImage" /></dd>
+            </dl>
+          </div>
+          <!---->
+
+        </dd>
+        <dd><span>营业执照号码：</span> <input type="text"   maxlength="18" ng-pattern="pubRegex.businessLicense"  placeholder="请输入15位或18位营业执照号码"  class="form-control" size="30" ng-model="businessInfo.lisenceNo"  ng-required="true" ng-blur="ajaxLisenceNo([businessInfo.lisenceNo,'lisenceNo','营业执照已存在,请检查后再试!'])"  ng-class="{err:lisenceNoCss }"/><em class="c-red f12 ml10 ">{{lisenceNoErrText}}</em> <input type="hidden" ng-model="lisenceNoOld"></dd>
+
+    <dd ng-init="businessInfo.supportedSupervisor=false"><span>美家保：</span>
+      <input type="radio" ng-model="businessInfo.supportedSupervisor " ng-value="true"  > 支持
+      <input type="radio" ng-model="businessInfo.supportedSupervisor "  ng-value="false" style="margin-left: 50px" > 不支持
+    </dd>
+  <dd ng-init="businessInfo.invitation=false"><span>旗下设计师是否可以邀请客户获取主材补贴：</span>
+    <input type="radio" ng-model="businessInfo.invitation " ng-value="true"  > 是
+    <input type="radio" ng-model="businessInfo.invitation "  ng-value="false" style="margin-left: 50px" > 否
+  </dd>
+      </dl>
+    </div>
+
+    <p class=" model-title mt50 block  ">公司管理员资料</p>
+    <div>
+      <dl>
+        <dd><span>管理员姓名：</span><input type="text"  size="30" class="form-control "    maxlength="10" placeholder="2-10位真实中文名字字符"  ng-pattern="pubRegex.realname" ng-model="businessInfo.ownerName"   ng-blur="ownerName =!businessInfo.ownerName"  ng-class="{err:ownerName }" /></dd>
+        <dd><span>手机号码：</span><input type="tel"  size="30" class="form-control required"  ng-disabled="isUserName"  maxlength="11"  ng-pattern="pubRegex.phone" ng-model="businessInfo.ownerPhone"  ng-blur="ownerPhone =!businessInfo.ownerPhone"  placeholder="请填写11位手机号码" ng-class="{err:ownerPhone }"/></dd>
+        <dd><span>身份证号：</span><input type="tel" size="30" ng-pattern="pubRegex.identity"   maxlength="18"  placeholder="15位或18位身份证" class="form-control" ng-model="businessInfo.idCard"  ng-required="true"   ng-blur="ajaxidCard([businessInfo.idCard,'idCard','身份证号码已经存在,请检查后再试!'])"  ng-class="{err:idCardCss }" /><em class="c-red f12 ml10 ">{{idCardErrText}}</em><input type="hidden" ng-model="idCardOld"></dd>
+        <dd>
+          <span>上传身份证：</span>
+          <!---->
+          <div class="upimg-inline-block ">
+            <dl>
+              <dd ><button type="button"  class="btn btn-info " id="idCardImageA">正面照片上传<i></i>  </button><div class="img-show-box"></div><input type="hidden"  ng-model="businessInfo.idCardImageA" /></dd>
+              <dd class="ml20"><button type="button"  class="btn btn-info " id="idHoldImage"> 持证照片上传 <i></i> </button><div class="img-show-box"></div><input type="hidden"  ng-model="businessInfo.idHoldImage" /></dd>
+            </dl>
+          </div>
+          <!---->
+        </dd>
+        <dd><span>登录帐号：</span><input type="text" size="30"  maxlength="20"   ng-pattern="pubRegex.username" class="form-control required" ng-model="businessInfo.userName" ng-disabled="isUserName"   placeholder="8-20位 数字和字母"  ng-blur="userName =!businessInfo.userName"  ng-class="{err:userName }" /></dd>
+        <dd><input type="hidden"  ng-model="businessInfo.complete" /></dd>
+        <dd><input type="hidden"  ng-model="businessInfo.userId" /></dd>
+
+
+      </dl>
+
+    </div>
+      <span></span>
+      <input type="hidden" ng-model="businessInfo.available">
+      <button ng-click="submit([businessInfo,false])" type="button" class="btn btn-success " ng-show="isAdd"  >保存</button>
+      <button ng-click="submit([businessInfo,true])"  type="button" class="btn btn-primary " ng-if="isAdd">开通公司后台</button>
+      <button ng-click="submit([businessInfo,true])"  type="button" class="btn btn-primary " ng-if="!isAdd">提交</button>
+
+  </div>
+</div>
+
+<!--dialog-->
+<div class="modal fade myModal text-center "  >
+  <div class="modal-dialog" style="display: inline-block; width: auto; ">
+    <div class="modal-content"  style="padding: 10px">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div><img ng-src="{{preview}}&imageView2/2/w/600" class="img-big-show"></div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+

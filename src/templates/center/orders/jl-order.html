@@ -1,0 +1,81 @@
+
+<div class="crumbs" >
+  <h3>监理订单列表</h3>
+  <p><a ui-sref="main.jl-orders" >订单管理</a> > 监理订单列表</p>
+</div>
+
+
+<div class="content-box" >
+  <div class="form-inline form-group "  >
+    <select class="form-control input-sm " ng-init="isSupports=[{code:true,desc:'是'},{code:false,desc:'否'}]"  ng-options="v.code as v.desc for v in isSupports" ng-model="list.isSupport"   >
+      <option value="">--是否支持四方监理--</option>
+    </select>
+    <select class="form-control input-sm "   ng-options="v.code as v.desc for v in orderStatusTypes" ng-model="list.orderStatus"   >
+      <option value="">--订单状态不限--</option>
+    </select>
+
+
+    <div class="inline-block f12 float-right">
+      <input type="text" class="form-control input-sm"  placeholder="订单编号" maxlength="12" size="12" ng-model="list.orderNum">
+      <input type="text" class="form-control input-sm"  placeholder="装修公司" maxlength="30" size="20" ng-model="list.companyName">
+      <input type="text" class="form-control input-sm"  placeholder="客户电话" maxlength="11" size="12" ng-model="list.customerPhone">
+      <input type="text" class="form-control input-sm"  placeholder="客户名称" maxlength="10" size="20" ng-model="list.customerName">
+
+      <div class="input-append date form_datetime_start inline-block" >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" placeholder="申请起始时间" type="text"  ng-model="list.beginTime" onkeyup="this.value=''" id="beginTime" >
+      </div> ----
+      <div class="input-append date form_datetime_end inline-block" >
+        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+        <input class=" form-control input-sm" size="16" type="text" ng-model="list.endTime"  placeholder="申请结束时间" onkeyup="this.value=''" id="endTime">
+      </div>
+      <input type="hidden" ng-class="{err:!dateThan==''}">
+      <i class="f12 c-red" >{{dateThan}}</i>
+
+
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+    </div>
+  </div>
+
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>订单编号</td>
+      <td>是否支持四方监理</td>
+      <td>状态</td>
+      <td>已付金额（元）</td>
+      <td>监理公司</td>
+      <td>客户名称</td>
+      <td>客户电话</td>
+      <td>创建时间</td>
+      <td>结束时间</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.orderNum"></td>
+      <td>{{g.support?'是':'否'}}</td>
+      <td> {{g.statusDesc}}<i ng-if="g.currentPhaseDesc">({{g.currentPhaseDesc}})</i></td>
+      <td ng-bind="g.prepaidAmount  "></td>
+      <td ng-bind="g.companyName  "></td>
+      <td ng-bind="g.customerName  "></td>
+      <td ng-bind="g.customerPhone  "></td>
+      <td ng-bind="g.createTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+      <td ng-bind="g.finishTime | date:'yyyy-MM-dd HH:mm:ss' "></td>
+      <td>
+        <button  class="btn btn-success btn-xs "  ng-click=show(g.id)>查看</button>
+      </td>
+    </tr>
+    <tr ng-if="!grid.result"><td colspan="10" class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+
+
+

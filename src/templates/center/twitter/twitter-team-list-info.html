@@ -1,0 +1,271 @@
+
+<style>
+  .create-dialog-box .form-control{ width: auto}
+</style>
+<div class="crumbs">
+  <h3>团队详情</h3>
+  <p><a ui-sref="main.twitter-list" >推客管理</a> > <a ui-sref="main.twitter-list" >推客列表</a> > 团队详情</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <div class="tab-btn">
+      <ul>
+        <li>
+          <a onclick="javascript:void(0)" class="hover"  >基本信息</a>
+          <a onclick="javascript:void(0)" class="" >所属推客</a>
+          <a onclick="javascript:void(0)">结佣记录</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content mt20">
+    <div class="tab-btn-content">
+      <!--基本信息-->
+      <h4 class="mt20 mb10">基本信息</h4>
+      <table width="100%" border="#DCEAF5" cellspacing="0" cellpadding="6">
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">编号</td>
+            <td>{{dataInfo.id}}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">团队名称</td>
+            <td>{{dataInfo.twitterTeamName}}</td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">所属城市</td>
+            <td>{{dataInfo.provinceName}}<i ng-show="dataInfo.areaName">-{{dataInfo.areaName}}</i></td>
+            <td align="center" bgcolor="#EFF4FA"  style=" width:160px">管理员姓名</td>
+            <td>{{dataInfo.userName}}</td>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">管理员手机号</td>
+            <td>{{dataInfo.userPhone}}</td>
+        </tr>
+    </table>
+      <!--基本信息结束-->
+
+      <!--佣金比例-->
+      <h4 class="mt20 mb10">佣金比例</h4>
+      <table width="80%" border="#DCEAF5" cellspacing="0" cellpadding="6">
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">设计合同（成员）</td>
+            <td>{{dataInfo.designRatioDto.memberRatio}}‰</td>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">设计合同（团队）</td>
+            <td>{{dataInfo.designRatioDto.teamRatio}}‰</td>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">施工合同（成员）</td>
+            <td>{{dataInfo.buildRatioDto.memberRatio}}‰</td>
+            <td align="center" bgcolor="#EFF4FA" style=" width:160px">施工合同（团队）</td>
+            <td>{{dataInfo.buildRatioDto.teamRatio}}‰</td>
+        </tr>
+    	</table>
+      <!--佣金比例结束-->
+			<!--相关数据-->
+      <h4 class="mt20 mb10">相关数据</h4>
+      <table width="60%" border="#DCEAF5" cellspacing="0" cellpadding="6">
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style="width:160px">所属推客数</td>
+            <td>{{dataInfo.relateDateDto.twitterNum}}</td>
+            <td align="center" bgcolor="#EFF4FA"  style="width:160px">成交笔数</td>
+            <td>{{dataInfo.relateDateDto.dealNum}}</td>
+            <td align="center" bgcolor="#EFF4FA"  style="width:160px">结佣次数</td>
+            <td>{{dataInfo.relateDateDto.settledNum}}</td>
+        </tr>
+        <tr>
+            <td align="center" bgcolor="#EFF4FA" style="width:160px">总佣金</td>
+            <td>{{dataInfo.relateDateDto.totalAmount | currency:""}}</td>
+            <td align="center" bgcolor="#EFF4FA" style="width:160px">已结佣金额</td>
+            <td>{{dataInfo.relateDateDto.settledAmount | currency:""}}</td>
+            <td align="center" bgcolor="#EFF4FA" style="width:160px">待结佣金额</td>
+            <td>{{dataInfo.relateDateDto.toSettleAmount | currency:""}}</td>
+        </tr>
+    	</table>
+			<!--相关数据结束-->
+			<style>.tab-btn-content  table tr td{ padding: 8px 10px; border:1px solid #DCEAF5;text-align: center;}</style>
+    </div>
+
+    <!--##################################-->
+		<!--所属推客-->
+    <div style="display: none">
+      <div class="form-inline form-group clearfix">
+        <div class="inline-block float-right">
+
+          <input type="text" class="form-control input-sm" style="width: 140px;"  placeholder="姓名/电话号码" maxlength="30" size="30" ng-model="list.queryKey">
+          <div class="inline-block f12 ">
+            <button type="button" class="btn btn-primary btn-sm  input-sm " ng-click="search(list)">查询</button>
+            <button type="button" class="btn btn-primary btn-sm  input-sm " ng-click="add(teamId)">加入新成员</button>
+          </div>
+        </div>
+
+      </div>
+
+      <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+          <td>姓名</td>
+          <td>电话号码</td>
+          <td>报备客户数</td>
+          <td>成交笔数</td>
+          <td>加入团队时间</td>
+          <td>最后登录时间</td>
+          <td>状态</td>
+          <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        	<!--ng-repeat="g in grid.result"-->
+        <tr ng-repeat="g in grid.result">
+          <td ng-bind="g.userName"></td>
+          <td>{{g.userPhone}}</td>
+          <td>{{g.recordCustomerNum}}</td>
+          <td>{{g.dealNum}}</td>
+          <td>{{g.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td>{{g.lastLoginTime  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td>{{g.available ?"启用":"禁用"}}</td>
+          <td >
+            <button class="btn btn-success btn-xs" ng-click="lookTwitterDetails(g.twitterId)" >查看</button>
+          </td>
+        </tr>
+        <tr ng-if="!grid.result"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+      </table>
+      <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+
+    </div>
+    <!--所属推客结束-->
+    <!--#############################-->
+    <!--结佣记录-->
+    <div style="display: none">
+      <h4 class="inline-block mr50 mt10">结佣记录</h4>
+      <div class="form-inline form-group float-right"  >
+        <button type="button" class="btn btn-primary btn-sm  " ng-click="atOnceAccount(teamId)" >新增结佣记录</button>
+      </div>
+      <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+          <td>时间</td>
+          <td>金额 (元)</td>
+          <td>方式</td>
+          <td>凭证</td>
+          <td>备注</td>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="g in payLists">
+          <td>{{g.transferTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td>{{g.transferAmount}}</td>
+          <td>{{g.payTool}}</td>
+          <td> <a class="preview-img cursor "><img ng-src="{{g.credential}}&imageView2/1/w/40/h/40"  ng-click="showImg(g.credential)"  data-target=".myModal" data-toggle="modal"  data-img="{{g.credential}}"></a></td>
+          <td>{{g.postscript}}</td>
+        </tr>
+        <tr ng-if="!payLists"><td colspan="5" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!--结佣记录结束-->
+
+  </div>
+
+
+</div>
+
+<!--加入新成员-->
+<div class="modal fade createDialog-add">
+    <div class="modal-dialog " style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >加入新成员</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                  <div class="mb10 clearfix">
+										<div class="pr inline-block float-right" style="width: 40%;">
+											<input type="text" class="form-control input-sm inline-block"  placeholder="输入姓名或电话号码" maxlength="11" size="30" ng-model="queryKey">
+				            	<button type="button" class="btn btn-primary btn-sm inline-block pa" style="top: 0;right: 0;" ng-click="searchNewMember(queryKey)"> 
+				            		<span class="glyphicon glyphicon-search"></span>
+				            	</button>
+										</div>
+                   </div>
+                    <table class=" table table-hover table-condensed  table-striped text-center ">
+                        <thead style="background:#8A8BC4; color: #fff">
+                        <tr>
+                            <td style="width: 40px;">选择</td>
+                            <td>推客姓名</td>
+                            <td>推客电话</td>
+                            <td>入团情况</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="g in addNewMember" >
+                            <td><input type="checkbox" ng-disabled="g.teamName" ng-model="g.isSelect" class="checkbox-list"/></td>
+                            <td>{{g.twitterName}}</td>
+                            <td>{{g.phone}}</td>
+                            <td>{{g.teamName?("已加入"+g.teamName):""}}</td>
+                        </tr>
+                        <tr ng-if="addNewMember.length===0"><td colspan=6 class="f12 c-999 " >暂无数据!</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="text-center c-red f12 mt10 "> <i class="loading f12 c-green block"></i>{{errorMsg}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary "  ng-click="submitAdd(addNewMember)">确定</button>
+                <button type="button" class="btn btn-danger "  ng-click="callOffAdd()">取消</button>
+                
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--dialog上传图文模块-新增结佣记录-->
+<div class="modal fade createDialog-atOnceAccount  create-dialog-box">
+  <div class="modal-dialog " style="width: 750px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >新增结佣记录</h4>
+      </div>
+
+      <div class="modal-body"  >
+        <div class="dialog-content ml20 ">
+          <dl class="  form-inline form-group" >
+            <dd ><span>待结佣：</span>
+              <span style="text-align: left">{{pay.toSettleAmount}}</span>
+            </dd>
+
+            <dd ><span>结佣金额：</span>
+              <input  class="form-control " required="true"  type="text"  ng-model="pay.inputSettleAmount" maxlength="30"  placeholder="￥0.00"  ng-pattern="pubRegex.price"  autocomplete="off">
+            </dd>
+
+            <dd ><span>打款方式：</span>
+              <select class="form-control" ng-options="v.code as v.desc for v in payToolTypes" ng-model="pay.payMode " ng-required="true">
+								<option value="">--选择打款方式--</option>
+							</select>
+            </dd>
+
+
+            <dd>
+              <span>上传凭证：</span>
+              <div class="inline-block"><button type="button"  class="btn btn-info " id="upPhotosBtn"> 上传图片 <i></i></button>
+                <i class=" f12 c-999 ml10">({{tagsBaseText.common}})</i>
+                <div class="img-show-box create-dialog"></div> <input type="hidden"  ng-model="pay.voucher"  />
+              </div>
+            </dd>
+
+            <dd><span>备注：</span>
+              <input class="form-control " ng-model="pay.remark"   size="55"   ng-maxlength="50" maxlength="50" placeholder="50字以内"/>
+              <i class="f12 c-999">（选填）</i><i>{{pay.remark  | monitorWords}}/50</i>
+            </dd>
+            <p class="text-center c-red f12 "><em ng-bind="pay.errorMsg"></em></p>
+          </dl>
+
+        </div>
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-primary "  ng-click="createDialogSumbitAtOnceAccount(pay)" >提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

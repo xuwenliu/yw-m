@@ -1,0 +1,81 @@
+
+<div class="crumbs">
+    <h3>服务内容</h3>
+    <p><a ui-sref="main.order-phase">订单管理</a> > 服务内容</p>
+</div>
+
+<div class="content-box" style="min-width: 1100px; ">
+    <div class="form-inline form-group">
+        服务类型：
+        <select class="form-control input-sm "  ng-init="orderStatus=[{id:-1,value:'全部内容'},{id:1,value:'硬装设计'},{id:2,value:'软装设计'},{id:3,value:'硬装施工'},{id:4,value:'软装施工'}]"  ng-options="v.id as v.value for v in orderStatus" ng-model="list.contentType"   >
+            <option value="">--服务类型--</option>
+        </select>
+        <button class="btn btn-primary float-right" data-target='.myModal' data-toggle='modal' ng-click="bootDialog({status:false,id:0})">新增服务内容</button>
+    </div>
+
+    <table class="table table-hover table-condensed table-striped text-center">
+        <thead style="background:#8A8BC4; color: #fff">
+            <tr>
+              <td>服务类型</td>
+              <td>服务名称</td>
+              <td>简要描述</td>
+              <td>新增时间</td>
+              <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat = "g in grid.result">
+                <td ng-bind="showType(g.type)"></td> 
+                <td ng-bind="g.name"></td> 
+                <td ng-bind="g.description"></td> 
+                <td ng-bind="showTime(g.createTime)"></td> 
+                <td>
+                    <button data-target='.myModal' data-toggle='modal'  class="btn btn-primary btn-xs" ng-click="bootDialog({status:true,dataInfo:g})">修改</button>
+                </td> 
+            </tr>
+            <tr ng-if="!grid.result">
+                <td colspan="9" class="f12 c-999 " >没有相关数据!</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+
+<!--dialog-->
+<div class="modal fade myModal" >
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>{{title}}</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="dialog-content lh200 form-inline form-group">
+          <div>
+            <dl>
+                <dd>
+                    <span><i class="c-red">*</i> 服务内容：</span>
+                    <select class="form-control input-sm "  ng-init="refundStatusList=[{id:1,value:'硬装设计'},{id:2,value:'软装设计'},{id:3,value:'硬装施工'},{id:4,value:'软装施工'}]"  ng-options="v.id as v.value for v in refundStatusList" ng-model="dialog.type" ng-blur="type =!dialog.type"  ng-class="{err:type}" ng-required="true">
+                        <option value="">--服务内容--</option>
+                    </select>
+                </dd>
+                <dd>
+                    <span><i class="c-red">*</i> 服务名称：</span>
+                    <input type="text" class="form-control" ng-maxlength="12" style="width:400px;" ng-require="true" maxlength="12" ng-model="dialog.name" placeholder="请输入服务描述，12字以内" ng-blur="name =!dialog.name"  ng-class="{err:name}" ng-require="true">
+                </dd>
+                <dd>
+                    <span>服务描述：</span>
+                    <textarea class="form-control" ng-maxlength="50" rows="2" maxlength="50" placeholder="请输入服务描述，50字以内" ng-model="dialog.description" style="width:400px;"></textarea>
+                </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
+        <button type="button" class="btn btn-danger" ng-click="dialogSubmit(dialog)">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

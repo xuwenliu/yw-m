@@ -1,0 +1,50 @@
+
+<div class="crumbs">
+  <h3>活动报名</h3>
+  <p><a ui-sref="main.activity" >活动管理</a> > <a ui-sref="main.activity" >活动列表</a>  > 报名列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <input type="text" class="form-control input-sm"  placeholder="姓名" maxlength="12" size="30" ng-model="list.name">
+    <input type="text" class="form-control input-sm"  placeholder="手机号码" maxlength="11" size="30" ng-model="list.phone">
+
+    <select class="form-control input-sm "  ng-init="uses=[{code:true,desc:'是'},{code:false,desc:'否'}]" ng-options="v.code as v.desc for v in uses" ng-model="list.use"   >
+      <option value="">--到场不限--</option>
+    </select>
+    <div class="inline-block f12 ">
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+      <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitExcel(list)">导出excel</button>
+    </div>
+
+    <div class="inline-block f12 float-right ">
+      入场券：
+      <input type="text" class="form-control input-sm"  placeholder="输入入场券号" maxlength="12" size="30" ng-model="couponCode">
+      <button   type="button" class="btn btn-success btn-sm  input-sm " style="padding: 0 40px" ng-click="submitCheck(couponCode)">签到</button>
+    </div>
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>姓名</td>
+      <td>手机</td>
+      <td>入场券号</td>
+      <td>是否到场</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.userName "></td>
+      <td ng-bind="g.userPhone "></td>
+      <td ng-bind="g.couponCode "></td>
+      <td><i ng-if="g.couponUsed">是</i><i ng-if="!g.couponUsed">否</i></td>
+
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>
+

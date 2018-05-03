@@ -1,0 +1,47 @@
+<div class="crumbs">
+  <h3>管理门店</h3>
+  <p><a ui-sref="main.material-list" >主材管理</a> > <a ui-sref="main.material-list" >主材列表</a> > 门店列表</p>
+</div>
+
+<div class="content-box">
+  <div class="form-inline form-group "  >
+    <div class="inline-block f12  ">
+      <input type="text" class="form-control input-sm"  placeholder="门店名称" maxlength="30" size="20" ng-model="list.storeName">
+      <button   type="button" class="btn btn-primary btn-sm  input-sm "  ng-click="submitSearch(list.storeName)">查询</button>
+    </div>
+    <button type="button" class="btn btn-primary btn-sm  input-sm ml10 float-right " ng-click="add()">新增门店</button>
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center  ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>序列</td>
+      <td>门店名称</td>
+      <td>门店地址</td>
+      <td>720</td>
+      <td>状态</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="g in result">
+      <td>{{g.storeId }}</td>
+      <td>{{g.storeName }}</td>
+      <td>{{g.storeAddr }}</td>
+      <td>{{g.upload?"已上传":"无" }}</td>
+      <td>{{g.available?'启用':'禁用'}}</td>
+      <td>
+        <button  class="btn btn-primary btn-xs " ng-click=edit(g.storeId,2)>修改</button>
+        <button  class="btn  btn-xs " ng-class="{'btn-warning':(!g.available),'btn-danger':(g.available)}" ng-click=isAva(g.storeId,g.available)>{{g.available?"禁用":"启用"}}</button>
+        <button  class="btn btn-success btn-xs " ng-click=edit(g.storeId,3)>查看</button>
+      </td>
+    </tr>
+    <tr ng-if="!result"><td colspan=6 class="f12 c-999 " >没有相关数据!</td></tr>
+    </tbody>
+  </table>
+
+
+
+</div>

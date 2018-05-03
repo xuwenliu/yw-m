@@ -1,0 +1,437 @@
+<!-- 活动详情-楼盘活动 -->
+
+<style>
+  .create-dialog-box .form-control{ width: auto}
+  .input-table-default td{ padding: 6px 8px !important;}
+</style>
+<div class="crumbs">
+  <h3>活动详情</h3>
+  <p><a ui-sref="main.activity" >活动管理</a> > <a ui-sref="main.activity" >活动列表</a> > 活动详情</p>
+</div>
+
+<div class="content-box">
+    <div class="form-inline form-group">
+        <div class="tab-btn">
+        <ul>
+            <li>
+               <a class="hover">基本信息</a>
+               <a>大奖进度公示</a>
+               <a>活动中奖宣传</a>
+               <a>参与公司列表</a>
+               <a>报名列表</a>
+            </li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="tab-content mt20">
+        <div class="tab-btn-content">
+            <!--基本信息 -start TAB0-->
+            <dl class="form-inline form-group" >
+                <dd><span>活动名称：</span>
+                    <p class="inline-block ml10">{{activityDataInfo.name}}</p>
+                </dd>
+
+                <dd><span>活动封面：</span>
+                    <p class="inline-block ml10">
+                        <a class="block preview-img cursor">
+                            <img ng-src="{{activityDataInfo.coverImage}}&imageView2/2/h/30/" data-target=".myModal" data-toggle="modal" data-img="{{activityDataInfo.coverImage}}">
+                        </a>
+                    </p>
+
+                </dd>
+                <dd><span>活动时间：</span>
+                    <p class="inline-block ml10">{{activityDataInfo.beginTime | date:"yyyy-MM-dd HH:mm:ss"}} -- {{activityDataInfo.endTime | date:"yyyy-MM-dd HH:mm:ss"}}</p>
+                </dd>
+                <dd><span>举办城市：</span>
+                    <p class="inline-block ml10">{{activityDataInfo.cityId== 0 ? "全部":activityDataInfo.cityId ==2252?"重庆":"成都"}}</p>
+                </dd>
+                <dd><span>关联入场券：</span>
+                    <p class="inline-block ml10">{{activityDataInfo.couponName }}</p>
+                </dd>
+            </dl>
+        </div>
+        <!--基本信息-end -->
+
+
+    <!--##########################################################################################################################################################################-->
+
+    <!-- 活动公示 -start TAB1-->
+    <div style="display: none">
+        <div class="form-inline form-group "  >
+            <!-- 活动大奖进度公示 -start -->
+            <dl class="form-inline form-group">
+                <dd>
+                    <span style="width:150px;">当前参与人数：</span>
+                    <p class="inline-block ml10">
+                        <input type="tel" class="form-control input-sm" style="width:200px;" ng-model="progressDataInfo.nowPersonCount" maxlength="6" placeholder="请输入当前活动参与人数(必填)" ng-pattern="pubRegex.numberOfPeople" ng-required="true" ng-blur="nowPersonCount =!progressDataInfo.nowPersonCount"  ng-class="{err:nowPersonCount }">
+                    </p>
+                </dd>
+                <dd>
+                    <span style="width:150px;">活动开奖达成人数：</span>
+                    <p class="inline-block ml10">
+                        <input type="tel" class="form-control input-sm" style="width:200px;" ng-model="progressDataInfo.maxPersonCount" maxlength="6" placeholder="请输入活动开奖达成人数(必填)" ng-pattern="pubRegex.numberOfPeople" ng-required="true" ng-blur="maxPersonCount =!progressDataInfo.maxPersonCount"  ng-class="{err:maxPersonCount }">
+                    </p>
+                </dd>
+                <dd>
+                    <span style="width:150px;"> </span>
+                    <p class="inline-block ml10">
+                        <button type="button" class="btn btn-primary btn-sm"  ng-click="submitPopulation(progressDataInfo)">提交</button>
+                    </p>
+
+                </dd>
+            </dl>
+
+        </div>
+    </div>
+    <!-- 活动大奖进度公示-end -->
+
+
+    <!--##########################################################################################################################################################################-->
+    <!-- 活动中奖宣传列表-start TAB2 -->
+    <div style="display:none;">
+        <div class="form-inline form-group block clearfix">
+            <div class="float-right f12 mb10">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="edit(1,activityId)">新增</button>
+            </div>
+            <table class=" table   table-hover table-condensed  table-striped text-center ">
+              <thead style="background:#8A8BC4; color: #fff">
+              <tr>
+                <td>名称</td>
+                <td>封面</td>
+                <td>操作</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="g in grid.result">
+                <td>{{g.propagandaName}}</td>
+                <td>
+                    <p class="inline-block ml10">
+                        <a class="block preview-img cursor">
+                            <img ng-src="{{g.cover}}&imageView2/2/h/30/" data-target=".myModal" data-toggle="modal" data-img="{{g.cover}}">
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success btn-xs" ng-click="edit(2,activityId,g.id)">查看</button><!--28 是中奖宣传id-->
+                    <button type="button" class="btn btn-primary btn-xs" ng-click="edit(3,activityId,g.id)">修改</button>
+                    <button type="button" class="btn btn-danger btn-xs" ng-click="delActivityPublicity(g.id)">删除</button>
+                </td>
+              </tr>
+              <tr ng-if="!grid.result"><td colspan="3" class="f12 c-999 " >没有相关数据!</td></tr>
+              </tbody>
+            </table>
+            <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+        </div>
+    </div>
+    <!-- 活动中奖宣传列表-end -->
+
+
+
+    <!--######参与公司列表#############################################################################################-->
+
+    <div style="display: none">
+      <div class="form-inline form-group "  >
+
+      <select class="form-control input-sm " ng-options="v.code as v.desc for v in activityCompanyStates" ng-model="lists.state"   >
+      <option value="">--全部状态--</option>
+      </select>
+      <select class="form-control input-sm "    ng-options="v.code as v.desc for v in activityCompanyGroups" ng-model="lists.groupType"   >
+        <option value="">--全部分组--</option>
+      </select>
+      <div class="float-right">
+          <input type="text" class="form-control input-sm"  placeholder="公司名称" maxlength="30" size="30" ng-model="lists.companyName">
+          <div class="inline-block f12 ">
+          <a   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(lists)">查询</a>
+              <button type="button" class="btn btn-primary btn-sm"  ng-click="dialogMyModalChooseCompany(null)"> 添加公司</button>
+          </div>
+      </div>
+
+      </div>
+
+      <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+          <td>ID</td>
+          <td>公司名称</td>
+          <td>公司简称</td>
+          <td>所在地区</td>
+          <td>状态</td>
+          <td>组别</td>
+          <td>报名人数</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="k in grid.result">
+          <td ng-bind="k.id  "></td>
+          <td>{{k.name    }}</td>
+          <td>{{k.simpleName }} </td>
+          <td>{{k.areaStr }}</td>
+          <td>{{k.stateDesc}}</td>
+          <td>{{k.groupTypeDesc  }}</td>
+          <td>{{k.customerCount  }}</td>
+
+
+
+
+            <td>
+                <button  class="btn btn-warning btn-xs" ng-class="{'btn-warning':(k.state===2),'btn-danger':(k.state===1)}" ng-click="isOnCompany(k.companyId,activityId,(k.state===1?2:1))">{{k.state===1?"下架":"上架"}}</button>
+                <button class="btn btn-primary btn-xs" ng-click="dialogMyModalChooseCompany(k)">修改</button>
+                <a    class="btn btn-success  btn-xs" href="/#/main/activity-list-company-info/business-basic?id={{k.companyId}}&activityId={{activityId}}">查看</a>
+            </td>
+        </tr>
+        <tr ng-if="!grid.result"><td colspan="8" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+      </table>
+      <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+    </div>
+
+
+
+
+
+<!--#################################################################################################################################################-->
+
+
+    <!-- 报名列表-start TAB4 -->
+    <div style="display: none">
+        <div class="form-inline form-group "  >
+            <select class="form-control input-sm "  ng-init="arrives=[{code:true,desc:'是'},{code:false,desc:'否'}]"  ng-options="v.code as v.desc for v in arrives" ng-model="list.arrive"   >
+                <option value="">--是否到店--</option>
+            </select>
+            <select class="form-control input-sm "  ng-init="states=[{code:0,desc:'未提交'},{code:1,desc:'待审核'},{code:2,desc:'已通过'}]"  ng-options="v.code as v.desc for v in states" ng-model="list.state"   >
+                <option value="">--合同审核状态--</option>
+            </select>
+        <div class="float-right">
+            <input type="text" class="form-control input-sm" style="width:200px;" placeholder="公司名称" maxlength="30" size="30" ng-model="list.companyName">
+            <input type="text" class="form-control input-sm" style="width:150px;"  placeholder="手机号码" maxlength="11" size="30" ng-model="list.phone">
+            <div class="inline-block f12 ">
+                <button   type="button" class="btn btn-primary btn-sm  input-sm " ng-click="submitSearch(list)">查询</button>
+            </div>
+        </div>
+        </div>
+      <table class=" table   table-hover table-condensed  table-striped text-center ">
+        <thead style="background:#8A8BC4; color: #fff">
+        <tr>
+          <td>姓名</td>
+          <td>手机号码</td>
+          <td>报名公司</td>
+          <td>是否到店</td>
+          <td>报名日期</td>
+          <td>合同审核状态</td>
+          <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="g in grid.result">
+            <td>{{g.userName}}</td>
+            <td>{{g.userPhone }}</td>
+            <td>{{g.companyName }}</td>
+            <td>{{g.arrive ?"是":"否"}}</td>
+            <td>{{g.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{g.stateDesc }}</td>
+            <td>
+                <button class="btn btn-primary btn-xs" ng-click="lookCustomerInfo(g.id)">查看</button>
+                <button class="btn btn-xs" ng-class="g.state==2?'btn-success':'btn-primary'" ng-click="checkTheContract(g.id)" ng-show="g.state!=0">{{g.state==2?"查看合同":"审核合同"}}</button>
+            </td>
+        </tr>
+        <tr ng-if="!grid.result"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 报名列表-end TAB4 -->
+    </div>
+</div>
+
+<!--dialog-->
+<div class="modal fade myModalChooseCompany" >
+    <div class="modal-dialog " style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">选择公司</h4>
+            </div>
+            <div class="modal-body">
+                <div class="dialog-content f12  lh200">
+                    <div ng-show="showCompany==true">
+                        <div class=" form-inline">
+                            <input type="text" class="form-control input-sm inline-block"  placeholder="公司名称" maxlength="30" size="30" ng-model="companyName"> <button   type="button" class="btn btn-primary btn-sm  input-sm inline-block" ng-click="searchCompany(companyName)">查询</button> <i class="f12 c-999">(注:查询结果最多显示10条数据，请精确查找)</i>
+                        </div>
+
+                        <table class=" table   table-hover table-condensed  table-striped text-center mt10 ">
+                            <thead style="background:#8A8BC4; color: #fff">
+                            <tr>
+                                <td>ID</td>
+                                <td style="min-width: 100px">公司名称</td>
+                                <td>操作</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="g in companys.result" >
+                                <td ng-bind="g.id"></td>
+                                <td ng-bind="g.name"></td>
+                                <td>
+                                    <button  class="btn btn-primary btn-xs " ng-click=submitChooseCompany([g.id,g.name,g.ownerPhone])>选择</button>
+                                </td>
+                            </tr>
+                            <tr ng-if="companys&&!(companys.result)"><td colspan="7" class="f12 c-999 " >没有相关数据!</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <table class="input-table-default  form-inline text-left " style="background: #f8f8f8">
+                        <tr>
+                            <td>已选公司：</td>
+                            <td>
+                                <input type="text" class="form-control input-sm"  placeholder="已选公司名" disabled maxlength="30" size="30" ng-model="dialogInfo.name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>公司简称：</td>
+                            <td>
+                                <input type="text" class="form-control input-sm"  placeholder="公司简称1-6字" maxlength="6" size="30" ng-model="dialogInfo.simpleName ">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>选择分组：</td>
+                            <td>
+                                <select class="form-control input-sm "    ng-options="v.code as v.desc for v in activityCompanyGroups" ng-model="dialogInfo.groupType"   >
+                                    <option value="">--选择分组--</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>短信接收电话：</td>
+                            <td>
+                                <input type="text" class="form-control input-sm"  placeholder="手机号码" maxlength="11" size="30" ng-model="dialogInfo.notifyPhone "  ng-pattern="pubRegex.phone" >
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="text-right"> <button type="button" class="btn btn-primary btn-sm  mt10"  ng-click="submitChooseCompanyDialog(dialogInfo)"> 确认提交</button></div>
+                    <p class="f12 c-red text-center">{{dialogInfo.errorText}}</p>
+
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--dialog查看客户信息-->
+<div class="modal fade createDialog-lookCustomerInfo  create-dialog-box">
+    <div class="modal-dialog " style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >客户信息</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <table class="table text-center tab-noBorder">
+                        <tbody>
+                        <tr>
+                            <td>客户姓名：</td>
+                            <td>{{customerDataInfo.userName }}</td>
+                            <td>客户电话：</td>
+                            <td>{{customerDataInfo.userPhone }}</td>
+                            <td>小区名称：</td>
+                            <td>{{customerDataInfo.buildingName }}</td>
+                        </tr>
+                        <tr>
+                            <td>报名公司：</td>
+                            <td>{{customerDataInfo.companyName }}</td>
+                            <td>报名时间：</td>
+                            <td>{{customerDataInfo.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>到店状态：</td>
+                            <td>{{customerDataInfo.arrive ?"已到店":"未到店"}}</td>
+                            <td>到店时间：</td>
+                            <td>{{customerDataInfo.arriveDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>合同状态：</td>
+                            <td>{{customerDataInfo.stateDesc }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+
+
+                        </tbody>
+                    </table>
+                    <style>
+                        table.tab-noBorder tbody tr td{border: none;}
+                        table.tab-noBorder tbody tr td:nth-child(2n){color: #aeaeae;text-align:left;width:180px;}
+                        table.tab-noBorder tbody tr td:nth-child(2n-1){width: 100px;}
+                    </style>
+
+                </div>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary" ng-click="sure()">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!--dialog查看、审核合同-->
+<div class="modal fade createDialog-checkTheContract  create-dialog-box">
+    <div class="modal-dialog " style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >合同信息</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class="dialog-content ml20 ">
+                    <ul class="imgShow">
+                        <li>
+                            <a class="block preview-img cursor">
+                                <img ng-src="{{contractDataInfo.designMoney}}&imageView2/1/w/120/h/160" data-target=".myModal" data-toggle="modal" data-img="{{contractDataInfo.designMoney}}">
+                            </a>
+                            <p class="mt10">设计合同金额页</p>
+                        </li>
+                        <li>
+                            <a class="block preview-img cursor">
+                                <img ng-src="{{contractDataInfo.designSignature}}&imageView2/1/w/120/h/160" data-target=".myModal" data-toggle="modal" data-img="{{contractDataInfo.designSignature}}">
+                            </a>
+                            <p class="mt10">设计合同签章页</p>
+                        </li>
+                        <li>
+                            <a class="block preview-img cursor">
+                                <img ng-src="{{contractDataInfo.constructionMoney}}&imageView2/1/w/120/h/160" data-target=".myModal" data-toggle="modal" data-img="{{contractDataInfo.constructionMoney}}">
+                            </a>
+                            <p class="mt10">施工合同金额页</p>
+                        </li>
+                        <li>
+                            <a class="block preview-img cursor">
+                                <img ng-src="{{contractDataInfo.constructionSignature}}&imageView2/1/w/120/h/160" data-target=".myModal" data-toggle="modal" data-img="{{contractDataInfo.constructionSignature}}">
+                            </a>
+                            <p class="mt10">施工合同签章页</p>
+                        </li>
+                    </ul>
+                    <style>
+                        .imgShow{display: flex;justify-content: space-around;}
+                        .imgShow li{flex:1;text-align: center;}
+                        .imgShow li a{height: 160px;text-align: center;line-height: 160px;}
+                    </style>
+                </div>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary" ng-click="submitCheckTheContract(contractDataInfo)">{{contractDataInfo.state==1?"审核通过":contractDataInfo.state==2?"转换为待审核":""}} </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

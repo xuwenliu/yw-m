@@ -1,0 +1,128 @@
+
+<div class="crumbs">
+    <h3>新增优惠券 </h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.coupon-list" >优惠券管理</a> > <a ui-sref="main.coupon-list" >优惠券列表</a> > 新增优惠券</p>
+</div>
+
+<div class="content-box "  >
+    <div class="form-inline form-group">
+        <table class="input-table-default">
+            <tr>
+                <td><span>优惠券分类：</span></td>
+                <td>
+                    <select class="form-control" ng-options="v.code as v.desc for v in couponClass" ng-model="dataInfo.couponClass">
+                        <option value="">--选择券类型--</option>
+                    </select>
+                    <select class="form-control" ng-options="v.code as v.desc for v in couponTypes" ng-model="dataInfo.type" ng-required="true" ng-blur="type =!dataInfo.type"  ng-class="{err:type }"  >
+                        <option value="">--选择券--</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span>券名称：</span></td>
+                <td>
+                    <input type="text" class="form-control required " maxlength="15" size="60"  placeholder="名称2-15个字符，不能为纯数字" ng-model="dataInfo.name"  ng-pattern="pubRegex.reNumber"   ng-maxlength="15" ng-minlength="2"   ng-blur="name =!dataInfo.name"   ng-class="{err:name }"  />
+                </td>
+            </tr>
+
+            <tr  ng-if="dataInfo.type!==4&&dataInfo.type!==5">
+                <td><span>券概要说明：</span></td>
+                <td>
+                    <input type="text" class="form-control required " maxlength="30" size="60"  placeholder="概要-30个字符，不能为纯数字" ng-model="dataInfo.description "  ng-pattern="pubRegex.reNumber"  ng-maxlength="30" ng-minlength="2"   ng-blur="description  =!dataInfo.description "   ng-class="{err:description  }"  />
+                </td>
+            </tr>
+            <tr  ng-if="dataInfo.type==4||dataInfo.type==5">
+                <td><span>券概要说明：</span></td>
+                <td>
+                    <input type="text" class="form-control required " maxlength="50" size="60"  placeholder="概要-50个字符，不能为纯数字" ng-model="dataInfo.description "  ng-pattern="pubRegex.reNumber"  ng-maxlength="50" ng-minlength="2"   ng-blur="description  =!dataInfo.description "   ng-class="{err:description  }"  />
+                </td>
+            </tr>
+
+            <tr ng-show="dataInfo.type!==4&&dataInfo.type!==5">
+                <td><span>券有效期：</span></td>
+                <td>
+                    <div class="input-append date form_datetime_start inline-block" >
+                        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                        <input class=" form-control " size="20" placeholder="起始时间" type="text"    onkeyup="this.value=''" id="beginTime" >
+                    </div> ----
+                    <div class="input-append date form_datetime_end inline-block" >
+                        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                        <input class=" form-control " size="20" type="text"  placeholder="结束时间" onkeyup="this.value=''" id="endTime">
+                    </div>
+                    <i class="f12 c-999">（时间均从00:00:00开始）</i>
+                    <input type="hidden" ng-class="{err:!dateThan==''}">
+                    <i class="f12 c-red" >{{dateThan}}</i>
+                </td>
+            </tr>
+
+            <tr ng-if="dataInfo.type!==4&&dataInfo.type!==5">
+                <td> <span>券倒计时设置：</span></td>
+                <td>
+                    <input type="tel" class="form-control  " size="10"  placeholder="请填写整数"  maxlength="3" ng-model="dataInfo.countDown "    ng-blur="countDown  = validateFun(dataInfo.countDown) "  ng-class="{err:countDown  }"  /> <i class="f12 c-999">天 (选填)</i>
+                    <input type="hidden" ng-class="{err:!isDateSubtract==''}">
+                    <i class="f12 c-red" >{{isDateSubtract}}</i>
+                </td>
+            </tr>
+
+            <tr ng-if="dataInfo.type==3">
+                <td><span>是否收费：</span></td>
+                <td ng-init="dataInfo.whetherCharge=false">
+                    <select class="form-control"    ng-init="charges=[{code:true,desc:'是'},{code:false,desc:'否'}]" ng-options="v.code as v.desc for v in charges" ng-model="dataInfo.whetherCharge" ng-required="true" ng-blur="charge =dataInfo.whetherCharge==null"  ng-class="{err:charge }"  >
+                        <option value="">--选择--</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr  ng-if="dataInfo.whetherCharge==true&&dataInfo.type==3">
+                <td> <span>额度：</span></td>
+                <td>
+                    <input type="tel" class="form-control  " size="10"  placeholder="请填写整数"  maxlength="5" ng-model="dataInfo.price " ng-pattern="pubRegex.short_number"   ng-blur="price  = !dataInfo.price||dataInfo.price>10000"  ng-class="{err:price  }"  /> <i class="f12 c-999">( 元，金额不超过10000元)</i>
+                </td>
+            </tr>
+
+            <tr ng-if="dataInfo.type!=3&&dataInfo.type!=5&&dataInfo.type!=6">
+                <td> <span>券额度：</span></td>
+                <td>
+                    <input type="tel" class="form-control  " size="10"  placeholder="请填写整数"  maxlength="5" ng-model="dataInfo.price " ng-pattern="pubRegex.short_number"   ng-blur="price = !dataInfo.price "  ng-class="{err:price  }"  /> <i class="f12 c-999">元</i>
+                </td>
+            </tr>
+
+            <tr ng-if="dataInfo.type==5">
+                <td> <span>券折扣：</span></td>
+                <td>
+                    <input type="tel" class="form-control  " size="10"  placeholder="10以内小数"  maxlength="3" ng-model="dataInfo.discount " ng-pattern="pubRegex.price"   ng-blur="discount= (!dataInfo.discount)||(dataInfo.discount)*1>10"  ng-class="{err:discount  }"  /> <i class="f12 c-999"></i>
+                </td>
+            </tr>
+
+
+
+            <tr ng-if="dataInfo.type!=3">
+                <td class="v-top"><span>券使用规则说明：</span></td>
+                <td>
+                    <textarea class="form-control" ng-model="dataInfo.usageRules "  style="width:600px"   rows="8"     ng-maxlength="500" maxlength="500" placeholder="500字以内"></textarea>
+                    <i class="f12 c-999">(选填)</i>
+                    <br><i class="c-999">{{dataInfo.usageRules  | monitorWords}}/500</i>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span></span></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td><span></span></td>
+                <td >
+                    <button ng-click="submit([dataInfo,true])"  type="button" class="btn btn-primary  lastSubmit " >提交</button>
+                </td>
+            </tr>
+
+
+
+
+
+        </table>
+
+    </div>
+</div>

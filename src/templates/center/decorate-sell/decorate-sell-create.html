@@ -1,0 +1,62 @@
+
+<div class="crumbs" >
+  <h3>家居顾问</h3>
+  <p><a ui-sref="main.decorate-sell-list" >家居顾问管理</a> > 新增家居顾问</p>
+</div>
+
+
+<div class="content-box" >
+
+  <div class="form-inline form-group">
+    <table class="input-table-default">
+      <tr>
+        <td><span>姓名：</span></td>
+        <td>
+          <input type="text"  size="30" class="form-control "    maxlength="10" placeholder="2-10位真实中文名字字符"  ng-pattern="pubRegex.realname" ng-model="dataInfo.name"   ng-blur="name =!dataInfo.name"  ng-class="{err:name }" />
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>手机号：</span></td>
+        <td>
+          <input type="tel"  size="30" class="form-control"  ng-disabled="dataInfo.id"  maxlength="11"  ng-pattern="pubRegex.phone" ng-model="dataInfo.mobilePhone"  ng-blur="mobilePhone=!dataInfo.mobilePhone "  placeholder="请填写11位手机号码" ng-class="{err:mobilePhone }"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td><span>服务区域：</span></td>
+        <td>
+          <select class="form-control input-sm "  ng-disabled="dataInfo.id"   ng-options="v.id as v.name for v in cityTypes" ng-model="dataInfo.areaId"  ng-blur="areaId=!dataInfo.areaId "  ng-class="{err:areaId }"  >
+            <option value="">--选择区域--</option>
+          </select>
+          <label class="ml10"><input type="checkbox" ng-model="dataInfo.manager" ng-value=true ng-disabled="isManager"  class="v-top" >客服经理</label>
+          <i class="f12 c-red" ng-if="isManager">(该区域已存在客服经理){{isManager}}</i>
+        </td>
+      </tr>
+
+      <tr ng-if="dataInfo.id" ng-init="dataInfo.distribution=true">
+        <td><span>接受分配：</span></td>
+        <td>
+          <select class="form-control input-sm "   ng-init="distributions=[{code:true,desc:'是'},{code:false,desc:'否'}]"   ng-options="v.code as v.desc for v in distributions" ng-model="dataInfo.distribution"  ng-blur="distribution=dataInfo.distribution==undefined "   ng-disabled="!enable"
+ng-class="{err:distribution }"  >
+            <option value="">--是否接受分配--</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td>
+          <button ng-click="submit([dataInfo,true])"  type="button" class="btn btn-primary w110">提交</button>
+        </td>
+      </tr>
+
+
+      </table>
+    </div>
+
+</div>
+
+
+
+

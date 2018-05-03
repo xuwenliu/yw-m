@@ -1,0 +1,192 @@
+
+<style>
+
+    .roomsTab li{ display: inline-block; padding: 6px 12px; border: 1px solid #ccc; border-bottom: none; margin-right: -1px; cursor: pointer; margin-bottom: -1px}
+    .roomsTab li.hover{ border-bottom: 1px solid #fff}
+    .roomsTab { border-bottom: 1px solid #ccc; margin-bottom: 10px}
+    .roomsContent{ display: none}
+    #editor span{ min-width:0px}
+    .add-phone,.delete-phone{ width: 30px;height: 30px; text-align: center;line-height: 30px; border-radius: 50%; background: #5BC0DE;display: inline-block; font-size: 16px; color: #fff; cursor: pointer; margin-left: 10px}
+    .delete-phone{   border:1px solid #E53573; color: #E53573; background: #fff; font-weight: bold; line-height: 26px }
+
+</style>
+
+
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/lang/zh-cn/zh-cn.js"></script>
+<div class="crumbs">
+    <h3>新增活动 </h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.activity" >活动管理</a> > <a ui-sref="main.activity" >活动列表</a>  > 新增活动</p>
+</div>
+
+
+<div class="content-box "  style="display: none"  >
+    <div class="form-inline form-group">
+        <table class="input-table-default">
+            <tr>
+                <td><span>活动类型：</span></td>
+                <td ng-init="dataInfo.type=1">
+                    <select class="form-control" ng-options="v.code as v.desc for v in activityType" ng-model="dataInfo.type " ng-required="true" ng-blur="type =dataInfo.type==undefined"  ng-class="{err:type}"   ng-disabled="id"  >
+                        <option value="">--选择场景--</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%" colspan="2"><p class=" model-title mt50 block text-left  ">基本资料</p></td>
+            </tr>
+            <tr>
+                <td><span>活动名称：</span></td>
+                <td>
+                    <input type="text" class="form-control " maxlength="30" size="60"  placeholder="名称2-30个字符以内，不能为纯数字" ng-model="dataInfo.name "  ng-pattern="pubRegex.reNumber"  ng-maxlength="30" ng-minlength="2"   ng-blur="name = !dataInfo.name "  ng-class="{err:name  }"   />
+                </td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td><span class="v-top">活动封面：</span></td>
+                <td>
+                    <!---->
+                    <div class="upimg-inline-block ">
+                        <ul>
+                            <li><button type="button"  class="btn btn-info " id="coverImage"> 上传图片<i></i> </button><i class="f12 c-999"></i><div class="img-show-box "></div><input type="hidden"  ng-model="dataInfo.coverImage" /></li>
+                        </ul>
+                    </div>
+                    <!---->
+                </td>
+            </tr>
+
+
+            <tr>
+                <td><span>活动时间：</span></td>
+                <td>
+                    <div class="input-append date form_datetime_start inline-block" >
+                        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                        <input class=" form-control " size="20" placeholder="起始时间" type="text"    onkeyup="this.value=''" id="beginTime" >
+                    </div> ----
+                    <div class="input-append date form_datetime_end inline-block" >
+                        <i class="add-on pa mt30" ><i class="icon-th"></i></i>
+                        <input class=" form-control " size="20" type="text"  placeholder="结束时间" onkeyup="this.value=''" id="endTime">
+                    </div>
+                    <input type="hidden" ng-class="{err:!dateThan==''}">
+                    <i class="f12 c-red" >{{dateThan}}</i>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="v-top"><span>活动内容：</span></td>
+                <td >
+
+                    <!--style给定宽度可以影响编辑器的最终宽度-->
+                    <script id="editor" type="text/plain" style="width:940px;height:400px; overflow-x:hidden "></script>
+                    <!--style给定宽度可以影响编辑器的最终宽度结束-->
+                </td>
+            </tr>
+
+            <tr>
+                <td><span>举办城市：</span></td>
+                <td>
+                    <select class="form-control" ng-options="v.id as v.name for v in cityTypes" ng-model="dataInfo.cityId " ng-required="true" ng-blur="cityId=!dataInfo.cityId "  ng-class="{err:cityId  }"   >
+                        <option value="">--选择城市--</option>
+                        <option value="-1">全部</option>
+                    </select>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="v-top"><span>用户报名通知：</span></td>
+                <td>
+                    <input type="tel"  size="30" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="enrollNotice.userPhone"  ng-blur="userPhone=!enrollNotice.userPhone "  placeholder="请填写11位手机号码" />
+
+                    <select class="form-control"   ng-init="enrollNotice.noticeType=1" ng-options="v.code as v.desc for v in noticeTypes" ng-model="enrollNotice.noticeType " ng-required="true" ng-blur="noticeType =enrollNotice.noticeType==undefined"  ng-class="{err:noticeType}"   >
+                        <!--<option value="">&#45;&#45;选择通知人员类型&#45;&#45;</option>-->
+                    </select>
+                    <input  type="text"  size="30" class="form-control"   maxlength="30" ng-model="enrollNotice.remarks"   placeholder="备注2-30字 选填" />
+
+
+                    <i ng-click="joincallModel(enrollNotice,dataInfo.enrollNoticeInfos)" class="add-phone" ng-if="dataInfo.enrollNoticeInfos.length<10">+</i> <i class="f12 c-999">(选填{{dataInfo.enrollNoticeInfos.length}}，最多绑定10个电话号码)</i>
+
+                    <em class=" f12 c-red">{{enrollNotice.servicePhoneErr}}</em>
+
+                    <div ng-repeat="d in dataInfo.enrollNoticeInfos track by $index" class="mt5">
+                        <input disabled type="tel"  size="30" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="d.userPhone"  ng-blur="userPhones=!d.userPhone||noSome(d,dataInfo.enrollNoticeInfos,1) "  placeholder="请填写11位手机号码" ng-class="{err:userPhones }"/>
+
+                        <select disabled class="form-control" ng-options="v.code as v.desc for v in noticeTypes" ng-model="d.noticeType"  >
+
+                        </select>
+
+                        <input disabled type="text"   size="30" class="form-control"   maxlength="30"   ng-model="d.remarks"   placeholder="备注2-30字 选填" />
+
+                        <i class="delete-phone v-top" ng-click="DelServicePhoneModel(d,$index,dataInfo.enrollNoticeInfos)">-</i>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="v-top"><span>用户到店通知：</span></td>
+                <td>
+                    <input type="tel"  size="30" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="arriveNotice.userPhone"  ng-blur="userPhone=!arriveNotice.userPhone "  placeholder="请填写11位手机号码" />
+
+                    <select class="form-control"   ng-init="arriveNotice.noticeType=1" ng-options="v.code as v.desc for v in noticeTypes" ng-model="arriveNotice.noticeType " ng-required="true" ng-blur="noticeType2 =arriveNotice.noticeType==undefined"  ng-class="{err:noticeType2}"   >
+                        <!--<option value="">&#45;&#45;选择通知人员类型&#45;&#45;</option>-->
+                    </select>
+                    <input  type="text"  size="30" class="form-control"   maxlength="30" ng-model="arriveNotice.remarks"   placeholder="备注30字内 选填" />
+
+
+                    <i ng-click="joincallModel(arriveNotice,dataInfo.arriveNoticeInfos)" class="add-phone" ng-if="dataInfo.arriveNoticeInfos.length<10">+</i> <i class="f12 c-999">(选填，最多绑定10个电话号码)</i>
+
+                    <em class=" f12 c-red">{{arriveNotice.servicePhoneErr}}</em>
+
+                    <div ng-repeat="d in dataInfo.arriveNoticeInfos track by $index" class="mt5">
+                        <input disabled type="tel"  size="30" class="form-control"   maxlength="11"  ng-pattern="pubRegex.phone" ng-model="d.userPhone"  ng-blur="userPhones=!d.userPhone||noSome(d,dataInfo.arriveNoticeInfos,1) "  placeholder="请填写11位手机号码" ng-class="{err:userPhones }"/>
+
+                        <select disabled class="form-control" ng-options="v.code as v.desc for v in noticeTypes" ng-model="d.noticeType"  >
+
+                        </select>
+
+                        <input disabled type="text"   size="30" class="form-control"   maxlength="30"   ng-model="d.remarks"   placeholder="备注30字内 选填" />
+
+                        <i class="delete-phone v-top" ng-click="DelServicePhoneModel(d,$index,dataInfo.arriveNoticeInfos)">-</i>
+                    </div>
+                </td>
+            </tr>
+
+
+        </table>
+
+    </div>
+
+
+
+    <div class="form-inline form-group">
+        <p class=" model-title mt50 block  " >入场券设置</p>
+        <table class="input-table-default">
+            <tr>
+                <td><span>入场券名称：</span></td>
+               <td>
+                   <select class="form-control"  ng-options="v.id as v.name for v in couponNames" ng-model="dataInfo.couponId"   >
+                       <option value="">请选择入场券名称</option>
+                   </select>
+               </td>
+            </tr>
+
+
+        </table>
+    </div>
+
+    <div class="text-center" style="margin-bottom: 100px"><input type="hidden" ng-model="dataInfo.id"/><button type="button" class="btn btn-primary mt50 "  ng-click="submit([dataInfo,true])"  style="width: 160px;">保存</button></div>
+
+
+
+
+
+</div>
+
+<div ng-include="'/templates/partial/show-img.html'"></div>

@@ -1,0 +1,107 @@
+
+<div class="crumbs">
+  <h3>装修公司列表</h3>
+  <p><a ui-sref="main.business" >公司管理</a> > 装修公司列表</p>
+</div>
+
+<div class="content-box">
+  <!--dialog-->
+  <div class="modal fade myModal" >
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">管理员资料</h4>
+        </div>
+        <div class="modal-body">
+          <div class="dialog-content lh200">
+            <div><span class="w110 text-right inline-block">姓名：</span>{{dialog.ownerName}}</div>
+            <div><span class="w110 text-right inline-block">职位：</span>公司管理员</div>
+            <div><span class="w110 text-right inline-block">账号：</span>{{dialog.userName}}</div>
+            <div><span class="w110 text-right inline-block">密码：</span>****** <button class="btn btn-primary btn-xs" ng-click="reset(dialog.userId, dialog.ownerName)">重置密码</button></div>
+            <div><span class="w110 text-right inline-block">电话：</span>{{dialog.ownerPhone}}</div>
+            <div><span class="w110 text-right inline-block">身份证号：</span>{{dialog.idCard}}</div>
+            <div class="clearfix"><span class="w110 text-right float-left">持证照：</span><img class="float-left mb10" ng-src="{{dialog.idHoldImage}}" width="100" class="vt"></div>
+            <div class="clearfix"><span class="w110 text-right float-left">身份证正面照：</span><img clsas="mb10 float-left" ng-src="{{dialog.idCardImageA}}" width="100" class="vt"></div>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <div class="form-inline form-group searchs"  >
+    <input type="text" class="form-control input-sm"  placeholder="输入装修公司名称" maxlength="30" size="30" ng-model="list.searchKey">
+    <button type="button" class="btn btn-primary btn-sm " ng-click="submitSearch(list.searchKey)"> 查询</button>
+    <select  ng-model="list.selected"  class="form-control input-sm "   ng-change="isStatus(list.selected)" ng-init="list.selected = 'default' ">
+      <option value="default" style="display:none;"></option>
+      <option  ng-repeat="x in opts " value="{{x.val}}"  ng-selected="x.val==isComplete">{{x.name}}</option>
+    </select>
+
+    <select  class="form-control  input-sm " ng-init="jgs=[{code:true,desc:'是'},{code:false,desc:'否'}]" ng-options="v.code as v.desc for v in jgs" ng-model="list.supportedSupervisor"   >
+      <option value="">是否支持美家保</option>
+    </select>
+
+    <button type="button" class="btn btn-primary btn-sm float-right " ui-sref="main.business-add" > 新增装修公司</button>
+  </div>
+
+  <table class=" table   table-hover table-condensed  table-striped text-center ">
+    <thead style="background:#8A8BC4; color: #fff">
+    <tr>
+      <td>ID</td>
+      <td>公司名称</td>
+      <td>主营业务</td>
+      <td>公司管理员</td>
+      <td>所在地区</td>
+      <td>从业者</td>
+      <td>推客</td>
+      <td>作品</td>
+      <!--<td>订单</td>-->
+      <!--<td id="currentChatCount" ng-click="sort('currentChatCount')" class="cursor">当前聊天-->
+        <!--<span class="table-sort">-->
+          <!--<i ng-class="['glyphicon','glyphicon-triangle-top','f12','opacity-over',{'opacity-deep':currentSort['currentChatCount'] === true}]"></i>-->
+          <!--<i ng-class="['glyphicon','glyphicon-triangle-bottom','f12','opacity-over',{'opacity-deep':currentSort['currentChatCount'] === false}]"></i>-->
+        <!--</span>-->
+      <!--</td>-->
+      <td id="totalChatCount" ng-click="sort('totalChatCount')" class="cursor">咨询总量
+        <span class="table-sort">
+          <i ng-class="['glyphicon','glyphicon-triangle-top','f12','opacity-over',{'opacity-deep':currentSort['totalChatCount'] === true}]"></i>
+          <i ng-class="['glyphicon','glyphicon-triangle-bottom','f12','opacity-over',{'opacity-deep':currentSort['totalChatCount'] === false}]"></i>
+        </span>
+      </td>
+      <td>账户状态</td>
+      <td>美家保</td>
+      <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="g in grid.result">
+      <td ng-bind="g.id"></td>
+      <td ng-bind="g.name"></td>
+      <td ng-bind="g.decorateTypesDesc"></td>
+      <td ng-bind="g.ownerName"></td>
+      <td ng-bind="g.areaStr"></td>
+      <td ng-bind="g.employeeNum"></td>
+      <td ng-bind="g.twitterCount"></td>
+      <td ng-bind="g.caseNum"></td>
+      <!-- <td class="table-td-style"><a href="javascript:void(0);" ng-bind="g.ownerName" ng-click="show(g.id)" data-target='.myModal' data-toggle='modal'></a></td> -->
+      <!--<td ng-bind="g.orderCount"></td>-->
+      <!--<td ng-bind="g.currentChatCount"></td>-->
+      <td ng-bind="g.totalChatCount"></td>
+      <td>
+        <i ng-if="g.complete && g.available" >开启中</i> <i ng-if="g.complete && !g.available">禁用中</i> <i ng-if="!g.complete">未完善</i>
+      </td>
+      <td>{{g.supportedSupervisor?'支持':'不支持'}}</td>
+      <td>
+        <a  class="btn btn-success btn-xs " ng-if="g.complete"  ng-href="#/main/business-info/business-basic?id={{g.id}}">查看</a>
+        <button  class="btn btn-primary btn-xs " ng-if="g.complete" ng-click=edit([1,g.id])>修改</button>
+        <button  class="btn btn-primary btn-xs " ng-if="!g.complete" ng-click=edit([0,g.id])>完善</button>
+        <button  class="btn btn-danger btn-xs " ng-if="!g.complete" ng-click=del(g.id)>删除</button>
+        <button  class="btn btn-warning btn-xs " ng-if="g.complete && !g.available" ng-click=isAvailable([0,g.id])>启用</button>
+        <button  class="btn btn-danger btn-xs " ng-if="g.complete && g.available"  ng-click=isAvailable([1,g.id])>禁用</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-include="'/templates/partial/page.html'" style="height: 50px;background-color: #f4f4f6"></div>
+</div>

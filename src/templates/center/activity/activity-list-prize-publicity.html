@@ -1,0 +1,55 @@
+<!-- 新增活动中奖宣传 -->
+
+
+
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/static/libs/ue/lang/zh-cn/zh-cn.js"></script>
+<div class="crumbs">
+    <h3> {{type===2?"查看中奖宣传":type===3?"修改中奖宣传":"新增中奖宣传"}} </h3><em class="c-666 ml10"></em>
+    <p><a ui-sref="main.activity" >活动管理</a> >  {{type===2?"查看中奖宣传":type===3?"修改中奖宣传":"新增中奖宣传"}}</p>
+</div>
+
+
+<div class="content-box">
+    <div class="form-inline form-group">
+        <table class="input-table-default">
+            <tr>
+                <td><span>名称：</span></td>
+                <td>
+                    <input type="text" class="form-control " maxlength="12" size="60"  placeholder="请写明第几期，名称1-12个字符以内，不能为纯数字" ng-model="dataInfo.propagandaName"  ng-pattern="pubRegex.reNumber"  ng-maxlength="12" ng-minlength="1"   ng-blur="propagandaName = !dataInfo.propagandaName "  ng-class="{err:propagandaName  }"   />
+                </td>
+            </tr>
+            <tr>
+                <td><span class="v-top">封面：</span></td>
+                <td>
+                    <!---->
+                    <div class="upimg-inline-block ">
+                        <ul>
+                            <li><button type="button"  class="btn btn-info " id="coverImage"> 上传图片<i></i> </button><i class="f12 c-999"></i><div class="img-show-box "></div><input type="hidden"  ng-model="dataInfo.cover" /></li>
+                        </ul>
+                    </div>
+                    <!---->
+                </td>
+            </tr>
+            <tr>
+                <td class="v-top"><span>正文：</span></td>
+                <td >
+
+                    <!--style给定宽度可以影响编辑器的最终宽度-->
+                    <script id="editor" type="text/plain" style="width:940px;height:400px; overflow-x:hidden "></script>
+                    <!--style给定宽度可以影响编辑器的最终宽度结束-->
+                </td>
+            </tr>
+            <tr>
+                <td><span></span></td>
+                <td ng-show="type!=2"><button class="btn btn-primary btn-sm" ng-click="submitPrizePublicity(dataInfo)">提交</button></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div ng-include="'/templates/partial/show-img.html'"></div>
