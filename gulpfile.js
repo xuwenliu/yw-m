@@ -50,7 +50,7 @@
 
 
 // 直接复制安装
-//npm install gulp  gulp-uglify gulp-concat gulp-minify-css gulp-rename gulp-htmlmin gulp-asset-rev run-sequence gulp-strip-debug gulp-clean gulp-rev-collector gulp-rev gulp-ngmin  gulp-ng-annotate gulp-minify-html gulp-jshint jshint-stylish jshint gulp-csslint csslint-stylish gulp-watch gulp-sass
+//cnpm install gulp  gulp-uglify gulp-concat gulp-minify-css gulp-rename gulp-htmlmin gulp-asset-rev run-sequence gulp-strip-debug gulp-clean gulp-rev-collector gulp-rev gulp-ngmin  gulp-ng-annotate gulp-minify-html gulp-jshint jshint-stylish jshint gulp-csslint csslint-stylish gulp-watch gulp-sass
 
 // gulp 运行
 var gulp = require('gulp');

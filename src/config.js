@@ -6,7 +6,7 @@
 
 // window.HOST = "https://devconsole.yingwumeijia.com";//dev
 
-window.HOST = "https://preconapi.yingwumeijia.com";//pre
+window.HOST = "https://conapi.yingwumeijia.com";//pre
 
 // window.HOST = "http://192.168.28.78:8181";//lf
 
